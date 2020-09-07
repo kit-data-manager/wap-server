@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.1//EN" "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
+<module name="Checker">
+    <property name="severity" value="warning" />
+
+    <!-- ######## TEMPLATE/CHECKSTYLE/OTHERS.XML ######## !-->
+    <module name="com.puppycrawl.tools.checkstyle.TreeWalker">
+        
+        <!-- Checks that the order of modifiers conforms to the suggestions in the Java Language specification, !-->
+        <!-- sections 8.1.1, 8.3.1 and 8.4.3. !-->
+        <!-- See http://checkstyle.sf.net/config_modifiers.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck"/>
+        
+        <!-- Checks that there are no redundant modifiers. !-->
+        <!-- See http://checkstyle.sf.net/config_modifiers.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.modifier.RedundantModifierCheck">
+            <property name="tokens" value="METHOD_DEF, VARIABLE_DEF, ANNOTATION_FIELD_DEF"/>
+        </module>
+        
+        <!-- Checks that a class which has only private constructors is declared as final. !-->
+        <!-- See http://checkstyle.sf.net/config_design.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck"/>
+        
+        <!-- Check nested (internal) classes/interfaces are declared at the bottom of the class after all method and field declarations. !-->
+        <!-- See http://checkstyle.sourceforge.net/config_design.html#InnerTypeLast !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.InnerTypeLastCheck"/>
+        
+        <!-- Implements Bloch, Effective Java, Item 17 - Use Interfaces only to define types. !-->
+        <!-- See http://checkstyle.sf.net/config_design.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck">
+            <property name="allowMarkerInterfaces" value="false"/>
+        </module>
+        
+        <!-- Restricts throws statements to a specified count. !-->
+        <!-- See http://checkstyle.sf.net/config_design.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.ThrowsCountCheck">
+            <property name="max" value="2"/>
+        </module>
+        
+        <!-- Checks that classes that define a covariant equals() method also override method equals(java.lang.Object). !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.CovariantEqualsCheck"/>
+        
+        <!-- Checks declaration order according to Code Conventions for the Java Programming Language. !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.DeclarationOrderCheck">
+            <property name="ignoreConstructors" value="false"/>
+            <property name="ignoreModifiers" value="false"/>
+        </module>
+        
+        <!-- Check that the default is after all the cases in a switch statement. !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.DefaultComesLastCheck"/>
+        
+        <!-- Detects empty statements (standalone ;). !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck"/>
+        
+        <!-- Catching java.lang.Exception, java.lang.Error or java.lang.RuntimeException is almost never acceptable. !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalCatchCheck">
+            <property name="illegalClassNames" value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException"/>
+        </module>
+        
+        <!-- This check can be used to ensure that types are not declared to be thrown. !-->
+        <!-- Declaring to throw java.lang.Error or java.lang.RuntimeException is almost never acceptable. !-->
+        <!-- See http://checkstyle.sourceforge.net/config_coding.html#IllegalThrows !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalThrowsCheck">
+            <property name="illegalClassNames" value="java.lang.Throwable, java.lang.Error, java.lang.RuntimeException"/>
+        </module>
+        
+        <!-- Checks for assignments in subexpressions, such as in String s = Integer.toString(i = 2);. !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.InnerAssignmentCheck">
+            <property name="tokens" value="ASSIGN, BAND_ASSIGN, BOR_ASSIGN, BSR_ASSIGN, BXOR_ASSIGN,             DIV_ASSIGN, MINUS_ASSIGN, MOD_ASSIGN, PLUS_ASSIGN, SL_ASSIGN,             SR_ASSIGN, STAR_ASSIGN"/>
+        </module>
+        
+        <!-- Checks that switch statement has "default" clause. !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck"/>
+        
+        <!-- Check for ensuring that for loop control variables are not modified inside the for block. !-->
+        <!-- See http://checkstyle.sourceforge.net/config_coding.html#ModifiedControlVariable !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.ModifiedControlVariableCheck"/>
+        
+        <!-- Disallow assignment of parameters. !-->
+        <!-- See http://checkstyle.sf.net/config_coding.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.ParameterAssignmentCheck"/>
+        
+        <!-- this got moved here from the import checks !-->
+        <!-- Checks for unused import statements. !-->
+        <!-- See http://checkstyle.sf.net/config_import.html !-->
+        <module name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+        
+    </module>
+    <!-- ######## END OF TEMPLATE/CHECKSTYLE/OTHERS.XML ######## !-->
+</module>

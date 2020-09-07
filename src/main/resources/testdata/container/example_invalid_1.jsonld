@@ -1,0 +1,10 @@
+{
+    "@context": [
+    "http://www.w3.org/ns/anno.jsonld",
+    "http://www.w3.org/ns/ldp.jsonld"
+  ],
+  "@id": "ClientseitigeOriginalId:keine",
+  "@type": [ "ldp:Container", "AnnotationCollection"],
+  "dcterms:title": "Alice data storage on the Web",
+  "label": "Alice data storage on the Web"
+}

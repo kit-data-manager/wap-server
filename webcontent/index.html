@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  
+  <!-- @author -->
+  <meta name="author" content="Matthias Dressel, Michael Hitzker, Markus Hoefler, Andreas Loeffler, Timo Schmidt">
+  <!-- @version -->
+  <meta name="version" content="1.0">
+
+  <!-- JQuery -->
+  <script src="resources/jquery/jquery.js"></script>
+
+  <!-- JQueryUi -->
+  <link rel="stylesheet" href="resources/jquery/jquery-ui.css">
+  <link rel="stylesheet" href="resources/jquery/jquery-ui.structure.css">
+  <link rel="stylesheet" href="resources/jquery/jquery-ui.theme.css">
+  <script src="resources/jquery/jquery-ui.js"></script>
+
+  <!-- HightlightJS.org - styles and javascript to pretty print JSON string -->
+  <link rel="stylesheet" href="resources/highlight/stylesHighlightDefault.css">
+  <script src="resources/highlight/highlight.pack.js"></script>
+
+  <!-- Autolinker - generates html anchor tags to given input text -->
+  <script src="resources/autolinker/Autolinker.js"></script>
+
+  <!-- WAPS styles and javascript -->
+  <link rel="stylesheet" href="styles.css">
+  <script src="ExampleData.js"></script>
+  <script src="HttpMethod.js"></script>
+  <script src="HttpRequest.js"></script>
+  <script src="JsonString.js"></script>
+  <script src="WebAnnotation.js"></script>
+  <script src="Main.js"></script>
+
+  <title>Web Annotation Protocol Server</title>
+</head>
+
+<body>
+
+  <!-- Global Form layout, because submitting is handled by javascript -->
+  <form style="width:100%;" name="wapsForm" id="wapsForm">
+    <!-- Body div frame -->
+    <div style="width:100%;">
+
+      <!-- Top Block frame -->
+      <div style="width:100%;">
+        <!-- HTTP Methods -->
+        <div class="minWidth1" style="width:446px;">
+          <fieldset style="width:calc(100% - 32px);">
+            <legend>Select HTTP Method</legend>
+            <label for="httpRadio-1">GET</label>
+            <input type="radio" name="httpRadio" id="httpRadio-1" value="GET" checked="checked">
+
+            <label for="httpRadio-2">HEAD</label>
+            <input type="radio" name="httpRadio" id="httpRadio-2" value="HEAD">
+
+            <label for="httpRadio-3">POST</label>
+            <input type="radio" name="httpRadio" id="httpRadio-3" value="POST">
+
+            <label for="httpRadio-4">PUT</label>
+            <input type="radio" name="httpRadio" id="httpRadio-4" value="PUT">
+
+            <label for="httpRadio-5">DELETE</label>
+            <input type="radio" name="httpRadio" id="httpRadio-5" value="DELETE">
+
+            <!--
+				<label for="httpRadio-6">OPTIONS</label>
+				<input type="radio" name="httpRadio" id="httpRadio-6" value="OPTIONS">
+				-->
+          </fieldset>
+        </div>
+        <!-- IRI -->
+        <div class="minWidth1" style="width:calc(100% - 446px - 180px - 6px);">
+          <fieldset style="width:calc(100% - 32px);">
+            <legend>Annotation URL</legend>
+            <div style="width:100%; white-space:nowrap; border:none;">
+              <input style="width:calc(100% - 8px); vertical-align:middle;" name="targetUrl" id="targetUrl" value="http://localhost:8080/wap/">
+              <button type="button" style="width:1px; visibility:hidden; vertical-align:middle;" class="ui-button ui-widget ui-corner-all">DUMMY</button>
+            </div>
+          </fieldset>
+        </div>
+        <!-- Submit Button -->
+        <div style="width:180px;">
+          <fieldset style="width:calc(100% - 30px);">
+            <legend>Submit Request</legend>
+            <button type="button" class="ui-button ui-widget ui-corner-all" id="submitButton">Submit Request</button>
+          </fieldset>
+        </div>
+      </div>
+
+
+      <!-- Top Sublevel Block frame -->
+      <div style="width:100%;">
+        <!-- HTTP Method GET -->
+        <div class="minWidth1" style="width:100%; display:none;" id="subGet">
+          <fieldset class="subHttp">
+            <legend>GET Request</legend>
+            <!-- Page input -->
+            <div class="nobr inputBoxFrame">
+              <label class="inputLabel spaceTop1" for="subGetPage">Page: </label>
+              <input class="inputWidth1 spaceTop1" name="subGetPage" id="subGetPage" value="" placeholder="Number" style="">
+            </div>
+            <!-- Iris input -->
+            <div class="nobr inputBoxFrame">
+              <label class="inputLabel spaceTop1" for="subGetIris">Iris: </label>
+              <input class="inputWidth1 spaceTop1" name="subGetIris" id="subGetIris" value="" placeholder="0 or 1" style="">
+            </div>
+          </fieldset>
+        </div>
+        <!-- HTTP Method POST -->
+        <div class="minWidth1" style="width:100%; display:none;" id="subPost">
+          <fieldset class="subHttp">
+            <legend>POST Request</legend>
+            <!-- Slug input -->
+            <div class="nobr inputBoxFrame" id="subPostSlugBoxFrame">
+              <label class="inputLabel spaceTop1" for="subPostSlug">Slug: </label>
+              <input class="inputWidth2 spaceTop1" name="subPostSlug" id="subPostSlug" value="" placeholder="ContainerName" style="">
+            </div>
+            <br>
+            <!-- JSON input -->
+            <label class="inputLabel spaceTop1" for="subPostJson">
+              Web Annotation in JSON:
+              <span class="textButton" id="subPostJsonCopyButton">copy</span> |
+              <span class="textButton" id="subPostJsonClearButton">clear</span> |
+              <span class="textButton" id="subPostJsonExampleContainerButton">container</span> |
+              <span class="textButton" id="subPostJsonExample1Button">ex.Serialized</span> |
+              <span class="textButton" id="subPostJsonExample2Button">ex.Simplified</span> |
+              <span class="textButton" id="subPostJsonExample3Button">ex.SVG</span> |
+              <span class="textButton" id="subPostJsonExample4Button">ex.Person</span>
+            </label>
+            <br>
+            <textarea class="inputJson" name="subPostJson" id="subPostJson"></textarea>
+          </fieldset>
+        </div>
+        <!-- HTTP Method PUT -->
+        <div class="minWidth1" style="width:100%; display:none;" id="subPut">
+          <fieldset class="subHttp">
+            <legend>PUT Request</legend>
+            <!-- Etag input -->
+            <div class="nobr inputBoxFrame">
+              <label class="inputLabel spaceTop1" for="subPutEtag">Etag: </label>
+              <input class="inputWidth2 spaceTop1" name="subPutEtag" id="subPutEtag" value="" placeholder="&quot;String&quot;" style="">
+              <span class="textButton" id="subPutEtagCopyButton">copy</span>
+            </div>
+            <br>
+            <!-- JSON input -->
+            <label class="inputLabel spaceTop1" for="subPutJson">
+              Web Annotation in JSON:
+              <span class="textButton" id="subPutJsonCopyButton">copy</span> |
+              <span class="textButton" id="subPutJsonClearButton">clear</span> |
+              <!-- <span class="textButton" id="subPutJsonExampleContainerButton">container</span> | -->
+              <span class="textButton" id="subPutJsonExample1Button">ex.Serialized</span> |
+              <span class="textButton" id="subPutJsonExample2Button">ex.Simplified</span> |
+              <span class="textButton" id="subPutJsonExample3Button">ex.SVG</span> |
+              <span class="textButton" id="subPutJsonExample4Button">ex.Person</span>
+            </label>
+            <br>
+            <textarea class="inputJson" name="subPutJson" id="subPutJson"></textarea>
+          </fieldset>
+        </div>
+        <!-- HTTP Method DELETE -->
+        <div class="minWidth1" style="width:100%; display:none;" id="subDelete">
+          <fieldset class="subHttp">
+            <legend>DELETE Request</legend>
+            <!-- Etag input -->
+            <div class="nobr inputBoxFrame">
+              <label class="inputLabel spaceTop1" for="subDeleteEtag">Etag: </label>
+              <input class="inputWidth2 spaceTop1" name="subDeleteEtag" id="subDeleteEtag" value="" placeholder="&quot;String&quot;" style="">
+              <span class="textButton" id="subDeleteEtagCopyButton">copy</span>
+            </div>
+          </fieldset>
+        </div>
+        <!-- HTTP Method HEAD -->
+        <div class="minWidth1" style="width:100%; display:none;" id="subHead">
+          <fieldset class="subHttp">
+            <legend>HEAD Request</legend>
+          </fieldset>
+        </div>
+        <!-- HTTP Method OPTIONS -->
+        <div class="minWidth1" style="width:100%; display:none;" id="subOptions">
+          <fieldset class="subHttp">
+            <legend>OPTIONS Request</legend>
+          </fieldset>
+        </div>
+
+      </div>
+
+
+      <!-- Content Block frame -->
+      <div style="width:100%;">
+        <!-- Content Block Left frame -->
+        <div class="contentFrameLeft minWidth1">
+          <div id="tabsLeft" style="width:calc(100% - 10px);">
+            <ul>
+              <li>
+                <a href="#tabsLeft-1">Target Visualization</a>
+              </li>
+              <li>
+                <a href="#tabsLeft-2">HTTP Protocol</a>
+              </li>
+            </ul>
+            <!-- Target Visualization -->
+            <div id="tabsLeft-1" class="contentFrameLeft content">
+            </div>
+            <!-- HTTP Protocol -->
+            <div id="tabsLeft-2" class="contentFrameLeft content">
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Block Right frame -->
+        <div class="contentFrameRight minWidth1">
+          <div id="tabsRight" style="width:calc(100% - 10px);">
+            <ul>
+              <li>
+                <a href="#tabsRight-1">JSON pretty</a>
+              </li>
+              <li>
+                <a href="#tabsRight-2">JSON text</a>
+              </li>
+            </ul>
+            <!-- JSON object -->
+            <div id="tabsRight-1" class="contentFrameRight content">
+            </div>
+            <!-- JSON text -->
+            <div id="tabsRight-2" class="contentFrameRight content">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+  
+</body>
+
+</html>

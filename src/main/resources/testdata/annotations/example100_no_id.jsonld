@@ -1,0 +1,6 @@
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "type":"Annotation",
+  "bodyValue": "Comment text",
+  "target": "http://example.org/target1"
+}

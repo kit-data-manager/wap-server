@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="MainGroup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">20000</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">{&#xd;
+  &quot;id&quot; : &quot;urn:anno4j:73c138b5-db5c-443c-8fc2-3252d21eb798&quot;,&#xd;
+  &quot;type&quot; : &quot;Annotation&quot;,&#xd;
+  &quot;dcterms:created&quot; : &quot;2018-04-30T14:44:25Z&quot;,&#xd;
+  &quot;creator&quot; : &quot;urn:uuid:c4dbcb3f-f03f-3ff6-8c6d-c0cdb44a06ac&quot;,&#xd;
+  &quot;dcterms:issued&quot; : &quot;2018-05-01T11:49:48Z&quot;,&#xd;
+  &quot;body&quot; : [ {&#xd;
+    &quot;id&quot; : &quot;urn:anno4j:40ba806b-90c9-455f-8679-094db9bf7c3c&quot;,&#xd;
+    &quot;type&quot; : [ &quot;oa:EmbeddedContent&quot;, &quot;TextualBody&quot;, &quot;https://github.com/anno4j/ns#CreationProvenance&quot;, &quot;https://github.com/anno4j/ns#ExternalWebResource&quot;, &quot;https://github.com/anno4j/ns#Resource&quot; ],&#xd;
+    &quot;dc:subject&quot; : &quot;PageRegion&quot;,&#xd;
+    &quot;dc:title&quot; : &quot;imageHeight&quot;,&#xd;
+    &quot;creator&quot; : &quot;urn:uuid:c4dbcb3f-f03f-3ff6-8c6d-c0cdb44a06ac&quot;,&#xd;
+    &quot;http://qudt.org/vocab/unit&quot; : &quot;Pixel&quot;,&#xd;
+    &quot;value&quot; : &quot;1593&quot;&#xd;
+  }, {&#xd;
+    &quot;id&quot; : &quot;urn:anno4j:340ef1dd-6e99-4800-a1e1-da438eccd55a&quot;,&#xd;
+    &quot;type&quot; : [ &quot;oa:EmbeddedContent&quot;, &quot;TextualBody&quot;, &quot;https://github.com/anno4j/ns#CreationProvenance&quot;, &quot;https://github.com/anno4j/ns#ExternalWebResource&quot;, &quot;https://github.com/anno4j/ns#Resource&quot; ],&#xd;
+    &quot;dc:subject&quot; : &quot;PageRegion&quot;,&#xd;
+    &quot;dc:title&quot; : &quot;imageWidth&quot;,&#xd;
+    &quot;creator&quot; : &quot;urn:uuid:c4dbcb3f-f03f-3ff6-8c6d-c0cdb44a06ac&quot;,&#xd;
+    &quot;http://qudt.org/vocab/unit&quot; : &quot;Pixel&quot;,&#xd;
+    &quot;value&quot; : &quot;1024&quot;&#xd;
+  } ],&#xd;
+  &quot;target&quot; : {&#xd;
+    &quot;id&quot; : &quot;urn:anno4j:2f6f366e-0657-4959-8d71-b217ce7228cf&quot;,&#xd;
+    &quot;type&quot; : [ &quot;SpecificResource&quot;, &quot;https://github.com/anno4j/ns#CreationProvenance&quot;, &quot;https://github.com/anno4j/ns#ExternalWebResource&quot;, &quot;https://github.com/anno4j/ns#Resource&quot; ],&#xd;
+    &quot;selector&quot; : {&#xd;
+      &quot;id&quot; : &quot;urn:anno4j:e78e91e4-ae54-4552-8ab0-da3969bb3209&quot;,&#xd;
+      &quot;type&quot; : [ &quot;SvgSelector&quot;, &quot;https://github.com/anno4j/ns#Resource&quot;, &quot;https://github.com/anno4j/ns#Selector&quot; ],&#xd;
+      &quot;dcterms:conformsTo&quot; : &quot;http://www.w3.org/TR/SVG/&quot;,&#xd;
+      &quot;value&quot; : &quot;&lt;svg xmlns=\&quot;http://www.w3.org/2000/svg\&quot;&gt;&lt;ellipse cx=\&quot;550\&quot; cy=\&quot;670\&quot; rx=\&quot;150\&quot; ry=\&quot;120\&quot; /&gt;&lt;/svg&gt;&quot;&#xd;
+    },&#xd;
+    &quot;source&quot; : &quot;http://diglib.hab.de/drucke/218-20-quod-2s/00002.jpg&quot;&#xd;
+  },&#xd;
+  &quot;motivation&quot; : &quot;describing&quot;,&#xd;
+  &quot;@context&quot; : {&#xd;
+    &quot;oa&quot; : &quot;http://www.w3.org/ns/oa#&quot;,&#xd;
+    &quot;dc&quot; : &quot;http://purl.org/dc/elements/1.1/&quot;,&#xd;
+    &quot;dcterms&quot; : &quot;http://purl.org/dc/terms/&quot;,&#xd;
+    &quot;dctypes&quot; : &quot;http://purl.org/dc/dcmitype/&quot;,&#xd;
+    &quot;foaf&quot; : &quot;http://xmlns.com/foaf/0.1/&quot;,&#xd;
+    &quot;rdf&quot; : &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;,&#xd;
+    &quot;rdfs&quot; : &quot;http://www.w3.org/2000/01/rdf-schema#&quot;,&#xd;
+    &quot;skos&quot; : &quot;http://www.w3.org/2004/02/skos/core#&quot;,&#xd;
+    &quot;xsd&quot; : &quot;http://www.w3.org/2001/XMLSchema#&quot;,&#xd;
+    &quot;iana&quot; : &quot;http://www.iana.org/assignments/relation/&quot;,&#xd;
+    &quot;owl&quot; : &quot;http://www.w3.org/2002/07/owl#&quot;,&#xd;
+    &quot;as&quot; : &quot;http://www.w3.org/ns/activitystreams#&quot;,&#xd;
+    &quot;schema&quot; : &quot;http://schema.org/&quot;,&#xd;
+    &quot;id&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;@id&quot;&#xd;
+    },&#xd;
+    &quot;type&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;@type&quot;&#xd;
+    },&#xd;
+    &quot;Annotation&quot; : &quot;oa:Annotation&quot;,&#xd;
+    &quot;Dataset&quot; : &quot;dctypes:Dataset&quot;,&#xd;
+    &quot;Image&quot; : &quot;dctypes:StillImage&quot;,&#xd;
+    &quot;Video&quot; : &quot;dctypes:MovingImage&quot;,&#xd;
+    &quot;Audio&quot; : &quot;dctypes:Sound&quot;,&#xd;
+    &quot;Text&quot; : &quot;dctypes:Text&quot;,&#xd;
+    &quot;TextualBody&quot; : &quot;oa:TextualBody&quot;,&#xd;
+    &quot;ResourceSelection&quot; : &quot;oa:ResourceSelection&quot;,&#xd;
+    &quot;SpecificResource&quot; : &quot;oa:SpecificResource&quot;,&#xd;
+    &quot;FragmentSelector&quot; : &quot;oa:FragmentSelector&quot;,&#xd;
+    &quot;CssSelector&quot; : &quot;oa:CssSelector&quot;,&#xd;
+    &quot;XPathSelector&quot; : &quot;oa:XPathSelector&quot;,&#xd;
+    &quot;TextQuoteSelector&quot; : &quot;oa:TextQuoteSelector&quot;,&#xd;
+    &quot;TextPositionSelector&quot; : &quot;oa:TextPositionSelector&quot;,&#xd;
+    &quot;DataPositionSelector&quot; : &quot;oa:DataPositionSelector&quot;,&#xd;
+    &quot;SvgSelector&quot; : &quot;oa:SvgSelector&quot;,&#xd;
+    &quot;RangeSelector&quot; : &quot;oa:RangeSelector&quot;,&#xd;
+    &quot;TimeState&quot; : &quot;oa:TimeState&quot;,&#xd;
+    &quot;HttpRequestState&quot; : &quot;oa:HttpRequestState&quot;,&#xd;
+    &quot;CssStylesheet&quot; : &quot;oa:CssStyle&quot;,&#xd;
+    &quot;Choice&quot; : &quot;oa:Choice&quot;,&#xd;
+    &quot;Person&quot; : &quot;foaf:Person&quot;,&#xd;
+    &quot;Software&quot; : &quot;as:Application&quot;,&#xd;
+    &quot;Organization&quot; : &quot;foaf:Organization&quot;,&#xd;
+    &quot;AnnotationCollection&quot; : &quot;as:OrderedCollection&quot;,&#xd;
+    &quot;AnnotationPage&quot; : &quot;as:OrderedCollectionPage&quot;,&#xd;
+    &quot;Audience&quot; : &quot;schema:Audience&quot;,&#xd;
+    &quot;Motivation&quot; : &quot;oa:Motivation&quot;,&#xd;
+    &quot;bookmarking&quot; : &quot;oa:bookmarking&quot;,&#xd;
+    &quot;classifying&quot; : &quot;oa:classifying&quot;,&#xd;
+    &quot;commenting&quot; : &quot;oa:commenting&quot;,&#xd;
+    &quot;describing&quot; : &quot;oa:describing&quot;,&#xd;
+    &quot;editing&quot; : &quot;oa:editing&quot;,&#xd;
+    &quot;highlighting&quot; : &quot;oa:highlighting&quot;,&#xd;
+    &quot;identifying&quot; : &quot;oa:identifying&quot;,&#xd;
+    &quot;linking&quot; : &quot;oa:linking&quot;,&#xd;
+    &quot;moderating&quot; : &quot;oa:moderating&quot;,&#xd;
+    &quot;questioning&quot; : &quot;oa:questioning&quot;,&#xd;
+    &quot;replying&quot; : &quot;oa:replying&quot;,&#xd;
+    &quot;reviewing&quot; : &quot;oa:reviewing&quot;,&#xd;
+    &quot;tagging&quot; : &quot;oa:tagging&quot;,&#xd;
+    &quot;auto&quot; : &quot;oa:autoDirection&quot;,&#xd;
+    &quot;ltr&quot; : &quot;oa:ltrDirection&quot;,&#xd;
+    &quot;rtl&quot; : &quot;oa:rtlDirection&quot;,&#xd;
+    &quot;body&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasBody&quot;&#xd;
+    },&#xd;
+    &quot;target&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasTarget&quot;&#xd;
+    },&#xd;
+    &quot;source&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasSource&quot;&#xd;
+    },&#xd;
+    &quot;selector&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasSelector&quot;&#xd;
+    },&#xd;
+    &quot;state&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasState&quot;&#xd;
+    },&#xd;
+    &quot;scope&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasScope&quot;&#xd;
+    },&#xd;
+    &quot;refinedBy&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:refinedBy&quot;&#xd;
+    },&#xd;
+    &quot;startSelector&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasStartSelector&quot;&#xd;
+    },&#xd;
+    &quot;endSelector&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasEndSelector&quot;&#xd;
+    },&#xd;
+    &quot;renderedVia&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:renderedVia&quot;&#xd;
+    },&#xd;
+    &quot;creator&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;dcterms:creator&quot;&#xd;
+    },&#xd;
+    &quot;generator&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;as:generator&quot;&#xd;
+    },&#xd;
+    &quot;rights&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;dcterms:rights&quot;&#xd;
+    },&#xd;
+    &quot;homepage&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;foaf:homepage&quot;&#xd;
+    },&#xd;
+    &quot;via&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:via&quot;&#xd;
+    },&#xd;
+    &quot;canonical&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:canonical&quot;&#xd;
+    },&#xd;
+    &quot;stylesheet&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:styledBy&quot;&#xd;
+    },&#xd;
+    &quot;cached&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:cachedSource&quot;&#xd;
+    },&#xd;
+    &quot;conformsTo&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;dcterms:conformsTo&quot;&#xd;
+    },&#xd;
+    &quot;items&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;as:items&quot;,&#xd;
+      &quot;@container&quot; : &quot;@list&quot;&#xd;
+    },&#xd;
+    &quot;partOf&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;as:partOf&quot;&#xd;
+    },&#xd;
+    &quot;first&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;as:first&quot;&#xd;
+    },&#xd;
+    &quot;last&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;as:last&quot;&#xd;
+    },&#xd;
+    &quot;next&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;as:next&quot;&#xd;
+    },&#xd;
+    &quot;prev&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;as:prev&quot;&#xd;
+    },&#xd;
+    &quot;audience&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@id&quot;,&#xd;
+      &quot;@id&quot; : &quot;schema:audience&quot;&#xd;
+    },&#xd;
+    &quot;motivation&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@vocab&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:motivatedBy&quot;&#xd;
+    },&#xd;
+    &quot;purpose&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@vocab&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:hasPurpose&quot;&#xd;
+    },&#xd;
+    &quot;textDirection&quot; : {&#xd;
+      &quot;@type&quot; : &quot;@vocab&quot;,&#xd;
+      &quot;@id&quot; : &quot;oa:textDirection&quot;&#xd;
+    },&#xd;
+    &quot;accessibility&quot; : &quot;schema:accessibilityFeature&quot;,&#xd;
+    &quot;bodyValue&quot; : &quot;oa:bodyValue&quot;,&#xd;
+    &quot;format&quot; : &quot;dc:format&quot;,&#xd;
+    &quot;language&quot; : &quot;dc:language&quot;,&#xd;
+    &quot;processingLanguage&quot; : &quot;oa:processingLanguage&quot;,&#xd;
+    &quot;value&quot; : &quot;rdf:value&quot;,&#xd;
+    &quot;exact&quot; : &quot;oa:exact&quot;,&#xd;
+    &quot;prefix&quot; : &quot;oa:prefix&quot;,&#xd;
+    &quot;suffix&quot; : &quot;oa:suffix&quot;,&#xd;
+    &quot;styleClass&quot; : &quot;oa:styleClass&quot;,&#xd;
+    &quot;name&quot; : &quot;foaf:name&quot;,&#xd;
+    &quot;email&quot; : &quot;foaf:mbox&quot;,&#xd;
+    &quot;email_sha1&quot; : &quot;foaf:mbox_sha1sum&quot;,&#xd;
+    &quot;nickname&quot; : &quot;foaf:nick&quot;,&#xd;
+    &quot;label&quot; : &quot;rdfs:label&quot;,&#xd;
+    &quot;created&quot; : {&#xd;
+      &quot;@id&quot; : &quot;dcterms:created&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:dateTime&quot;&#xd;
+    },&#xd;
+    &quot;modified&quot; : {&#xd;
+      &quot;@id&quot; : &quot;dcterms:modified&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:dateTime&quot;&#xd;
+    },&#xd;
+    &quot;generated&quot; : {&#xd;
+      &quot;@id&quot; : &quot;dcterms:issued&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:dateTime&quot;&#xd;
+    },&#xd;
+    &quot;sourceDate&quot; : {&#xd;
+      &quot;@id&quot; : &quot;oa:sourceDate&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:dateTime&quot;&#xd;
+    },&#xd;
+    &quot;sourceDateStart&quot; : {&#xd;
+      &quot;@id&quot; : &quot;oa:sourceDateStart&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:dateTime&quot;&#xd;
+    },&#xd;
+    &quot;sourceDateEnd&quot; : {&#xd;
+      &quot;@id&quot; : &quot;oa:sourceDateEnd&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:dateTime&quot;&#xd;
+    },&#xd;
+    &quot;start&quot; : {&#xd;
+      &quot;@id&quot; : &quot;oa:start&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:nonNegativeInteger&quot;&#xd;
+    },&#xd;
+    &quot;end&quot; : {&#xd;
+      &quot;@id&quot; : &quot;oa:end&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:nonNegativeInteger&quot;&#xd;
+    },&#xd;
+    &quot;total&quot; : {&#xd;
+      &quot;@id&quot; : &quot;as:totalItems&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:nonNegativeInteger&quot;&#xd;
+    },&#xd;
+    &quot;startIndex&quot; : {&#xd;
+      &quot;@id&quot; : &quot;as:startIndex&quot;,&#xd;
+      &quot;@type&quot; : &quot;xsd:nonNegativeInteger&quot;&#xd;
+    }&#xd;
+  }&#xd;
+}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/wap/container/</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>true</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>true</code>
+                <message>true</message>
+                <threadName>true</threadName>
+                <dataType>true</dataType>
+                <encoding>false</encoding>
+                <assertions>true</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <bytes>true</bytes>
+                <sentBytes>true</sentBytes>
+                <url>true</url>
+                <threadCounts>true</threadCounts>
+                <idleTime>true</idleTime>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="RespTimeGraph.graphtitle">Response Time Graph</stringProp>
+            <stringProp name="RespTimeGraph.yaxisscalemaxvalue">100</stringProp>
+            <stringProp name="RespTimeGraph.yaxisscaleincrement">10</stringProp>
+          </ResultCollector>
+          <hashTree/>
+        </hashTree>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">Content-Type</stringProp>
+              <stringProp name="Header.value">application/ld+json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>false</xml>
+              <fieldNames>true</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <sentBytes>true</sentBytes>
+              <url>true</url>
+              <threadCounts>true</threadCounts>
+              <idleTime>true</idleTime>
+              <connectTime>true</connectTime>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

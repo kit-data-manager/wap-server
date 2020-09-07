@@ -1,0 +1,35 @@
+[ {
+  "http://www.w3.org/ns/oa#hasBody" : [ {
+    "http://purl.org/dc/terms/created" : [ {
+      "@value" : "2014-06-02T17:00:00Z",
+      "@type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+    } ],
+    "http://purl.org/dc/terms/creator" : [ {
+      "@id" : "http://example.net/user2"
+    } ],
+    "@id" : "http://example.net/review1"
+  } ],
+  "http://purl.org/dc/terms/created" : [ {
+    "@value" : "2015-01-28T12:00:00Z",
+    "@type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+  } ],
+  "http://purl.org/dc/terms/creator" : [ {
+    "@id" : "http://example.org/user1"
+  } ],
+  "http://purl.org/dc/terms/issued" : [ {
+    "@value" : "2015-02-04T12:00:00Z",
+    "@type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+  } ],
+  "http://www.w3.org/ns/activitystreams#generator" : [ {
+    "@id" : "http://example.org/client1"
+  } ],
+  "@id" : "http://example.org/anno90",
+  "http://purl.org/dc/terms/modified" : [ {
+    "@value" : "2015-01-29T09:00:00Z",
+    "@type" : "http://www.w3.org/2001/XMLSchema#dateTime"
+  } ],
+  "http://www.w3.org/ns/oa#hasTarget" : [ {
+    "@id" : "http://example.com/restaurant1"
+  } ],
+  "@type" : [ "http://www.w3.org/ns/oa#Annotation" ]
+} ]

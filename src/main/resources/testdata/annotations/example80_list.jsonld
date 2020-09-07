@@ -1,0 +1,23 @@
+[
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "id": "http://example.org/anno1",
+  "type": "Annotation",
+  "body": "http://example.org/post1",
+  "target": "http://example.com/page1"
+},
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "id": "http://example.org/anno2",
+  "type": "Annotation",
+  "body": "http://example.org/post1",
+  "target": "http://example.com/page1"
+},
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "id": "http://example.org/anno3",
+  "type": "Annotation",
+  "body": "http://example.org/post1",
+  "target": "http://example.com/page1"
+}
+]

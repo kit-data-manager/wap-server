@@ -1,0 +1,12 @@
+edu.kit.scc.dem.wapsrv.app
+edu.kit.scc.dem.wapsrv.controller
+edu.kit.scc.dem.wapsrv.exceptions
+edu.kit.scc.dem.wapsrv.installer
+edu.kit.scc.dem.wapsrv.model
+edu.kit.scc.dem.wapsrv.model.formats
+edu.kit.scc.dem.wapsrv.model.rdf
+edu.kit.scc.dem.wapsrv.model.rdf.vocabulary
+edu.kit.scc.dem.wapsrv.model.validators
+edu.kit.scc.dem.wapsrv.repository
+edu.kit.scc.dem.wapsrv.repository.jena
+edu.kit.scc.dem.wapsrv.service

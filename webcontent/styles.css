@@ -1,0 +1,216 @@
+/**
+ * Major part of used css styles are defined here in stlyes.css file.
+ * Common css stlyes defined inline html are related to with, heigh and are very local.
+ * 
+ * @author  Matthias Dressel
+ * @author  Michael Hitzker
+ * @author  Markus Hoefler
+ * @author  Andreas Loeffler
+ * @author  Timo Schmidt
+ * @version 1.0
+ */
+
+body {
+	background-color: transparent;
+	padding: 6px 10px 0px 10px;
+	margin: 0px 0px 0px 0px;
+	float: clear;
+	overflow: auto scroll;
+	width: calc(100% - 20px);
+	font-size: 16px;
+	font-family: "Times New Roman", Times, serif;
+}
+
+div {
+	outline: 0px solid powderblue;
+	display: inline-block;
+	background-color: transparent;
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	float: left;
+}
+
+input,
+label,
+textarea {
+	font-size: 16px;
+	vertical-align: middle;
+}
+
+textarea.inputJson {
+	font-size: 12px;
+	width: 100%;
+	min-height: 100px;
+	height: 50vh;
+}
+
+label.inputLabel {
+	display: inline-block;
+}
+
+div.inputBoxFrame {
+	height: 40px;
+	margin-right: 20px;
+	float: none;
+}
+
+.inputWidth1 {
+	width: 100px;
+}
+
+.inputWidth2 {
+	width: 300px;
+}
+
+.spaceTop1 {
+	margin-top: 4px;
+}
+
+.nobr {
+	white-space: nowrap;
+}
+
+.bold {
+	font-weight: 700;
+}
+
+.minWidth1 {
+	min-width: 446px;
+}
+
+fieldset.subHttp {
+	width: calc(100% - 34px);
+}
+
+div.contentFrameLeft {
+	width: calc(50% - 2px);
+}
+
+div.contentFrameRight {
+	width: calc(50% - 2px);
+}
+
+div.contentFrameLeft.content,
+div.contentFrameRight.content {
+	width: calc(100% - 45px);
+	min-height: 50vh;
+	max-height: calc(100vh - 100px);
+	white-space: nowrap;
+	overflow: auto;
+	font-size: 12px;
+}
+
+pre {
+	outline: 0px solid #ccc;
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+}
+
+.key {
+	color: darkcyan;
+}
+
+.string {
+	color: grey;
+}
+
+.number {
+	color: crimson;
+}
+
+.boolean {
+	color: blue;
+}
+
+.null {
+	color: darkmagenta;
+}
+
+a.autolink {
+	color: black;
+	text-decoration: inherit;
+	background-color: inherit;
+}
+
+a.autolink:hover {
+	text-decoration: underline;
+}
+
+.textButton {
+	color: grey;
+	text-decoration: inherit;
+	background-color: inherit;
+}
+
+.textButton:hover {
+	color: black;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+span.cascadeJsonString {
+	color: darkcyan;
+	border: 1px solid powderblue;
+	border-radius: 0% 50% 0% 50%;
+	display: inline-block;
+	padding: 0px 4px 0px 4px;
+	margin: 0px 6px 1px 6px;
+	float: none;
+	cursor: pointer;
+	vertical-align: middle;
+	text-align: center;
+}
+
+span.cascadeJsonString:hover {
+	color: black;
+	border-color: black;
+}
+
+svg.blockframe {
+	max-width: 100%;
+	width: calc(100% + 0px);
+	height: calc(100% + 0px);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	overflow: inherit;
+}
+
+svg {
+	width: calc(100% - 0px);
+	height: calc(100% - 0px);
+	position: relative;
+	left: 0px;
+	top: 0px;
+	overflow: inherit;
+}
+
+rect,
+circle,
+ellipse,
+line,
+polygon,
+polyline,
+path,
+text {
+	fill: transparent;
+	stroke-width: 3;
+	stroke: red;
+}
+
+img.loading {
+	width: 100%;
+	height: calc(50vh - 3px);
+	background: url(resources/loading.gif) 50% 40% no-repeat;
+	background-size: 200px auto;
+}
+
+.fadeIn {
+	opacity: 0.0;
+	animation: fadeIn 0.5s linear 0s 1 forwards;
+}
+
+@keyframes fadeIn {
+    0%   {opacity: 0.0;}
+    100% {opacity: 1.0;}
+}

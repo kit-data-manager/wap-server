@@ -1,0 +1,8 @@
+{
+  "@context": ["http://www.w3.org/ns/ldp.jsonld","http://www.w3.org/ns/anno.jsonld"],
+  "@omitDefault": true,
+  "@omitGraph": true,
+  "type": "BasicContainer",
+  "first": {"@embed": true},
+  "last": {"@embed": false}
+}

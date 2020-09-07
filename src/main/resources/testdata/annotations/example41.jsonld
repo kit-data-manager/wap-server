@@ -1,0 +1,13 @@
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "id": "http://example.org/anno41",
+  "type": "Annotation",
+  "body": "http://example.org/road41",
+  "target": {
+    "source": "http://example.org/map41",
+    "selector": {
+      "id": "http://example.org/svg41",
+      "type": "SvgSelector"
+    }
+  }
+}

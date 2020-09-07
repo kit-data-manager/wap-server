@@ -1,0 +1,19 @@
+{
+  "type" : "Annotation",
+  "body": {
+    "type": "TextualBody",
+    "value": "Moon?",
+    "purpose": "tagging"
+  },
+  "target" : {
+    "type" :  "SpecificResource",
+    "selector" : {
+      "type" :  "SvgSelector",
+      "dcterms:conformsTo" : "http://www.w3.org/TR/SVG/",
+      "value" : "<svg xmlns=\"http://www.w3.org/2000/svg\"><rect height=\"200\" width=\"200\" x=\"100\" y=\"100\" /></svg>"
+    },
+    "source" : "ichbinkeineURL"
+  },
+  "motivation" : "tagging",
+  "@context" : "http://www.w3.org/ns/anno.jsonld"
+}

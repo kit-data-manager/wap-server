@@ -1,0 +1,9 @@
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "id": "http://example.org/anno50",
+  "type": "Annotation",
+  "body": "http://example.org/post1",
+  "target": "http://example.com/page1",
+  "canonical": "http://www.should-not-be-changed.de",
+  "via": "http://www.leave-via-alone.de"
+}
