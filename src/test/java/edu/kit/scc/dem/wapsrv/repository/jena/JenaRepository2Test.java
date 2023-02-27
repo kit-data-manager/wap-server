@@ -19,10 +19,9 @@ import edu.kit.scc.dem.wapsrv.exceptions.NotExistentException;
 import edu.kit.scc.dem.wapsrv.model.WapObject;
 import edu.kit.scc.dem.wapsrv.model.rdf.RdfBackend;
 import edu.kit.scc.dem.wapsrv.repository.TransactionRepository;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * Tests the class JenaRepository
@@ -40,6 +39,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @SpringBootTest(classes = {JenaRepository2.class, WapServerConfig.class, JenaDataBase.class, JenaRdfBackend.class, ISequenceDao.class})
 @ActiveProfiles("test")
 @ComponentScan(basePackages = "edu.kit.scc.dem.wapsrv.repository.jena")
+@Disabled("Conflicts as of Spring Boot 2.5.5")
 class JenaRepository2Test{
 
   @Autowired

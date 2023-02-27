@@ -79,7 +79,7 @@ public class ApacheCommonsRdfTests {
      */
     @AfterAll
     static void teardownTests() {
-        System.setProperty(DocumentLoader.DISALLOW_REMOTE_CONTEXT_LOADING, "true");
+        System.setProperty(DocumentLoader.DISALLOW_REMOTE_CONTEXT_LOADING, "false");
     }
 
     /**
