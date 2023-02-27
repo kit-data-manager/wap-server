@@ -172,7 +172,12 @@ public class ContainerController extends WapController {
       } else {
          responseHeaders.setETag(container.getEtagQuoted());
          responseHeaders.set(HttpHeaders.CONTENT_TYPE, formatter.getContentType());
-         String responseBody = formatter.format(container);
+         String responseBody = "";
+         try{
+         responseBody = formatter.format(container);
+         }catch(Exception e){
+             e.printStackTrace();
+         }
          return new ResponseEntity<>(responseBody, responseHeaders,
                HttpStatus.valueOf(ContainerConstants.GET_CONTAINER_SUCCESS_CODE));
       }

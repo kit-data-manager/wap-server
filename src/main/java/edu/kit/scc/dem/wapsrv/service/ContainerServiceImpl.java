@@ -108,7 +108,7 @@ public class ContainerServiceImpl extends AbstractWapService implements Containe
       }
       retDs[0] = containerDataset;
     });
-    log.info("Get Container finished: '" + containerIri + "'");
+    log.info("Get Container '" + containerIri + "' finished.");
     return modelFactory.createContainer(retDs[0], preferMinimalContainer, preferIrisOnly);
     // No exception ==> container exists
     // The container now contains only the basic information.

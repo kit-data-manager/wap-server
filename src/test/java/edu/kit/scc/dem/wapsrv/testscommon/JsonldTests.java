@@ -59,7 +59,7 @@ public class JsonldTests {
     protected static final void afterAll() {
         // disable remote context loading afterwards, done here to be executed even
         // if tests failed
-        System.setProperty(DocumentLoader.DISALLOW_REMOTE_CONTEXT_LOADING, "true");
+        System.setProperty(DocumentLoader.DISALLOW_REMOTE_CONTEXT_LOADING, "false");
     }
 
     /**
