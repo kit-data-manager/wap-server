@@ -1,0 +1,13 @@
+test {
+    // Execute only tests to generate code snippets 
+    println 'Generate snippets for documentation...'
+    // Create snippets for documentation only
+    include     "**/*DataResourceControllerDocumentationTest*"
+    outputs.dir snippetsDir
+}
+
+release {
+    tagTemplate         = 'v${version}'
+    versionPropertyFile = 'gradle.properties'
+    versionProperties   = ['version', 'mainversion']
+}
