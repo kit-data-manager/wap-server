@@ -113,101 +113,101 @@ class AbstractWapServiceTest{
     when(pageMock.getDataset()).thenReturn(pageDataset);
   }
 
-  /**
-   * Test getting model factory.
-   */
-  @Test
-  final void testGetModelFactory(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test getting WAP Server configuration.
-   */
-  @Test
-  final void testGetWapServerConfig(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test getting validator registry.
-   */
-  @Test
-  final void testGetValidatorRegistry(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test generating an ETAG.
-   */
-  @Test
-  final void testGenerateEtag(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test if input format is valid.
-   */
-  @Test
-  final void testIsValidInputFormat(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test if schema is valid.
-   */
-  @Test
-  final void testCheckSchemaValidity(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test ETAG exists.
-   */
-  @Test
-  final void testCheckEtag(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test deleting an object.
-   */
-  @Test
-  final void testDeleteObject(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test to update ETAG on blank node and IRI string.
-   */
-  @Test
-  final void testUpdateEtagBlankNodeOrIRIString(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test to update an ETAG string.
-   */
-  @Test
-  final void testUpdateEtagStringString(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test to write a WAP object to DB.
-   */
-  @Test
-  final void testWriteWapObjectToDb(){
-    // DOTEST write the test for this method
-  }
-
-  /**
-   * Test if exists and is not deleted.
-   */
-  @Test
-  final void testCheckExistsAndNotDeleted(){
-    // DOTEST write the test for this method
-  }
+//  /**
+//   * Test getting model factory.
+//   */
+//  @Test
+//  final void testGetModelFactory(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test getting WAP Server configuration.
+//   */
+//  @Test
+//  final void testGetWapServerConfig(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test getting validator registry.
+//   */
+//  @Test
+//  final void testGetValidatorRegistry(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test generating an ETAG.
+//   */
+//  @Test
+//  final void testGenerateEtag(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test if input format is valid.
+//   */
+//  @Test
+//  final void testIsValidInputFormat(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test if schema is valid.
+//   */
+//  @Test
+//  final void testCheckSchemaValidity(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test ETAG exists.
+//   */
+//  @Test
+//  final void testCheckEtag(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test deleting an object.
+//   */
+//  @Test
+//  final void testDeleteObject(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test to update ETAG on blank node and IRI string.
+//   */
+//  @Test
+//  final void testUpdateEtagBlankNodeOrIRIString(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test to update an ETAG string.
+//   */
+//  @Test
+//  final void testUpdateEtagStringString(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test to write a WAP object to DB.
+//   */
+//  @Test
+//  final void testWriteWapObjectToDb(){
+//    // DOTEST write the test for this method
+//  }
+//
+//  /**
+//   * Test if exists and is not deleted.
+//   */
+//  @Test
+//  final void testCheckExistsAndNotDeleted(){
+//    // DOTEST write the test for this method
+//  }
 
   /**
    * Test if an IRI is contained.
@@ -217,11 +217,11 @@ class AbstractWapServiceTest{
     wapObjectService.containsIri(ROOT_IRI);
   }
 
-  /**
-   * Test if an IRI is deleted.
-   */
-  @Test
-  final void testIsIriDeleted(){
-    // DOTEST write the test for this method
-  }
+//  /**
+//   * Test if an IRI is deleted.
+//   */
+//  @Test
+//  final void testIsIriDeleted(){
+//    // DOTEST write the test for this method
+//  }
 }

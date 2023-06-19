@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Test REST interface.
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 @Tag("rest")
+@ActiveProfiles("test")
 public class WapServerApplicationRestTest extends AbstractRestTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WapServerApplicationRestTest.class);

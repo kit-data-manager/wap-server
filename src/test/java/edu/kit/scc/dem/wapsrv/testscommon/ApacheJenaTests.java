@@ -81,7 +81,7 @@ public class ApacheJenaTests {
             res = ResourceUtils.renameResource(res, "http://wapserver.dem.scc.kit.edu/tristrant/anno1");
         }
         Dataset ds = TDB2Factory.createDataset();
-        ds.begin();
+        ds.begin(ReadWrite.WRITE);
         ds.getDefaultModel().add(res.getModel());
         // ds.addNamedModel("http://data.dem.scc.kit.edu/wap/persons/person1", readModel);
         ds.commit();
@@ -147,12 +147,12 @@ public class ApacheJenaTests {
         long durationPrep = System.currentTimeMillis() - timeStartPrep;
         Log.info(this, "---------- Prepare of " + SPEED_TEST_COUNT + " Annos in millis: " + durationPrep);
         Dataset ds = TDB2Factory.connectDataset("temp/tdb2/test.tdb");
-        ds.begin();
+        ds.begin(ReadWrite.WRITE);
         ds.getDefaultModel().removeAll();
         ds.commit();
         ds.end();
         long timeStart = System.currentTimeMillis();
-        ds.begin();
+        ds.begin(ReadWrite.WRITE);
         for (int i = 0; i < SPEED_TEST_COUNT; i++) {
             ds.getDefaultModel().add(modelList.get(i));
         }
@@ -183,7 +183,7 @@ public class ApacheJenaTests {
     public void jenaDatasetUnionModelTest() {
         JenaSystem.init();
         Dataset dataBase = TDB2Factory.createDataset();
-        dataBase.begin();
+        dataBase.begin(ReadWrite.WRITE);
         // generate root container:
         Model containerRootModel = ModelFactory.createDefaultModel();
         Resource basicContainer = containerRootModel.createResource(LdpVocab.basicContainer.getIRIString());
@@ -203,7 +203,7 @@ public class ApacheJenaTests {
         dataBase.commit();
         dataBase.end();
         // reopen and check the result:...
-        dataBase.begin();
+        dataBase.begin(ReadWrite.READ);
         // dump database
         logger.trace(" -------------- union Model ----------- ");
         dataBase.getUnionModel().listStatements().forEachRemaining(s -> {

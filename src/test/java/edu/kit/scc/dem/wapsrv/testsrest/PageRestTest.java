@@ -22,6 +22,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * PageRestTest
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * @author Timo Schmidt
  * @version 1.1
  */
+@ActiveProfiles("test")
 @Tag("rest")
 public class PageRestTest extends AbstractRestTest {
 

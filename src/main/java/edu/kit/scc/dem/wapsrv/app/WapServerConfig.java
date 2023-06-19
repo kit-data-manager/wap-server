@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import edu.kit.scc.dem.wapsrv.controller.WapPathMatcher;
+import java.util.Arrays;
 
 /**
  * Contains the configuration and the global constants that affect the entire
@@ -977,10 +978,10 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
         exposedHeaders = new String[]{"Link", "Vary", "Allow", "Date", "Content-Location", "Content-Length",
           "ETag", "Location", "Connection", "Content-Type"};
       }
-      logger.info("WAP :   CORS allowed origins = " + allowedOrigins);
-      logger.info("WAP :   CORS allowed methods = " + allowedMethods);
-      logger.info("WAP :   CORS allowed headers = " + allowedHeaders);
-      logger.info("WAP :   CORS exposed headers = " + exposedHeaders);
+      logger.info("WAP :   CORS allowed origins = " + Arrays.asList(allowedOrigins));
+      logger.info("WAP :   CORS allowed methods = " + Arrays.asList(allowedMethods));
+      logger.info("WAP :   CORS allowed headers = " + Arrays.asList(allowedHeaders));
+      logger.info("WAP :   CORS exposed headers = " + Arrays.asList(exposedHeaders));
       logger.info("WAP : CORS preflight max age = " + maxAge);
       logger.info("WAP : CORS allow credentials = " + allowCredentials);
       registry.addMapping(WAP_ENDPOINT + "**") // Enable CORS for all WAP-endpoints

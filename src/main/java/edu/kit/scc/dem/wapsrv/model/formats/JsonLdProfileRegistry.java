@@ -747,8 +747,7 @@ public final class JsonLdProfileRegistry {
     public String getFrameString(Type type) {
         if (!type2frame.containsKey(type)) {
             // load on first access
-            File frameFile
-                    = new File(WapServerConfig.getInstance().getJsonLdFrameFolder(), "FRAME_" + type.toString() + ".jsonld");
+            File frameFile = new File(WapServerConfig.getInstance().getJsonLdFrameFolder(), "FRAME_" + type.toString() + ".jsonld");
             String frame = readFile(frameFile);
             if (frame == null) {
                 logger.warn("Could not load JSON-LD Frame file for " + type);

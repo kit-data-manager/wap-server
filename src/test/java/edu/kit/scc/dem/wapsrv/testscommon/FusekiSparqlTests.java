@@ -71,7 +71,7 @@ public class FusekiSparqlTests {
       JenaSystem.init();
       Resource testdata = this.getTestdata();
       Dataset ds = TDB2Factory.createDataset();
-      ds.begin();
+      ds.begin(ReadWrite.WRITE);
       ds.getDefaultModel().add(testdata.getModel());
       // ds.addNamedModel("http://data.dem.scc.kit.edu/wap/persons/person1", readModel);
       ds.commit();

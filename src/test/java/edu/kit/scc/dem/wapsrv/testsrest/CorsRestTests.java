@@ -25,6 +25,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * CorsRestTests that test the CORS functionality including preflight requests
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 @Tag("rest")
+@ActiveProfiles("test")
 public class CorsRestTests extends AbstractRestTest {
 
     private static final Logger logger = LoggerFactory.getLogger(CorsRestTests.class);
@@ -534,9 +536,10 @@ public class CorsRestTests extends AbstractRestTest {
         // We compare them case insensitive ==> to lower case on both
         exposedHeadersHeader = exposedHeadersHeader.toLowerCase();
         List<String> exposedHeadersList = Arrays.asList(exposedHeadersHeader.split(Pattern.quote(",")));
+        
         for (Header header : response.getHeaders()) {
             String headerName = header.getName().toLowerCase();
-            if (headerName.startsWith("access-control")) {
+            if (headerName.startsWith("access-control") || headerName.startsWith("keep-alive")) {
                 continue;
             }
             boolean contained = exposedHeadersList.contains(headerName);

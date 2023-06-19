@@ -26,7 +26,7 @@ import edu.kit.scc.dem.wapsrv.repository.jena.JenaDataBase;
 @ActiveProfiles("test")
 class FusekiRunnerTest {
    @Autowired
-   private WapServerConfig wapServerConfigMock;
+   private WapServerConfig wapServerConfig;
    @Autowired
    private FusekiRunner objFusekiRunner;
 
@@ -52,7 +52,7 @@ class FusekiRunnerTest {
     */
    @Test
    final void testInit() {
-      WapServerConfig mockWapServerConfig = wapServerConfigMock;
+      WapServerConfig mockWapServerConfig = wapServerConfig;
       // test default
       objFusekiRunner.init();
       objFusekiRunner.deinit();
@@ -69,27 +69,27 @@ class FusekiRunnerTest {
       objFusekiRunner.init();
       objFusekiRunner.deinit();
       // set back to default
-      when(wapServerConfigMock.getSparqlReadIp()).thenReturn("localhost");
-      when(wapServerConfigMock.getSparqlWriteIp()).thenReturn("localhost");
+      when(wapServerConfig.getSparqlReadIp()).thenReturn("localhost");
+      when(wapServerConfig.getSparqlWriteIp()).thenReturn("localhost");
       // test readPort > 0 || writePort > 0
       // test true || false
-      when(wapServerConfigMock.getSparqlReadPort()).thenReturn(3330);
-      when(wapServerConfigMock.getSparqlWritePort()).thenReturn(-1);
+      when(wapServerConfig.getSparqlReadPort()).thenReturn(3330);
+      when(wapServerConfig.getSparqlWritePort()).thenReturn(-1);
       objFusekiRunner.init();
       objFusekiRunner.deinit();
       // test false || true
-      when(wapServerConfigMock.getSparqlReadPort()).thenReturn(-1);
-      when(wapServerConfigMock.getSparqlWritePort()).thenReturn(3331);
+      when(wapServerConfig.getSparqlReadPort()).thenReturn(-1);
+      when(wapServerConfig.getSparqlWritePort()).thenReturn(3331);
       objFusekiRunner.init();
       objFusekiRunner.deinit();
       // test false || false
-      when(wapServerConfigMock.getSparqlReadPort()).thenReturn(-1);
-      when(wapServerConfigMock.getSparqlWritePort()).thenReturn(-1);
+      when(wapServerConfig.getSparqlReadPort()).thenReturn(-1);
+      when(wapServerConfig.getSparqlWritePort()).thenReturn(-1);
       objFusekiRunner.init();
       objFusekiRunner.deinit();
       // set back to default
-      when(wapServerConfigMock.getSparqlReadPort()).thenReturn(3330);
-      when(wapServerConfigMock.getSparqlWritePort()).thenReturn(3331);
+      when(wapServerConfig.getSparqlReadPort()).thenReturn(3330);
+      when(wapServerConfig.getSparqlWritePort()).thenReturn(3331);
    }
 
    /**

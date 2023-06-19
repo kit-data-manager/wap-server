@@ -24,6 +24,7 @@ import edu.kit.scc.dem.wapsrv.testscommon.TestDataStore;
 import static edu.kit.scc.dem.wapsrv.controller.ControllerTestHelper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Tests the class JsonLdProfileRegistry
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {WapServerConfig.class})
+@ActiveProfiles("test")
 class JsonLdProfileRegistryTest {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonLdProfileRegistryTest.class);

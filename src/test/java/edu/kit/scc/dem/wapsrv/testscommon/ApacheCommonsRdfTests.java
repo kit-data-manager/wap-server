@@ -38,6 +38,7 @@ import edu.kit.scc.dem.wapsrv.model.formats.Format;
 import edu.kit.scc.dem.wapsrv.model.rdf.RdfUtilities;
 import edu.kit.scc.dem.wapsrv.repository.jena.JenaRdfBackend;
 import edu.kit.scc.dem.wapsrv.testsbenchmark.WapServerProfiling;
+import org.apache.jena.sparql.core.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,12 +169,12 @@ public class ApacheCommonsRdfTests {
         long durationPrep = System.currentTimeMillis() - timeStartPrep;
         Log.info(this, "---------- Prepare of " + SPEED_TEST_COUNT + " Annos in millis: " + durationPrep);
         org.apache.jena.query.Dataset ds = TDB2Factory.connectDataset("temp/tdb2/test.tdb");
-        ds.begin();
+        ((Transactional)ds).begin();
         ds.getDefaultModel().removeAll();
         ds.commit();
         ds.end();
         long timeStart = System.currentTimeMillis();
-        ds.begin();
+        ds.begin(ReadWrite.WRITE);
         for (int i = 0; i < SPEED_TEST_COUNT; i++) {
             ds.getDefaultModel().add(modelList.get(i).asJenaModel());
         }

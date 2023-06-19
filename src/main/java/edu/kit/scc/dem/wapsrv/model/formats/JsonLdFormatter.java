@@ -370,7 +370,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
         }
         profileString.insert(0, "\"");
         profileString.append("\"");
-        return getFormatString() + "; profile=" + profileString.toString() + ";charset=utf-8";
+        return getFormatString() + ";profile=" + profileString.toString() + ";charset=utf-8";
     }
 
     @Override
