@@ -111,6 +111,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+.gradle/
 
 
 ### IntelliJ IDEA ###

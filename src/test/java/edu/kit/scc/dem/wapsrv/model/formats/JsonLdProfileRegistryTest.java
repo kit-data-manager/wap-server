@@ -345,7 +345,8 @@ class JsonLdProfileRegistryTest {
         final Type type = Type.PAGE;
         Properties props = getInitialProps();
         props.setProperty(ConfigurationKeys.JsonLdFrameFolder.toString(), "nonExistentFolder");
-        config.updateConfig(props);
+        WapServerConfig.getInstance().updateConfig(props);
+        //config.updateConfig(props);
         checkException(InternalServerException.class, "Could not load JSON-LD Frame file for " + type, () -> {
             JsonLdProfileRegistry instance = getJsonLdProfileRegistry();
             instance.getFrameString(type);

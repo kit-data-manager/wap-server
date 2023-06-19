@@ -137,8 +137,6 @@ public final class ControllerTestHelper {
     *                     The code that should throw the exception
     */
    public static void checkException(Class<? extends Exception> expectedType, String message, Executable executable) {
-      StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-      logger.trace("Checking " + stacktrace[2]);
       Exception actualException = Assertions.assertThrows(expectedType, executable);
       // If this code is reached, the exception has been thrown, now check message
       assertEquals(message, actualException.getMessage(), "Exception has unexpected message");
