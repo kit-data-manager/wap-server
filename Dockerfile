@@ -4,6 +4,7 @@ ARG SERVER_NAME_DEFAULT=wapserver
 
 #This is the post that you want to use on the HOST machine, not in the container itself
 ARG PORT_DEFAULT=8090
+ARG SPARQ_DEFAULT=3330
 ARG HOST_DEFAULT=localhost
 ARG ROOT_DIRECTORY_DEFAULT=/spring
 
@@ -23,9 +24,10 @@ RUN echo $SERVICE_DIRECTORY
 RUN bash ./build.sh $SERVICE_DIRECTORY
 
 #You can use this to set config variables or mount in an application.properties file
-ENV SPRING_APPLICATION_JSON "{\"WapPort\": ${PORT_DEFAULT}, \"Hostname\": ${HOST_DEFAULT}}"
+ENV SPRING_APPLICATION_JSON "{\"WapPort\": ${PORT_DEFAULT}, \"Hostname\": \"${HOST_DEFAULT}\"}"
 
 EXPOSE ${PORT_DEFAULT}
+EXPOSE ${SPARQL_DEFAULT}
 WORKDIR $SERVICE_DIRECTORY
 COPY ./profiles ./profiles/
 COPY ./schemas ./schemas/
