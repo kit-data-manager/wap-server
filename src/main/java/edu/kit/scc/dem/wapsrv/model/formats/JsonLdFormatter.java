@@ -209,7 +209,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
             JsonLdOptions optionsWithContexts = profileRegistry.getJsonLdOptions();
             Map<String, Object> framed = null;
             if (frameObject != null) {
-                final JsonLdOptions options = new JsonLdOptions();
+                final JsonLdOptions options = profileRegistry.getJsonLdOptions();
                 options.format = JsonLdConsts.APPLICATION_NQUADS;
                 options.setCompactArrays(true);
                 framed = JsonLdProcessor.frame(jsonObject, frameObject, options);
