@@ -1,5 +1,4 @@
-FROM openjdk:17-bullseye
-
+FROM eclipse-temurin:17-jdk
 ARG SERVER_NAME_DEFAULT=wapserver
 
 #This is the post that you want to use on the HOST machine, not in the container itself
@@ -18,7 +17,7 @@ RUN apt-get -y update && \
 ENV SERVICE_DIRECTORY=${ROOT_DIRECTORY_DEFAULT}/${SERVER_NAME_DEFAULT}
 RUN mkdir -p /git
 WORKDIR /git
-COPY . .
+COPY .. .
 # Build service in given directory
 RUN echo $SERVICE_DIRECTORY
 RUN bash ./build.sh $SERVICE_DIRECTORY
@@ -29,8 +28,8 @@ ENV SPRING_APPLICATION_JSON "{\"WapPort\": ${PORT_DEFAULT}, \"Hostname\": \"${HO
 EXPOSE ${PORT_DEFAULT}
 EXPOSE ${SPARQL_DEFAULT}
 WORKDIR $SERVICE_DIRECTORY
-COPY ./profiles ./profiles/
-COPY ./schemas ./schemas/
-COPY ./webcontent ./webcontent/
-COPY ./doc ./doc/
+COPY ../profiles ./profiles/
+COPY ../schemas ./schemas/
+COPY ../webcontent ./webcontent/
+COPY ../doc ./doc/
 ENTRYPOINT ["/spring/wapserver/run.sh"]
