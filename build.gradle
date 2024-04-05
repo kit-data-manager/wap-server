@@ -188,3 +188,7 @@ tasks.register('printProjectName') {
         println "${project.name}"
     }
 }
+
+gradleLint {
+    skipForTask('printProjectName')
+}
