@@ -3,10 +3,13 @@ package edu.kit.scc.dem.wapsrv.testsrest;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.HttpMethod;
 import edu.kit.scc.dem.wapsrv.app.ErrorMessageRegistry;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
@@ -34,6 +37,9 @@ import org.springframework.test.context.ActiveProfiles;
  * @author Timo Schmidt
  * @version 1.1
  */
+
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @ActiveProfiles("test")
 @Tag("rest")
 public class PageRestTest extends AbstractRestTest {

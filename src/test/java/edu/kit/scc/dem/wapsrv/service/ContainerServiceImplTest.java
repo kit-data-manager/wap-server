@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.simple.SimpleRDF;
@@ -66,6 +68,8 @@ import edu.kit.scc.dem.wapsrv.testscommon.ModelFactoryMock;
 @SpringBootTest(classes = {ContainerServiceImpl.class, RepositoryMock.class, ModelFactoryMock.class,
       EtagFactoryMock.class, JsonLdProfileRegistry.class, ValidatorRegistry.class, WapServerConfigMock.class,
       JsonLdValidator.class, Validator.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Configuration
 @ActiveProfiles("test")
 class ContainerServiceImplTest {
