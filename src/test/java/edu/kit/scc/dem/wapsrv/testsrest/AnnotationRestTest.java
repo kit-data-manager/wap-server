@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Pattern;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -1121,9 +1122,10 @@ public class AnnotationRestTest extends AbstractRestTest {
 
     /**
      * Test posting annotation with a series of multiple escaped characters.
+     * @throws JSONException
      */
     @Test
-    public void testPostAnnoWithMultipleEscapes() {
+    public void testPostAnnoWithMultipleEscapes() throws JSONException {
         String annotation = getAnnotation(101);
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
