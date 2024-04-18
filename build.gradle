@@ -88,12 +88,12 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
 
     //Jena
-    implementation "org.apache.jena:apache-jena-libs:3.15.0"
-    implementation "org.apache.jena:jena-fuseki:3.15.0"
-    implementation "org.apache.jena:jena-fuseki-server:3.15.0"
-    implementation 'org.apache.jena:jena-osgi:3.15.0'
+    implementation "org.apache.jena:apache-jena-libs:4.1.0"
+    implementation "org.apache.jena:jena-fuseki:4.1.0"
+    implementation "org.apache.jena:jena-fuseki-server:4.1.0"
+    implementation 'org.apache.jena:jena-osgi:4.1.0'
 
-    implementation "org.apache.jena:jena-commonsrdf:3.15.0"
+    implementation "org.apache.jena:jena-commonsrdf:4.1.0"
     implementation "org.apache.thrift:libthrift:0.18.1"
     implementation "org.apache.commons:commons-rdf-jsonld-java:0.5.0"
     implementation "com.github.java-json-tools:json-schema-validator:2.2.8"
