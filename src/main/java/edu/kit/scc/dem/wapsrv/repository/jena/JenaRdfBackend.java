@@ -4,12 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.RDF;
-import org.apache.commons.rdf.jena.JenaRDF;
+import org.apache.jena.commonsrdf.JenaCommonsRDF;
+import org.apache.jena.commonsrdf.JenaRDF;
 import org.apache.jena.graph.Graph;
+import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RiotException;
-import org.apache.jena.system.JenaSystem;
+import org.apache.jena.sys.JenaSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -65,7 +67,7 @@ public class JenaRdfBackend implements RdfBackend {
       if (lang == null) {
          throw new FormatException("Format " + format + " not supported in jena RDF backend");
       }
-      Graph graph = rdf.asJenaGraph(dataset.getGraph());
+      Graph graph = JenaCommonsRDF.toJena(dataset.getGraph());
       StringWriter writer = new StringWriter();
       RDFDataMgr.write(writer, graph, lang);
       // StringWriters do not have to be closed!
@@ -80,14 +82,14 @@ public class JenaRdfBackend implements RdfBackend {
       }
       ByteArrayInputStream in = new ByteArrayInputStream(serialization.getBytes());
       // org.apache.jena.query.Dataset datasetGraph=null;
-      org.apache.jena.sparql.core.DatasetGraph datasetGraph = rdf.createDataset().asJenaDatasetGraph();
+      org.apache.jena.sparql.core.DatasetGraph datasetGraph = DatasetFactory.create().asDatasetGraph();
       try {
          RDFDataMgr.read(datasetGraph, in, lang);
       } catch (RiotException rex) {
          throw new FormatException(rex.getMessage(), rex);
       }
       // closing byte array input streams is not needed
-      return rdf.asDataset(datasetGraph);
+      return JenaCommonsRDF.fromJena(datasetGraph);
    }
 
    @Override
