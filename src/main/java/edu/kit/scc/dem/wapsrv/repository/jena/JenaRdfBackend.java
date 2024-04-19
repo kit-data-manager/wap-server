@@ -76,7 +76,9 @@ public class JenaRdfBackend implements RdfBackend {
 
    @Override
    public Dataset readFromString(String serialization, final Format format) throws WapException {
-      final Lang lang = JenaFormatMapper.map(format);
+      Lang lang = JenaFormatMapper.map(format);
+      //TODO: this solution is already deprecated. See https://github.com/apache/jena/issues/1765
+      if(format == Format.JSON_LD) {lang = Lang.JSONLD10;}
       if (lang == null) {
          throw new FormatException("Format " + format + " not supported in jena RDF backend");
       }
