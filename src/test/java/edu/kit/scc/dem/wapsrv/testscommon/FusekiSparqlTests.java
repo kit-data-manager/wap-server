@@ -2,7 +2,7 @@ package edu.kit.scc.dem.wapsrv.testscommon;
 
 import java.io.FileNotFoundException;
 import org.apache.jena.atlas.logging.Log;
-import org.apache.jena.fuseki.embedded.FusekiServer;
+import org.apache.jena.fuseki.main.FusekiServer;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Model;
@@ -10,7 +10,7 @@ import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
-import org.apache.jena.system.JenaSystem;
+import org.apache.jena.sys.JenaSystem;
 import org.apache.jena.tdb2.TDB2Factory;
 import org.apache.jena.util.ResourceUtils;
 import org.apache.jena.vocabulary.DCTerms;
@@ -109,9 +109,9 @@ public class FusekiSparqlTests {
        * dataService.addEndpoint(OperationName.Quads_RW, ""); dataService.addEndpoint(OperationName.Query, "");
        * dataService.addEndpoint(OperationName.Update, "");
        */
-      FusekiServer server1 = FusekiServer.create().setPort(3339).add("/write", ds, true).build();
+      FusekiServer server1 = FusekiServer.create().port(3339).add("/write", ds, true).build();
       server1.start();
-      FusekiServer server2 = FusekiServer.create().setPort(3338).add("/read", ds, false)// false -> read-only
+      FusekiServer server2 = FusekiServer.create().port(3338).add("/read", ds, false)// false -> read-only
             .build();
       server2.start();
       // Write transaction.
