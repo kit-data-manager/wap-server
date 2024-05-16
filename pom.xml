@@ -250,6 +250,14 @@
                         <version>1.3.2</version>
                     </dependency>
                 </dependencies>
+		<configuration>
+                    <systemProperties>
+                        <property>
+                            <name>spring.config.location</name>
+                            <value>optional:classpath:/test-config/</value>
+                        </property>
+                    </systemProperties>
+                </configuration>    
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
