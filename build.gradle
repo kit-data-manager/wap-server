@@ -88,10 +88,10 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
     
     //Jena
-    implementation "org.apache.jena:apache-jena-libs:3.7.0"
-    implementation "org.apache.jena:jena-fuseki:3.7.0"
-    implementation "org.apache.jena:jena-fuseki-embedded:3.7.0"
-    implementation 'org.apache.jena:jena-osgi:3.7.0'
+    implementation "org.apache.jena:apache-jena-libs:3.8.0"
+    implementation "org.apache.jena:jena-fuseki:3.8.0"
+    implementation "org.apache.jena:jena-fuseki-embedded:3.8.0"
+    implementation 'org.apache.jena:jena-osgi:3.8.0'
 
     implementation "org.apache.commons:commons-rdf-api:0.5.0"
     implementation "org.apache.thrift:libthrift:0.12.0"
