@@ -40,9 +40,9 @@ jobs:
         run: |
           echo -e "\n\n\n\n\n\nok\nyes" | java -jar "$JAR_PATH" &
           echo $! > server.pid
-          sleep 30  # Give the server time to start
+          sleep 20  # Give the server time to start
 
       - name: hurl install
         uses: gacts/install-hurl@v1
       - name: hurl tests
-        run: hurl --variable host=http://localhost --test integration_tests/*.hurl --verbose --error-format=long --continue-on-error
+        run: hurl --variable host=http://localhost:8080 --test integration_tests/*.hurl --verbose --error-format=long --continue-on-error
