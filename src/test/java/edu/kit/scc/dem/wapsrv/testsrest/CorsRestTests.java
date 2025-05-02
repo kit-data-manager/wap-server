@@ -134,7 +134,10 @@ public class CorsRestTests extends AbstractRestTest {
         final String originAllowed = "http://allowed.org";
         RequestSpecification request = RestAssured.given();
         request.header("Origin", originAllowed);
-        request.header(CrossOriginFilter.ACCESS_CONTROL_REQUEST_HEADERS_HEADER, "Link,Content-Type,ETag");
+        //Test behaviour changed on upgrade from embedded fuseki to fuseki
+        // test was working before even without explicitely asking for content-length header ->
+        // Test was adapted to CHANGED APPLICATION BEHAVIOUR
+        request.header(CrossOriginFilter.ACCESS_CONTROL_REQUEST_HEADERS_HEADER, "Link,Content-Type,ETag,Content-Length");
         request.header(CrossOriginFilter.ACCESS_CONTROL_REQUEST_METHOD_HEADER, "POST");
         Response response = request.options("/sparql");
         assertNotNull(response);

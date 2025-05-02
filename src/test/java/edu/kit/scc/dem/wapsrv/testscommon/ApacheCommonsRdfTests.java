@@ -2,31 +2,21 @@ package edu.kit.scc.dem.wapsrv.testscommon;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import io.specto.hoverfly.junit5.HoverflyExtension;
-import io.specto.hoverfly.junit5.api.HoverflySimulate;
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.jena.JenaGraph;
-import org.apache.commons.rdf.jena.JenaRDF;
+import java.util.*;
+
+import org.apache.commons.rdf.api.*;
+import org.apache.jena.commonsrdf.JenaCommonsRDF;
+import org.apache.jena.commonsrdf.JenaRDF;
 import org.apache.commons.rdf.jsonldjava.JsonLdGraph;
 import org.apache.commons.rdf.jsonldjava.JsonLdRDF;
 import org.apache.jena.atlas.logging.Log;
+import org.apache.jena.graph.Node;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.tdb2.TDB2Factory;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -39,10 +29,11 @@ import com.github.jsonldjava.utils.JsonUtils;
 import edu.kit.scc.dem.wapsrv.model.formats.Format;
 import edu.kit.scc.dem.wapsrv.model.rdf.RdfUtilities;
 import edu.kit.scc.dem.wapsrv.repository.jena.JenaRdfBackend;
-import edu.kit.scc.dem.wapsrv.testsbenchmark.WapServerProfiling;
 import org.apache.jena.sparql.core.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 
 /**
  * ApacheCommonsRdfTests
@@ -105,9 +96,9 @@ public class ApacheCommonsRdfTests {
         Literal createdString = rdfLib.getRdf().createLiteral("2018-06-5T00:23:00Z");
         BlankNodeOrIRI oldIdIri = null;
         Graph graph = dataset.getGraph();
-        for (Triple t : graph.iterate(null, iri, type)) {
-            Log.info(this, t.getSubject().ntriplesString() + " , " + t.getPredicate().getIRIString() + " , "
-                    + t.getObject().ntriplesString());
+        for (org.apache.commons.rdf.api.Triple t : graph.iterate(null, iri, type)) {
+            Log.info(this, t.getSubject().toString() + " , " + t.getPredicate().toString() + " , "
+                    + t.getObject().toString());
             oldIdIri = t.getSubject();
             if (graph.contains(t.getSubject(), created, null)) {
                 Log.info(this, "the created triple for this annotation already exists, DELETING...");
@@ -150,46 +141,49 @@ public class ApacheCommonsRdfTests {
      */
     @Test
     public void jenaBackedSpeedTest() throws FileNotFoundException {
-        JenaRDF factory = new JenaRDF();
-        JenaGraph sourceGraph = factory.createGraph();
-        sourceGraph.asJenaModel().read("src/main/resources/testdata/PAGE2017XML_Tristrant_VD16T1963-008.jsonld");
-        IRI typeAnnotation = factory.createIRI("http://www.w3.org/ns/oa#Annotation");
-        IRI rdfType = factory.createIRI(org.apache.jena.vocabulary.RDF.type.getURI());
+        RDF factory = new JenaRDF();
+        //org.apache.jena.query.Dataset sourceGraph = DatasetFactory.create();
+        //JenaGraph sourceGraph = factory.createGraph();
+        //JenaGraph sourceGraph = JenaCommonsRDF.toJena(datasetGraph.getGraph());
+        Model model = RDFDataMgr.loadModel("src/main/resources/testdata/PAGE2017XML_Tristrant_VD16T1963-008.jsonld");
+        //sourceGraph.asJenaModel().read("src/main/resources/testdata/PAGE2017XML_Tristrant_VD16T1963-008.jsonld");
+        Node typeAnnotation = JenaCommonsRDF.toJena(factory.createIRI("http://www.w3.org/ns/oa#Annotation"));
+        Node rdfType = JenaCommonsRDF.toJena(factory.createIRI(org.apache.jena.vocabulary.RDF.type.getURI()));
         long timeStartPrep = System.currentTimeMillis();
-        Iterable<Triple> it = sourceGraph.iterate(null, rdfType, typeAnnotation);
+        //Iterable<Triple> it = sourceGraph.iterate(null, rdfType, typeAnnotation);
         BlankNodeOrIRI node = null;
-        for (Triple t : it) {
-            node = t.getSubject();
-            Log.info(this, "Anno ROOT: " + t.getSubject().ntriplesString() + " Object: " + t.getObject().ntriplesString());
-        }
+        org.apache.jena.graph.Graph sourceGraph = model.getGraph();
+        Optional<org.apache.jena.graph.Triple> triple = sourceGraph.stream(null, rdfType, typeAnnotation).findFirst();
+        node = (BlankNodeOrIRI) (JenaCommonsRDF.fromJena(factory, triple.get().getSubject()));
+        logger.info("Anno ROOT: " + triple.get().getSubject().toString() + " Object: " + triple.get().getObject().toString());
         // fill a List with models to add
-        List<JenaGraph> modelList = new ArrayList<JenaGraph>();
+        ArrayList<Model> modelList = new ArrayList<>();
         for (int i = 0; i < SPEED_TEST_COUNT; i++) {
-            Graph newGraph = RdfUtilities.clone(sourceGraph, factory);
+            Graph newGraph = RdfUtilities.clone(JenaCommonsRDF.fromJena(sourceGraph), factory);
             RdfUtilities.renameNodeIri(newGraph, node,
                     factory.createIRI("http://wapserver.dem.scc.kit.edu/tristrant/anno" + i));
-            modelList.add((JenaGraph) newGraph);
+            modelList.add(ModelFactory.createModelForGraph(JenaCommonsRDF.toJena(newGraph)));
         }
         long durationPrep = System.currentTimeMillis() - timeStartPrep;
-        Log.info(this, "---------- Prepare of " + SPEED_TEST_COUNT + " Annos in millis: " + durationPrep);
+        logger.info("---------- Prepare of " + SPEED_TEST_COUNT + " Annos in millis: " + durationPrep);
         org.apache.jena.query.Dataset ds = TDB2Factory.connectDataset("temp/tdb2/test.tdb");
-        ((Transactional)ds).begin();
+        ds.begin(ReadWrite.WRITE);
         ds.getDefaultModel().removeAll();
         ds.commit();
         ds.end();
         long timeStart = System.currentTimeMillis();
         ds.begin(ReadWrite.WRITE);
         for (int i = 0; i < SPEED_TEST_COUNT; i++) {
-            ds.getDefaultModel().add(modelList.get(i).asJenaModel());
+            ds.getDefaultModel().add(modelList.get(i));
         }
         ds.commit();
         ds.end();
         long duration = System.currentTimeMillis() - timeStart;
-        Log.info(this, "---------- Write " + SPEED_TEST_COUNT + " Annos to Database millis: " + duration);
+        logger.info("---------- Write " + SPEED_TEST_COUNT + " Annos to Database millis: " + duration);
         Model targetModel = ModelFactory.createDefaultModel();
         Model model2 = ds.getDefaultModel();
         ds.begin(ReadWrite.READ);
-        Log.info(this, "Triples # in DB: " + model2.listStatements().toList().size());
+        logger.info("Triples # in DB: " + model2.listStatements().toList().size());
         ds.end();
         long timeStartRead = System.currentTimeMillis();
         ds.begin(ReadWrite.READ);
@@ -199,6 +193,6 @@ public class ApacheCommonsRdfTests {
         }
         ds.end();
         long durationRead = System.currentTimeMillis() - timeStartRead;
-        Log.info(this, "---------- read " + SPEED_TEST_COUNT + " Annos from Database millis: " + durationRead);
+        logger.info("---------- read " + SPEED_TEST_COUNT + " Annos from Database millis: " + durationRead);
     }
 }
