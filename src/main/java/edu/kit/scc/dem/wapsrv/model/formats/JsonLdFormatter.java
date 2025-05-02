@@ -132,13 +132,10 @@ public final class JsonLdFormatter extends AbstractFormatter {
 
     @Override
     public String format(FormattableObject obj) {
-        // To be able to create correct JSON-LD, we cannot rely on the database output generated.
-        // At least when using Jena, the actual state. This might change with different backends,
-        // but not break the behavior. It might only not be necessary.
-        final String nquadsString = obj.toString(Format.NQUADS);
+        final String jsonldString = obj.toString(Format.JSON_LD);
         // Get the frame as JSON-LD string
         final String frameString = profileRegistry.getFrameString(obj.getType());
-        final String jsonLdWithBlankNodeIds = applyProfiles(nquadsString, frameString);
+        final String jsonLdWithBlankNodeIds = applyProfiles(jsonldString, frameString);
         // Details why this step is necessary is found within the method
         return removeBlankNodeIds(jsonLdWithBlankNodeIds);
     }
@@ -204,7 +201,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
     private String applyProfiles(String jsonLd, String frameString) {
         try {
             final Object frameObject = frameString == null ? null : JsonUtils.fromString(frameString);
-            Object jsonObject = JsonLdProcessor.fromRDF(jsonLd);
+            Object jsonObject = JsonUtils.fromString(jsonLd);
             // Use precreated options with in memory profiles
             JsonLdOptions optionsWithContexts = profileRegistry.getJsonLdOptions();
             Map<String, Object> framed = null;

@@ -9,14 +9,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Pattern;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import io.specto.hoverfly.junit5.HoverflyExtension;
 import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.http.HttpMethod;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 import edu.kit.scc.dem.wapsrv.app.ErrorMessageRegistry;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
 import edu.kit.scc.dem.wapsrv.controller.AnnotationConstants;
@@ -1121,5 +1125,30 @@ public class AnnotationRestTest extends AbstractRestTest {
         putResponse = putAnnotation(request, realId); // the real id, only within json wrong
         assertNotNull(putResponse, "Could not get put response");
         checkException(UnallowedPropertyChangeException.class, putResponse);
+    }
+
+    /**
+     * Test posting annotation with a series of multiple escaped characters.
+     * @throws JSONException
+     */
+    @Test
+    public void testPostAnnoWithMultipleEscapes() throws JSONException {
+        String annotation = getAnnotation(101);
+        assertNotNull(annotation, "Could not load example annotation");
+        RequestSpecification request = RestAssured.given();
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.body(annotation);
+        Response response = postAnnotation(request);
+        assertNotNull(response, "Could not get response");
+        assertEquals(AnnotationConstants.POST_ANNOTATION_SUCCESS_CODE, response.getStatusCode(),
+                "Annotation could not be created");
+        String annoInDb = response.getBody().asString();
+
+        JSONObject expectedAnno = new JSONObject(annotation);
+        JSONObject actualAnno = new JSONObject(annoInDb);
+        //checks for existence of all values in the posted annotation payload but ignores additional fields (like 'id' or 'created')
+        JSONAssert.assertEquals(expectedAnno, actualAnno, JSONCompareMode.LENIENT);
+
     }
 }
