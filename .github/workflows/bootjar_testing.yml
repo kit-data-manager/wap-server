@@ -1,0 +1,52 @@
+name: Build and Test Bootable JAR
+
+on:
+  push:
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java: [17]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+
+      - name: Grant execute permission for Gradle wrapper (Unix)
+        if: runner.os != 'Windows'
+        run: chmod +x gradlew
+
+      - name: Build bootable JAR (skip tests)
+        run: ./gradlew bootJar -x test
+
+      - name: Run JAR with auto-input
+        shell: bash
+        run: |
+          echo -e "\n\n\n\n\n\nok\nyes" | java -jar build/libs/wap-server.jar &
+          echo $! > server.pid
+          sleep 20  # Give the server time to start
+
+      - name: hurl install
+        uses: gacts/install-hurl@v1
+
+      - name: hurl tests (windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          for file in integration_tests/*.hurl; do
+            hurl --variable host=http://localhost:8080 --test "$file" --verbose --error-format=long --continue-on-error
+          done
+      - name: hurl tests (other)
+        if: runner.os != 'Windows'
+        run: hurl --variable host=http://localhost:8080 --test integration_tests/*.hurl --verbose --error-format=long --continue-on-error
