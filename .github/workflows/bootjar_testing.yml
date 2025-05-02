@@ -42,6 +42,7 @@ jobs:
           echo $! > server.pid
           sleep 30  # Give the server time to start
 
-      - name: hurl tests
+      - name: hurl install
         uses: gacts/install-hurl@v1
-        run: hurl --variable host=http://localhost --test integration_tests/*.hurl --verbose --error-format=long
+      - name: hurl tests
+        run: hurl --variable host=http://localhost --test integration_tests/*.hurl --verbose --error-format=long --continue-on-error
