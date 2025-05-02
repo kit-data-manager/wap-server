@@ -185,7 +185,7 @@ public class TestJenaRespository {
      */
     @Test
     public void testInitDb() {
-        dataBase.begin();
+        dataBase.begin(ReadWrite.READ);
         dumpDatabase("InitDb Content:");
         assertThat(dataBase.getUnionModel().listStatements().toList().size(), Is.is(28));
         dataBase.end();

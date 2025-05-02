@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,7 @@ import edu.kit.scc.dem.wapsrv.testscommon.TestDataStore;
 import static edu.kit.scc.dem.wapsrv.controller.ControllerTestHelper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Tests the class JsonLdProfileRegistry
@@ -36,7 +39,10 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 @ExtendWith(SpringExtension.class)
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @SpringBootTest(classes = {WapServerConfig.class})
+@ActiveProfiles("test")
 class JsonLdProfileRegistryTest {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonLdProfileRegistryTest.class);
@@ -343,7 +349,8 @@ class JsonLdProfileRegistryTest {
         final Type type = Type.PAGE;
         Properties props = getInitialProps();
         props.setProperty(ConfigurationKeys.JsonLdFrameFolder.toString(), "nonExistentFolder");
-        config.updateConfig(props);
+        WapServerConfig.getInstance().updateConfig(props);
+        //config.updateConfig(props);
         checkException(InternalServerException.class, "Could not load JSON-LD Frame file for " + type, () -> {
             JsonLdProfileRegistry instance = getJsonLdProfileRegistry();
             instance.getFrameString(type);

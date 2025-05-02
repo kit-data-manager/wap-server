@@ -1,0 +1,13 @@
+test {
+    println 'Execute all tests...'
+    outputs.dir snippetsDir
+    include '**/*'
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}

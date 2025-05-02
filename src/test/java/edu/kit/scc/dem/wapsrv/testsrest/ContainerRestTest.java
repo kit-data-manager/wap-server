@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Pattern;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -42,6 +45,7 @@ import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * ContainerRestTest
@@ -53,7 +57,10 @@ import io.restassured.specification.RequestSpecification;
  * @author  Timo Schmidt
  * @version 1.1
  */
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("rest")
+@ActiveProfiles("test")
 public class ContainerRestTest extends AbstractRestTest {
    /**
     * The logger to use
@@ -353,6 +360,7 @@ public class ContainerRestTest extends AbstractRestTest {
          checkValidPageIri(lastPageIri, iris, 0, containerIri);
          if (preferMinimalContainer) {
             // first and last should be the same, last is already verified
+             System.out.println("LAST " + lastPageIri);
             checkProperty(response, "first", lastPageIri);
             // check no list of sub containers
             checkLdpContains(response, false);
@@ -744,8 +752,8 @@ public class ContainerRestTest extends AbstractRestTest {
          URL url = new URL(WapServerConfig.getInstance().getRootContainerIri());
          String params = "test=1";
          Map<String, Object> requestHeaders = new Hashtable<String, Object>();
-         requestHeaders.put("Content-Type", "application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-         requestHeaders.put("Accept", "application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+         requestHeaders.put("Content-Type", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+         requestHeaders.put("Accept", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
          requestHeaders.put("Slug", containerName);
          requestHeaders.put("Link", ContainerConstants.LINK_TYPE);
          OwnResponse response
@@ -1218,8 +1226,8 @@ public class ContainerRestTest extends AbstractRestTest {
       String annotation = getAnnotation(fixedAnnoId); // getRandomAnnotation();
       assertNotNull(annotation, "Could not load example annotation");
       RequestSpecification postRequest = RestAssured.given();
-      postRequest.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-      postRequest.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+      postRequest.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+      postRequest.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
       postRequest.body(annotation);
       Response postResponse = postRequest.post(path);
       assertNotNull(postResponse, "Could not get post response");
@@ -1236,8 +1244,8 @@ public class ContainerRestTest extends AbstractRestTest {
       {
          String annoEtag = getEtagFromServer(annoPath);
          RequestSpecification request = RestAssured.given();
-         request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-         request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+         request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+         request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
          request.header("If-Match", annoEtag);
          request.body(annotation);
          Response putResponse = request.put(annoPath);
@@ -1281,7 +1289,7 @@ public class ContainerRestTest extends AbstractRestTest {
          request.body(container);
          request.header("Link", ContainerConstants.LINK_TYPE);
          request.header("Slug", containerName);
-         request.contentType("application/ld+json; profile=\""
+         request.contentType("application/ld+json;profile=\""
                + "http://www.w3.org/ns/anno.jsonld http://www.w3.org/ns/ldp.jsonld\"");
          Response response = request.post();
          assertNotNull(response, "Could not get response");

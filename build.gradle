@@ -1,0 +1,183 @@
+plugins { 
+    id "org.springframework.boot" version "2.7.5"
+    id "io.spring.dependency-management" version "1.1.0" 
+    id "io.freefair.maven-publish-java" version "6.5.1"
+    id "com.github.kt3k.coveralls" version "2.12.0" 
+    id "org.owasp.dependencycheck" version "7.3.0"
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id "net.researchgate.release" version "3.0.2"
+    id "com.gorylenko.gradle-git-properties" version "2.4.1"
+    id 'java'
+    id 'jacoco'
+}
+
+apply plugin: 'project-report'
+
+jar {
+    archiveBaseName = 'wap-server'
+    // version is defined in file 'gradle.properties'
+    archiveVersion = System.getenv('version')
+}
+
+repositories {
+    mavenLocal() 
+    mavenCentral()
+}
+
+
+//configurations {
+ //   all*.exclude module : 'spring-boot-starter-logging'
+//}
+
+ext {
+    set('javersVersion', "6.8.0")
+    set('springBootVersion', "2.7.5")
+    set('springDocVersion', "1.6.9")
+    set('keycloakVersion', "19.0.0")
+    set('junitPlatformVersion', "1.2.0")
+    set('junitJupiterVersion', "5.2.0")
+
+    // directory for generated code snippets during tests
+    snippetsDir = file("build/generated-snippets")
+}
+
+println "Running gradle version: $gradle.gradleVersion"
+println "Building ${name} version: ${version}"
+println "JDK version: ${JavaVersion.current()}"
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+if (System.getProperty('profile') == 'minimal') {
+    println 'Using minimal profile for building ' + project.getName()
+    apply from: 'gradle/profile-minimal.gradle'   
+} else {
+    println 'Using default profile executing all tests for building ' + project.getName()
+    apply from: 'gradle/profile-complete.gradle'
+}
+
+dependencies {
+   // boot starter
+    implementation "org.springframework.boot:spring-boot-starter-validation"    
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-data-rest"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+
+    //implementation "org.springframework.security:spring-security-web:5.7.5"
+    //implementation "org.springframework.security:spring-security-config:5.7.5"
+    implementation "org.thymeleaf:thymeleaf-spring5"
+
+    
+    // cloud support
+    //implementation "org.springframework.cloud:spring-cloud-starter-config:3.1.5"
+    //implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.4"
+   // implementation "org.springframework.cloud:spring-cloud-gateway-mvc:3.1.4"
+    //implementation 'de.codecentric:spring-boot-admin-starter-client:2.7.10'
+
+    // springdoc
+    implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-data-rest:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-webmvc-core:${springDocVersion}"
+
+    //Keycloak
+    // implementation "org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}"
+    implementation "com.nimbusds:nimbus-jose-jwt:9.24.3"
+    implementation "io.jsonwebtoken:jjwt-api:0.11.5"
+    implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
+    implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
+    
+    //Jena
+    implementation "org.apache.jena:apache-jena-libs:3.7.0"
+    implementation "org.apache.jena:jena-fuseki:3.7.0"
+    implementation "org.apache.jena:jena-fuseki-embedded:3.7.0"
+    implementation 'org.apache.jena:jena-osgi:3.7.0'
+
+    implementation "org.apache.commons:commons-rdf-api:0.5.0"
+    implementation "org.apache.thrift:libthrift:0.12.0"
+    implementation("org.apache.commons:commons-rdf-jena:0.5.0"){
+        exclude group: 'org.apache.jena', module: 'jena-osgi'
+    }        
+    implementation "org.apache.commons:commons-rdf-jsonld-java:0.5.0"
+    implementation "com.github.java-json-tools:json-schema-validator:2.2.8"
+
+    implementation "org.apache.commons:commons-collections4:4.1"
+   
+     // driver for postgres
+    implementation "org.postgresql:postgresql:42.5.0"
+    //driver for h2
+    implementation "com.h2database:h2:2.1.214"
+
+    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework:spring-test"
+   // testImplementation "org.springframework.security:spring-security-test"
+   
+    testImplementation "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}"
+    testImplementation "org.junit.platform:junit-platform-engine:${junitPlatformVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.rest-assured:spring-mock-mvc"
+    testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.specto:hoverfly-java-junit5:0.17.1"
+
+    //Java 11 Support 
+    testImplementation "org.mockito:mockito-inline:4.10.0"
+    //testImplementation "org.mockito:mockito-core:2.23.4"
+    testImplementation "com.sun.xml.bind:jaxb-core:2.3.0.1"
+    testImplementation "com.sun.xml.bind:jaxb-impl:2.3.0.1"
+    testImplementation "javax.activation:activation:1.1.1"
+    testImplementation "org.javassist:javassist:3.23.1-GA"
+    testImplementation "javax.xml.bind:jaxb-api:2.3.1"
+}
+
+if (project.hasProperty('release')) {
+    println 'Using \'release\' profile for building ' + project.getName()
+    apply from: 'gradle/profile-deploy.gradle'
+}
+
+test {
+    useJUnitPlatform()
+ if (!JavaVersion.current().isJava8()) {
+        println 'Allow access to private methods...'
+        jvmArgs '--illegal-access=permit'
+    }
+    if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_16)) {
+        println 'Allow access to private methods of package java.util.stream...'
+        jvmArgs '--add-opens=java.base/java.util.stream=ALL-UNNAMED'
+   }
+    testLogging {
+        outputs.upToDateWhen {false}
+        showStandardStreams = true
+    }
+
+   environment "spring.config.location", "classpath:/test-config/"
+}
+
+tasks.withType(Test) {
+    testLogging {
+        events 'started', 'passed'
+    }
+}
+
+springBoot {    
+    buildInfo()
+}
+
+bootJar {
+    println 'Create bootable jar...'
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+    }
+    launchScript()
+}
+
+// task for printing project name.
+task printProjectName {
+    doLast {
+        println "${project.name}"
+    }
+}

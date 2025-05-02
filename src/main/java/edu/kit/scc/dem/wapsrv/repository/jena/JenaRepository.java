@@ -10,7 +10,6 @@ import org.apache.commons.rdf.jena.JenaDataset;
 import org.apache.commons.rdf.jena.JenaRDF;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.query.Dataset;
-import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Seq;
@@ -22,6 +21,7 @@ import edu.kit.scc.dem.wapsrv.model.WapObject;
 import edu.kit.scc.dem.wapsrv.model.rdf.RdfBackend;
 import edu.kit.scc.dem.wapsrv.repository.CollectedRepository;
 import edu.kit.scc.dem.wapsrv.repository.TransactionRepository;
+import org.apache.jena.query.ReadWrite;
 import org.apache.jena.query.TxnType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,210 +43,212 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("jena")
 @Primary
-public class JenaRepository extends CollectedRepository{
+public class JenaRepository extends CollectedRepository {
 
-  private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  private Dataset dataBase;
-  /**
-   * Database
-   */
-  @Autowired
-  private JenaDataBase dataBaseSource;
-  /**
-   * The application configuration to use
-   */
-  @Autowired
-  private WapServerConfig wapServerConfig;
-  /**
-   * The RDF backend
-   */
-  @Autowired
-  private RdfBackend rdfBackend;
+    private Dataset dataBase;
+    /**
+     * Database
+     */
+    @Autowired
+    private JenaDataBase dataBaseSource;
+    /**
+     * The application configuration to use
+     */
+    @Autowired
+    private WapServerConfig wapServerConfig;
+    /**
+     * The RDF backend
+     */
+    @Autowired
+    private RdfBackend rdfBackend;
 
-  /**
-   * Sets the configuration to use
-   *
-   * @param wapServerConfig The application configuration
-   */
-  @Autowired
-  public void setWapServerConfig(WapServerConfig wapServerConfig){
-    this.wapServerConfig = wapServerConfig;
-  }
-
-  @PostConstruct
-  private void init(){
-    if(wapServerConfig == null){
-      throw new RuntimeException("WapServerConfiguration not set in JenaRepository");
+    /**
+     * Sets the configuration to use
+     *
+     * @param wapServerConfig The application configuration
+     */
+    @Autowired
+    public void setWapServerConfig(WapServerConfig wapServerConfig) {
+        this.wapServerConfig = wapServerConfig;
     }
-    if(dataBaseSource != null){
-      setDataBase(dataBaseSource.getDataBase());
-    }
-  }
 
-  @Override
-  public org.apache.commons.rdf.api.Dataset getWapObject(String iri){
-    org.apache.commons.rdf.api.Dataset retDs = rdfBackend.getRdf().createDataset();
-    JenaDataset jenaDs = (JenaDataset) retDs;
-    if(!dataBase.containsNamedModel(iri)){
-      throw new NotExistentException("the requested container does not exist");
-    }
-    Model readModel = dataBase.getNamedModel(iri);
-    readModel.listStatements().forEachRemaining(s -> {
-      jenaDs.asJenaDatasetGraph().getDefaultGraph().add(s.asTriple());
-    });
-    return retDs;
-  }
-
-  @Override
-  public String backupDatabase(){
-    DatabaseMgr.backup(dataBase.asDatasetGraph());
-    Path path = FileSystems.getDefault().getPath(WapServerConfig.getInstance().getDataBasePath() + "/Backups/");
-    return path.toUri().toString();
-  }
-
-  /**
-   * Gets the database dataset.
-   *
-   * @return the dataBase dataset
-   */
-  @Override
-  public Dataset getDataBase(){
-    return dataBase;
-  }
-
-  /**
-   * Sets the database dataset.
-   *
-   * @param dataBase the dataBase dataset to set
-   */
-  public void setDataBase(Dataset dataBase){
-    this.dataBase = dataBase;
-  }
-
-  @Override
-  public boolean beginTransaction(TransactionRepository.Type type){
-    if(!dataBase.isInTransaction()){
-      log.trace("Beginning {} transaction.", type);
-      dataBase.begin(translateType(type));
-      log.trace("{} transaction now active.", type);
-      return true;
-    }
-    return false;
-  }
-
-  @Override
-  public void abortTransaction(){
-    if(dataBase.isInTransaction()){
-      log.trace("Aborting {} transaction.", dataBase.transactionType());
-      dataBase.abort();
-      log.trace("Transaction aborted.");
-      log.trace("Ending dataset.");
-      dataBase.end();
-      log.trace("Dataset ended.");
-    }
-  }
-
-  @Override
-  public void endTransaction(boolean wasOpend){
-    if(wasOpend){
-      try{
-        if(dataBase.isInTransaction() && dataBase.transactionType() == TxnType.WRITE){
-          log.trace("Committing dataset.");
-          dataBase.commit();
-          log.trace("Dataset committed.");
+    @PostConstruct
+    private void init() {
+        if (wapServerConfig == null) {
+            throw new RuntimeException("WapServerConfiguration not set in JenaRepository");
         }
-      } finally{
-        log.trace("Ending dataset.");
-        dataBase.end();
-        log.trace("Dataset ended.");
-      }
+        if (dataBaseSource != null) {
+            setDataBase(dataBaseSource.getDataBase());
+        }
     }
-  }
 
-  private TxnType translateType(TransactionRepository.Type type){
-    if(type.equals(TransactionRepository.Type.Read)){
-      return TxnType.READ;
+    @Override
+    public org.apache.commons.rdf.api.Dataset getWapObject(String iri) {
+        org.apache.commons.rdf.api.Dataset retDs = rdfBackend.getRdf().createDataset();
+        JenaDataset jenaDs = (JenaDataset) retDs;
+        if (!dataBase.containsNamedModel(iri)) {
+            throw new NotExistentException("the requested container does not exist");
+        }
+        Model readModel = dataBase.getNamedModel(iri);
+        readModel.listStatements().forEachRemaining(s -> {
+            jenaDs.asJenaDatasetGraph().getDefaultGraph().add(s.asTriple());
+        });
+        return retDs;
     }
-    if(type.equals(TransactionRepository.Type.Write)){
-      return TxnType.WRITE;
+
+    @Override
+    public String backupDatabase() {
+        DatabaseMgr.backup(dataBase.asDatasetGraph());
+        Path path = FileSystems.getDefault().getPath(WapServerConfig.getInstance().getDataBasePath() + "/Backups/");
+        return path.toUri().toString();
     }
-    return null;
-  }
 
-  @Override
-  public RDF getRdf(){
-    return rdfBackend.getRdf();
-  }
-
-  @Override
-  public void addElementToRdfSeq(String modelIri, String seqIri, String objIri){
-    Model model = dataBase.getNamedModel(modelIri);
-    Seq seq = model.getSeq(seqIri);
-    Resource objectResource = model.getResource(objIri);
-    seq.add(objectResource);
-  }
-
-  @Override
-  public void removeElementFromRdfSeq(String modelIri, String seqIri, String objIri){
-    Model model = dataBase.getNamedModel(modelIri);
-    Seq seq = model.getSeq(seqIri);
-    Resource objectResource = model.getResource(objIri);
-    int indexOfContainer = seq.indexOf(objectResource);
-    if(indexOfContainer > 0){
-      seq.remove(indexOfContainer);
+    /**
+     * Gets the database dataset.
+     *
+     * @return the dataBase dataset
+     */
+    @Override
+    public Dataset getDataBase() {
+        return dataBase;
     }
-  }
 
-  @Override
-  public int countElementsInSeq(String modelIri, String seqIri){
-    Seq seq = dataBase.getNamedModel(modelIri).getSeq(seqIri);
-    return seq.size();
-  }
-
-  @Override
-  public void writeObjectToDatabase(WapObject wapObject){
-    org.apache.commons.rdf.api.Dataset dataset = wapObject.getDataset();
-    JenaDataset jenaDs = (JenaDataset) dataset;
-    Graph jenaGraph = jenaDs.asJenaDatasetGraph().getDefaultGraph();
-    Model jenaModel = org.apache.jena.rdf.model.ModelFactory.createModelForGraph(jenaGraph);
-    String iriString = wapObject.getIriString();
-    dataBase.addNamedModel(iriString, jenaModel);
-    // Model returnValue = dataBase.getNamedModel(iriString);
-  }
-
-  @Override
-  public List<String> getRangeOfObjectIrisFromSeq(String containerIri, String seqIri, int firstIndex, int lastIndex){
-    List<String> retValue = new ArrayList<>();
-    Model containerModel = dataBase.getNamedModel(containerIri);
-    Seq annoSeq = containerModel.getSeq(seqIri);
-    for(int i = firstIndex; i <= lastIndex; i++){
-      String annotationIri = annoSeq.getObject(i).asResource().toString();
-      retValue.add(annotationIri);
+    /**
+     * Sets the database dataset.
+     *
+     * @param dataBase the dataBase dataset to set
+     */
+    public void setDataBase(Dataset dataBase) {
+        this.dataBase = dataBase;
     }
-    return retValue;
-  }
 
-  @Override
-  public List<String> getAllObjectIrisOfSeq(String modelIri, String seqIri){
-    Model containerModel = dataBase.getNamedModel(modelIri);
-    Seq annoSeq = containerModel.getSeq(seqIri);
-    return getRangeOfObjectIrisFromSeq(modelIri, seqIri, 1, annoSeq.size());
-  }
+    @Override
+    public boolean beginTransaction(TransactionRepository.Type type) {
+        if (!dataBase.isInTransaction()) {
+            log.trace("Beginning {} transaction.", type);
+            dataBase.begin(translateType(type));
+            log.trace("{} transaction now active.", type);
+            return true;
+        }
+        return false;
+    }
 
-  @Override
-  public org.apache.commons.rdf.api.Dataset getTransactionDataset(){
-    JenaRDF jenaRDF = (JenaRDF) rdfBackend.getRdf();
-    JenaDataset transactionDataset = jenaRDF.asDataset(dataBase);
-    return transactionDataset;
-  }
+    @Override
+    public void abortTransaction() {
+        if (dataBase.isInTransaction()) {
+            log.trace("Aborting {} transaction.");
+            dataBase.abort();
+            log.trace("Transaction aborted.");
+            log.trace("Ending dataset.");
+            dataBase.end();
+            log.trace("Dataset ended.");
+        }
+    }
 
-  @Override
-  public void emptySeq(String modelIri, String seqIri){
-    Model model = dataBase.getNamedModel(modelIri);
-    Resource subject = model.createResource(seqIri);
-    model.removeAll(subject, null, null);
-    // regenerate the seq.
-    model.createSeq(seqIri);
-  }
+    @Override
+    public void endTransaction(boolean wasOpend) {
+        if (wasOpend) {
+            try {
+                if (dataBase.isInTransaction()) {
+                    log.trace("Committing dataset.");
+                    dataBase.commit();
+                    log.trace("Dataset committed.");
+                }
+            } finally {
+                log.trace("Ending dataset.");
+                dataBase.end();
+                log.trace("Dataset ended.");
+            }
+        }
+    }
+
+    private ReadWrite translateType(TransactionRepository.Type type) {
+        if (type.equals(TransactionRepository.Type.Read)) {
+            return ReadWrite.READ;
+            //return TxnType.READ;
+        }
+        if (type.equals(TransactionRepository.Type.Write)) {
+            return ReadWrite.WRITE;
+            //return TxnType.WRITE;
+        }
+        return null;
+    }
+
+    @Override
+    public RDF getRdf() {
+        return rdfBackend.getRdf();
+    }
+
+    @Override
+    public void addElementToRdfSeq(String modelIri, String seqIri, String objIri) {
+        Model model = dataBase.getNamedModel(modelIri);
+        Seq seq = model.getSeq(seqIri);
+        Resource objectResource = model.getResource(objIri);
+        seq.add(objectResource);
+    }
+
+    @Override
+    public void removeElementFromRdfSeq(String modelIri, String seqIri, String objIri) {
+        Model model = dataBase.getNamedModel(modelIri);
+        Seq seq = model.getSeq(seqIri);
+        Resource objectResource = model.getResource(objIri);
+        int indexOfContainer = seq.indexOf(objectResource);
+        if (indexOfContainer > 0) {
+            seq.remove(indexOfContainer);
+        }
+    }
+
+    @Override
+    public int countElementsInSeq(String modelIri, String seqIri) {
+        Seq seq = dataBase.getNamedModel(modelIri).getSeq(seqIri);
+        return seq.size();
+    }
+
+    @Override
+    public void writeObjectToDatabase(WapObject wapObject) {
+        org.apache.commons.rdf.api.Dataset dataset = wapObject.getDataset();
+        JenaDataset jenaDs = (JenaDataset) dataset;
+        Graph jenaGraph = jenaDs.asJenaDatasetGraph().getDefaultGraph();
+        Model jenaModel = org.apache.jena.rdf.model.ModelFactory.createModelForGraph(jenaGraph);
+        String iriString = wapObject.getIriString();
+        dataBase.addNamedModel(iriString, jenaModel);
+        // Model returnValue = dataBase.getNamedModel(iriString);
+    }
+
+    @Override
+    public List<String> getRangeOfObjectIrisFromSeq(String containerIri, String seqIri, int firstIndex, int lastIndex) {
+        List<String> retValue = new ArrayList<>();
+        Model containerModel = dataBase.getNamedModel(containerIri);
+        Seq annoSeq = containerModel.getSeq(seqIri);
+        for (int i = firstIndex; i <= lastIndex; i++) {
+            String annotationIri = annoSeq.getObject(i).asResource().toString();
+            retValue.add(annotationIri);
+        }
+        return retValue;
+    }
+
+    @Override
+    public List<String> getAllObjectIrisOfSeq(String modelIri, String seqIri) {
+        Model containerModel = dataBase.getNamedModel(modelIri);
+        Seq annoSeq = containerModel.getSeq(seqIri);
+        return getRangeOfObjectIrisFromSeq(modelIri, seqIri, 1, annoSeq.size());
+    }
+
+    @Override
+    public org.apache.commons.rdf.api.Dataset getTransactionDataset() {
+        JenaRDF jenaRDF = (JenaRDF) rdfBackend.getRdf();
+        JenaDataset transactionDataset = jenaRDF.asDataset(dataBase);
+        return transactionDataset;
+    }
+
+    @Override
+    public void emptySeq(String modelIri, String seqIri) {
+        Model model = dataBase.getNamedModel(modelIri);
+        Resource subject = model.createResource(seqIri);
+        model.removeAll(subject, null, null);
+        // regenerate the seq.
+        model.createSeq(seqIri);
+    }
 }

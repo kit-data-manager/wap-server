@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
@@ -38,6 +40,7 @@ import edu.kit.scc.dem.wapsrv.model.formats.Format;
 import edu.kit.scc.dem.wapsrv.model.rdf.RdfUtilities;
 import edu.kit.scc.dem.wapsrv.repository.jena.JenaRdfBackend;
 import edu.kit.scc.dem.wapsrv.testsbenchmark.WapServerProfiling;
+import org.apache.jena.sparql.core.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +55,8 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 @ExtendWith(SpringExtension.class)
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("old")
 public class ApacheCommonsRdfTests {
 
@@ -168,12 +173,12 @@ public class ApacheCommonsRdfTests {
         long durationPrep = System.currentTimeMillis() - timeStartPrep;
         Log.info(this, "---------- Prepare of " + SPEED_TEST_COUNT + " Annos in millis: " + durationPrep);
         org.apache.jena.query.Dataset ds = TDB2Factory.connectDataset("temp/tdb2/test.tdb");
-        ds.begin();
+        ((Transactional)ds).begin();
         ds.getDefaultModel().removeAll();
         ds.commit();
         ds.end();
         long timeStart = System.currentTimeMillis();
-        ds.begin();
+        ds.begin(ReadWrite.WRITE);
         for (int i = 0; i < SPEED_TEST_COUNT; i++) {
             ds.getDefaultModel().add(modelList.get(i).asJenaModel());
         }

@@ -1,6 +1,8 @@
 package edu.kit.scc.dem.wapsrv.testsrest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdfconnection.RDFConnection;
@@ -17,8 +19,10 @@ import edu.kit.scc.dem.wapsrv.model.FormattableObject.Type;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * CommonRestTests
@@ -30,7 +34,10 @@ import org.slf4j.LoggerFactory;
  * @author Timo Schmidt
  * @version 1.1
  */
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("rest")
+@ActiveProfiles("test")
 public class CommonRestTests extends AbstractRestTest {
 
     private static final Logger logger = LoggerFactory.getLogger(CommonRestTests.class);
@@ -216,7 +223,7 @@ public class CommonRestTests extends AbstractRestTest {
         assertNotEqual(-1, index, "body was not compacted as expected");
         // Request container with ldp profile
         request = RestAssured.given();
-        formatString = "application/ld+json; profile=\"http://www.w3.org/ns/ldp.jsonld\"";
+        formatString = "application/ld+json;profile=\"http://www.w3.org/ns/ldp.jsonld\"";
         request.accept(formatString);
         response = request.get(name + "/");
         assertNotNull(response, "Could not get container response");

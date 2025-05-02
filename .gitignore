@@ -91,7 +91,7 @@ buildNumber.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.nar
 *.ear
@@ -111,6 +111,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+.gradle/
 
 
 ### IntelliJ IDEA ###

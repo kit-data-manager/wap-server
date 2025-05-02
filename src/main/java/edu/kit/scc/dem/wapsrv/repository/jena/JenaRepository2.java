@@ -24,6 +24,7 @@ import edu.kit.scc.dem.wapsrv.model.rdf.RdfBackend;
 import edu.kit.scc.dem.wapsrv.repository.CollectedRepository;
 import edu.kit.scc.dem.wapsrv.repository.TransactionRepository;
 import java.util.Optional;
+import org.apache.jena.sparql.core.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -123,7 +124,6 @@ public class JenaRepository2 extends CollectedRepository{
    */
   @Override
   public Dataset getDataBase(){
-    System.out.println("GETTING " + dataBase);
     return dataBase;
   }
 
@@ -156,7 +156,8 @@ public class JenaRepository2 extends CollectedRepository{
   @Override
   public void endTransaction(boolean wasOpend){
     if(wasOpend & dataBase.isInTransaction()){
-      if(dataBase.transactionMode() == ReadWrite.WRITE){
+        
+      if(dataBase.isInTransaction()){
         dataBase.commit();
       }
       dataBase.end();

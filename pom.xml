@@ -181,6 +181,13 @@
             <artifactId>spring-mock-mvc</artifactId>
             <scope>test</scope>
         </dependency>
+	<!-- https://mvnrepository.com/artifact/io.specto/hoverfly-java-junit5 -->
+	<dependency>
+	    <groupId>io.specto</groupId>
+	    <artifactId>hoverfly-java-junit5</artifactId>
+	    <version>0.17.1</version>
+	    <scope>test</scope>
+	</dependency>    
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>

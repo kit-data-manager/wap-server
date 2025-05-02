@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.kit.scc.dem.wapsrv.repository.jena.JenaRdfBackend;
 import java.util.TimeZone;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Tests the class RdfUtilities
@@ -27,6 +28,7 @@ import java.util.TimeZone;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {JenaRdfBackend.class})
 @EnableConfigurationProperties
+@ActiveProfiles("test")
 class RdfUtilitiesTest {
 
     /**

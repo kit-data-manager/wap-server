@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.kit.scc.dem.wapsrv.model.rdf.RdfModelFactory;
 import edu.kit.scc.dem.wapsrv.repository.jena.JenaRdfBackend;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Tests the interface Container
@@ -26,6 +27,7 @@ import edu.kit.scc.dem.wapsrv.repository.jena.JenaRdfBackend;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {JenaRdfBackend.class, RdfModelFactory.class})
+@ActiveProfiles("test")
 class ContainerTest {
    @Autowired
    private ModelFactory modelFactory;
