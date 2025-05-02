@@ -5,7 +5,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.rdf.api.RDF;
 import org.apache.jena.commonsrdf.JenaCommonsRDF;
 import org.apache.jena.commonsrdf.JenaRDF;

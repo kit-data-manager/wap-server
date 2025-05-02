@@ -1,7 +1,7 @@
 package edu.kit.scc.dem.wapsrv.repository.jena;
 
 import java.util.Calendar;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Literal;

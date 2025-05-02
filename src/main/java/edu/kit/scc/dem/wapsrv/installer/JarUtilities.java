@@ -83,11 +83,11 @@ public final class JarUtilities {
             // jar:file:/C:/Users/andreas/Desktop/TestInstall/PSE-AA-0.0.1-SNAPSHOT.jar!/BOOT-INF/classes!/
             // linux :
             // mac :
-            String[] parts = uri.split(Pattern.quote("/"));
+            String[] parts = uri.split(Pattern.quote("!"))[0].split(Pattern.quote("/"));
             for (String part : parts) {
-               if (part.toLowerCase().endsWith(".jar!")) {
+               if (part.toLowerCase().endsWith(".jar")) {
                   System.out.println("Part found : " + part);
-                  return new File("./" + part.substring(0, part.length() - 1));
+                  return new File("./" + part);
                }
             }
             return guessJar();

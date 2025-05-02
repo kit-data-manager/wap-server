@@ -2,7 +2,7 @@ package edu.kit.scc.dem.wapsrv.controller;
 
 import java.util.Hashtable;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.eclipse.jetty.http.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

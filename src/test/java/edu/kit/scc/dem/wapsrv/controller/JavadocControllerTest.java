@@ -3,10 +3,13 @@ package edu.kit.scc.dem.wapsrv.controller;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
+import jakarta.servlet.http.HttpServletRequest;
+
 
 /**
  * Tests the class JavadocController. This test is quite simple, as no own functionality beside
@@ -41,12 +44,11 @@ class JavadocControllerTest {
    final void testGetFileResponse() {
       WapServerConfig paramWapServerConfig = WapServerConfig.getInstance();
       JavadocController actual = new JavadocController(paramWapServerConfig);
-      actual.getFileResponse(new HttpServletRequestAdapter() {
-         @Override
-         public StringBuffer getRequestURL() {
-            return new StringBuffer(paramWapServerConfig.getBaseUrl() + JavadocController.PATH);
-         }
-      }, null); // headers not used
+      HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+      Mockito.when(mockRequest.getRequestURL()).thenReturn(
+              new StringBuffer(paramWapServerConfig.getBaseUrl() + JavadocController.PATH)
+      );
+      actual.getFileResponse(mockRequest, null); // headers not used
    }
 
    /**

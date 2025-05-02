@@ -115,7 +115,7 @@ public class ApacheJenaTests {
             res.addLiteral(DCTerms.created, "2018-06-5T00:23:00Z");
             res = ResourceUtils.renameResource(res, "http://wapserver.dem.scc.kit.edu/tristrant/anno1");
         }
-        RDFDataMgr.write(System.out, readModel, RDFFormat.JSONLD_COMPACT_PRETTY);
+        RDFDataMgr.write(System.out, readModel, RDFFormat.JSONLD_PRETTY);
     }
 
     /**

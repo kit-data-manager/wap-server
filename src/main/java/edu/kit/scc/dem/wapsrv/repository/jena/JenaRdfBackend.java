@@ -72,7 +72,7 @@ public class JenaRdfBackend implements RdfBackend {
       StringWriter writer = new StringWriter();
       //Specifying format option to match behaviour of jsonld-java. Likely to break on dependency change / jena upgrade. See https://jena.apache.org/documentation/io/rdf-output.html#json-ld
       if(format == Format.JSON_LD) {
-         RDFDataMgr.write(writer, graph, RDFFormat.JSONLD_EXPAND_PRETTY);
+         RDFDataMgr.write(writer, graph, RDFFormat.JSONLD_PRETTY);
          return writer.toString();
       }
       RDFDataMgr.write(writer, graph, lang);
@@ -83,8 +83,8 @@ public class JenaRdfBackend implements RdfBackend {
    @Override
    public Dataset readFromString(String serialization, final Format format) throws WapException {
       Lang lang = JenaFormatMapper.map(format);
-      //TODO: this solution is already deprecated. See https://github.com/apache/jena/issues/1765
-      if(format == Format.JSON_LD) {lang = Lang.JSONLD10;}
+      //TODO: Does this still work as expected? See https://github.com/apache/jena/issues/1765
+      if(format == Format.JSON_LD) {lang = Lang.JSONLD;}
       if (lang == null) {
          throw new FormatException("Format " + format + " not supported in jena RDF backend");
       }
