@@ -3,6 +3,8 @@ package edu.kit.scc.dem.wapsrv.controller;
 import static edu.kit.scc.dem.wapsrv.controller.ControllerTestHelper.checkException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.Dataset;
 import org.eclipse.jetty.http.HttpMethod;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,8 @@ import static edu.kit.scc.dem.wapsrv.controller.ControllerTestHelper.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {PageController.class, WapServerConfig.class, JsonLdProfileRegistry.class,
       FormatRegistry.class, JsonLdFormatter.class, ContainerServiceMock.class, TurtleFormatter.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @ActiveProfiles("test")
 class PageControllerTest extends BasicWapControllerTest {
    @Autowired

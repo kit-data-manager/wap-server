@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import java.util.Iterator;
 import java.util.List;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
@@ -48,6 +50,8 @@ import static edu.kit.scc.dem.wapsrv.controller.ControllerTestHelper.*;
 @SpringBootTest(
       classes = {AnnotationController.class, WapServerConfig.class, JsonLdProfileRegistry.class, FormatRegistry.class,
             JsonLdFormatter.class, AnnotationServiceMock.class, TurtleFormatter.class, EtagFactory.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @ActiveProfiles("test")
 class AnnotationControllerTest extends BasicWapControllerTest {
    @Autowired

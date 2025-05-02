@@ -1,6 +1,8 @@
 package edu.kit.scc.dem.wapsrv.model;
 
 import static org.junit.jupiter.api.Assertions.*;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.IRI;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +33,8 @@ import edu.kit.scc.dem.wapsrv.testscommon.TestDataStore;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {JenaRdfBackend.class, RdfModelFactory.class, WapServerConfig.class, FormatRegistry.class,
       JsonLdProfileRegistry.class, JsonLdFormatter.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @ActiveProfiles("test")
 class WapObjectTest {
    @Autowired

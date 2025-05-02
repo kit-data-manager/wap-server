@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
@@ -53,6 +55,8 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 @ExtendWith(SpringExtension.class)
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("old")
 public class ApacheCommonsRdfTests {
 
