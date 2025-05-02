@@ -257,6 +257,13 @@
                         <version>1.3.2</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <!-- env variables can only be set with forkCount > 0-->
+                    <forkCount>1</forkCount>
+                    <environmentVariables>
+                        <SPRING_CONFIG_LOCATION>optional:classpath:/test-config/</SPRING_CONFIG_LOCATION>
+                    </environmentVariables>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
