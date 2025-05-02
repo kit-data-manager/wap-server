@@ -56,6 +56,20 @@ if (System.getProperty('profile') == 'minimal') {
     apply from: 'gradle/profile-complete.gradle'
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir '.'
+            includes = [
+                    'doc/**/*.*',
+                    'webcontent/**/*.*',
+                    'schemas/**/*.*',
+                    'profiles/**/FRAME_*.*'
+            ]
+        }
+    }
+}
+
 dependencies {
    // boot starter
     implementation "org.springframework.boot:spring-boot-starter-validation"
