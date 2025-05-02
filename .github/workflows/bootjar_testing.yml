@@ -30,15 +30,10 @@ jobs:
       - name: Build bootable JAR (skip tests)
         run: ./gradlew bootJar -x test
 
-      - name: Find JAR file
-        id: find-jar
-        run: |
-          echo "JAR_PATH=$(find build/libs -name '*.jar' | head -n 1)" >> $GITHUB_ENV
-
       - name: Run JAR with auto-input
         shell: bash
         run: |
-          echo -e "\n\n\n\n\n\nok\nyes" | java -jar "$JAR_PATH" &
+          echo -e "\n\n\n\n\n\nok\nyes" | java -jar build/libs/wap-server.jar &
           echo $! > server.pid
           sleep 20  # Give the server time to start
 
