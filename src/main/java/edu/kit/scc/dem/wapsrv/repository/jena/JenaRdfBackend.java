@@ -10,6 +10,7 @@ import org.apache.jena.graph.Graph;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.riot.RiotException;
 import org.apache.jena.sys.JenaSystem;
 import org.slf4j.Logger;
@@ -69,6 +70,11 @@ public class JenaRdfBackend implements RdfBackend {
       }
       Graph graph = JenaCommonsRDF.toJena(dataset.getGraph());
       StringWriter writer = new StringWriter();
+      //Specifying format option to match behaviour of jsonld-java. Likely to break on dependency change / jena upgrade. See https://jena.apache.org/documentation/io/rdf-output.html#json-ld
+      if(format == Format.JSON_LD) {
+         RDFDataMgr.write(writer, graph, RDFFormat.JSONLD_EXPAND_PRETTY);
+         return writer.toString();
+      }
       RDFDataMgr.write(writer, graph, lang);
       // StringWriters do not have to be closed!
       return writer.toString();

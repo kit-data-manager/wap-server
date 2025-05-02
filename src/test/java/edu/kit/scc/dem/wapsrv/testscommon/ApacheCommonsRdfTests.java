@@ -44,6 +44,8 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 @ExtendWith(SpringExtension.class)
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("old")
 public class ApacheCommonsRdfTests {
 

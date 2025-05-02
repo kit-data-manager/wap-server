@@ -2,6 +2,8 @@ package edu.kit.scc.dem.wapsrv.testsbenchmark;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,6 +40,8 @@ import org.slf4j.LoggerFactory;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
         classes = {WapServerConfig.class, JsonLdProfileRegistry.class, FormatRegistry.class, JsonLdFormatter.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("benchmark")
 @ActiveProfiles("test")
 public class JsonLdJavaBenchmark {

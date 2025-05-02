@@ -4,11 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.jena.fuseki.servlets.CrossOriginFilter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.HttpMethod;
 import edu.kit.scc.dem.wapsrv.app.FusekiRunner;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
@@ -37,6 +41,8 @@ import org.springframework.test.context.ActiveProfiles;
  * @author Timo Schmidt
  * @version 1.1
  */
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("rest")
 @ActiveProfiles("test")
 public class CorsRestTests extends AbstractRestTest {

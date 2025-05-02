@@ -1,0 +1,10 @@
+{
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  "type": "Annotation",
+  "body":  {
+    "type": "TextualBody",
+    "value": "{\"text\":\"Hello \\\"world\\\"!\"}",
+    "purpose": "tagging"
+  },
+  "target": "http://example.com/page1"
+}

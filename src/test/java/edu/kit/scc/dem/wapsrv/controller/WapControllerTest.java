@@ -2,6 +2,8 @@ package edu.kit.scc.dem.wapsrv.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Properties;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,8 @@ import edu.kit.scc.dem.wapsrv.model.formats.TurtleFormatter;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {JsonLdProfileRegistry.class, FormatRegistry.class, JsonLdFormatter.class,
       TurtleFormatter.class, WapServerConfig.class, InvalidFormatterForTests.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @ActiveProfiles("test")
 class WapControllerTest {
    @Autowired

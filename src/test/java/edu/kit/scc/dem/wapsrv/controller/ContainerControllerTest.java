@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
@@ -56,6 +58,8 @@ import edu.kit.scc.dem.wapsrv.service.ContainerServiceMock;
 @SpringBootTest(
       classes = {ContainerController.class, WapServerConfig.class, JsonLdProfileRegistry.class, FormatRegistry.class,
             JsonLdFormatter.class, ContainerServiceMock.class, TurtleFormatter.class, EtagFactory.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @ActiveProfiles("test")
 class ContainerControllerTest extends BasicWapControllerTest {
    @Autowired

@@ -33,4 +33,4 @@ Now it should be possible to right click on the project and choose "Run as" -> "
 
 ## License
 
-The WEB Server is licensed under the Apache License, Version 2.0.
+The WAP Server is licensed under the Apache License, Version 2.0.

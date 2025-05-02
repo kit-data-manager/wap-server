@@ -94,6 +94,7 @@ dependencies {
 
     implementation "org.apache.jena:jena-commonsrdf:4.10.0"
     implementation "org.apache.thrift:libthrift:0.18.1"
+
     implementation "org.apache.commons:commons-rdf-jsonld-java:0.5.0"
     implementation "com.github.java-json-tools:json-schema-validator:2.2.8"
 
@@ -116,6 +117,7 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.rest-assured:spring-mock-mvc"
     testImplementation "io.rest-assured:rest-assured"
+    testImplementation "io.specto:hoverfly-java-junit5:0.17.1"
 
     //Java 11 Support
     testImplementation "org.mockito:mockito-inline:4.10.0"
