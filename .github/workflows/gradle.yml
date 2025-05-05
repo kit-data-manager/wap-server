@@ -19,7 +19,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, macOS-latest]
         # Use both LTS releases and latest one for tests
-        jdk: [ 17 ]
+        jdk: [ 17, 21 ]
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
