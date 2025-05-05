@@ -6,16 +6,15 @@ HTTP 200
 POST {{host}}/wap/
 Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 Link: <http://www.w3.org/ns/ldp\#BasicContainer>; rel="type"
-Slug: helloWorld
+Slug: crud_performance
 {
   "@context": [ "http://www.w3.org/ns/anno.jsonld", "http://www.w3.org/ns/ldp.jsonld" ],
   "@type": [ "ldp:Container", "ldp:BasicContainer", "AnnotationCollection"],
-  "label":"This container will contain nothing"
+  "label":"This container will contain many annotations"
 }
-HTTP 201
 
 # Create an Annotation
-POST {{host}}/wap/helloWorld/
+POST {{host}}/wap/crud_performance/
 Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 
 {
@@ -31,27 +30,3 @@ Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 HTTP 201
 [Captures]
 anno: header "Location"
-
-# Get the Annotation and capture ETag
-GET {{anno}}
-Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
-HTTP 200
-[Captures]
-etag: header "ETag"
-
-# Delete the Annotation using ETag
-DELETE {{anno}}
-If-Match: {{etag}}
-HTTP 204
-
-# Get the Container and capture ETag
-GET {{host}}/wap/helloWorld/
-Accept: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
-HTTP 200
-[Captures]
-etag: header "ETag"
-
-# Delete the Container using ETag
-DELETE {{host}}/wap/helloWorld/
-If-Match: {{etag}}
-HTTP 204
