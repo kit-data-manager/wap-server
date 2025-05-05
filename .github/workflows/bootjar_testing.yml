@@ -40,13 +40,15 @@ jobs:
       - name: hurl install
         uses: gacts/install-hurl@v1
 
-      - name: hurl tests (windows)
+      - name: hurl CRUD tests (windows)
         if: runner.os == 'Windows'
         shell: bash
         run: |
-          for file in integration_tests/*.hurl; do
-            hurl --variable host=http://localhost:8080 --test "$file" --verbose --error-format=long --continue-on-error
+          for file in ./integration_tests/CRUD/*.hurl; do
+            hurl --variable host=http://localhost:8080 --test "$file" --verbose --error-format=long --continue-on-error --report-html hurlreports
           done
       - name: hurl tests (other)
         if: runner.os != 'Windows'
-        run: hurl --variable host=http://localhost:8080 --test integration_tests/*.hurl --verbose --error-format=long --continue-on-error
+        run: hurl --variable host=http://localhost:8080 --test ./integration_tests/CRUD/*.hurl --verbose --error-format=long --continue-on-error --report-html hurlreports
+      - name: hurl performance tests
+        run: hurl --variable host=http://localhost:8080 --test ./integration_tests/performance/create_anno.hurl --jobs 1 --repeat 1000 --verbose --error-format=long --report-html hurlreports
