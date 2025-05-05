@@ -6,6 +6,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-06-13
+### Added
+- Gradle build toolchain (Maven build will be deprecated in future upgrade)
+
+### Changed
+- Updated dependencies for apache-jena from 3.7.0 to 4.10.0 ([PR#15](https://github.com/kit-data-manager/wap-server/pull/15))
+- Updated spring boot from 2.5.5 to 2.7.5
+- Abandoned Apache Commons RDF dependency replaced by commons rdf shipped with apache jena ([PR#15](https://github.com/kit-data-manager/wap-server/pull/15))
+- Union graph set as default graph for Fuseki - no need to query named graphs individually in SPARQL queries anymore ([PR#19](https://github.com/kit-data-manager/wap-server/pull/19)).
+
+### Removed
+- none
+
+### Deprecated
+- none
+
+### Fixed
+- JSON-LD framing now uses cached profiles instead of remote version ([PR#5](https://github.com/kit-data-manager/wap-server/pull/5))
+- JSON-LD compacting now uses contexts from both frame and profile (only profile before) ([PR#21](https://github.com/kit-data-manager/wap-server/pull/21))
+- Running test suite will no longer fail due to flooding w3c http with requests for json-ld context files (simulated hoverfly response instead) ([PR#9](https://github.com/kit-data-manager/wap-server/pull/9))
+- SPARQL queries with bind clauses will no longer result in extensive logging about "No node in NodeTable" (Issue #8, [PR#13](https://github.com/kit-data-manager/wap-server/pull/13))
+- Annotation data in json-ld format no longer returns broken character escaping (Issue #7, [PR#11](https://github.com/kit-data-manager/wap-server/pull/11))
+
+### Security
+- none
+
 ## [1.0] - 2020-09-04
 ### Added
 - First public version
