@@ -52,7 +52,3 @@ jobs:
         run: hurl --variable host=http://localhost:8080 --test ./integration_tests/CRUD/*.hurl --verbose --error-format=long --continue-on-error --report-html hurlreports
       - name: hurl performance tests
         run: hurl --variable host=http://localhost:8080 --test ./integration_tests/performance/create_anno.hurl --jobs 1 --repeat 1000 --verbose --error-format=long --report-html hurlreports
-      - name: hurl report preview
-        uses: pavi2410/html-preview-action@v4
-        with:
-          html_file: 'hurlreports/index.html'
