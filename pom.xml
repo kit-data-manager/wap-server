@@ -4,24 +4,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.kit.scc.dem.wapsrv</groupId>
-    <artifactId>PSE-AA</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>wap-server</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>PSE-AA</name>
+    <name>WAP Server</name>
     <description>Web Annotation Protocol Server</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.5</version>
+        <version>2.7.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
 		
         <junit-platform.version>1.2.0</junit-platform.version>
         <junit-jupiter.version>5.2.0</junit-jupiter.version>
@@ -30,9 +30,13 @@
 	
     <repositories>
         <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
             <id>jcenter-snapshots</id>
             <name>jcenter</name>
-            <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+            <url>https://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
         </repository>
     </repositories>
     
@@ -109,21 +113,16 @@
             <groupId>org.apache.jena</groupId>
             <artifactId>apache-jena-libs</artifactId>
             <type>pom</type>
-            <version>3.8.0</version>
+            <version>4.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-rdf-api</artifactId>
-            <version>0.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-rdf-jena</artifactId>
-            <version>0.5.0</version>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-commonsrdf</artifactId>
+            <version>4.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -132,14 +131,8 @@
         </dependency>
         <dependency>
             <groupId>org.apache.jena</groupId>
-            <artifactId>jena-fuseki</artifactId>
-            <version>3.8.0</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-fuseki-embedded</artifactId>
-            <version>3.8.0</version>
+            <artifactId>jena-fuseki-main</artifactId>
+            <version>4.10.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.java-json-tools</groupId>
@@ -228,13 +221,13 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.197</version>  
+            <version>2.1.214</version>
             <!--scope>test</scope-->
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.1</version>  
+            <version>42.5.0</version>
         </dependency>
     </dependencies>
    
@@ -356,33 +349,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <systemPropertyVariables>
-                        <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.3.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml.bind</groupId>
-                        <artifactId>jaxb-api</artifactId>
-                        <version>2.3.1</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <repoToken>${env.repoToken}</repoToken>
-                    <sourceDirectories>
-                        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-                        <sourceDirectory>${basedir}/src/installer/java</sourceDirectory>
-                    </sourceDirectories>
-                    <excludes>
-                        <exclude>**/*WapServerInstaller.java</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
         <resources>		
@@ -403,7 +369,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.2</version>
+                <version>0.8.7</version>
                 <reportSets>
                     <reportSet>
                         <reports>
