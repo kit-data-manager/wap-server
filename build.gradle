@@ -13,6 +13,11 @@ plugins {
 
 apply plugin: 'project-report'
 
+//make sure that git properties plugin does not fail on build without access to the git repo information (zip download etc.)
+gitProperties {
+    failOnNoGitDirectory = false
+}
+
 jar {
     archiveBaseName = 'wap-server'
     // version is defined in file 'gradle.properties'
