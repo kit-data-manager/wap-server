@@ -55,5 +55,5 @@ jobs:
       - name: Upload generated libs as job artifact
         uses: actions/upload-artifact@v4
         with:
-            name: jar-jdk${{ matrix.java }}
+            name: jar_jdk${{ matrix.java }}_${{ matrix.os }}
             path: ./build/libs/
