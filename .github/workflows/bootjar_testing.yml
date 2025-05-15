@@ -52,3 +52,8 @@ jobs:
         run: hurl --variable host=http://localhost:8080 --test ./integration_tests/CRUD/*.hurl --verbose --error-format=long --continue-on-error --report-html hurlreports
       - name: hurl performance tests
         run: hurl --variable host=http://localhost:8080 --test ./integration_tests/performance/create_anno.hurl --jobs 1 --repeat 1000 --verbose --error-format=long --report-html hurlreports
+      - name: Upload generated libs as job artifact
+        uses: actions/upload-artifact@v4
+        with:
+            name: jar-jdk${{ matrix.java }}
+            path: ./build/libs/
