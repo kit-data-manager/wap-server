@@ -3,13 +3,7 @@ package edu.kit.scc.dem.wapsrv.model.formats;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Pattern;
 import org.apache.commons.collections4.map.ListOrderedMap;
 import org.slf4j.Logger;
@@ -58,7 +52,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
     /**
      * The set of used profiles
      */
-    private final Set<URL> profiles = new HashSet<URL>();
+    private final Set<URL> profiles = new HashSet<>();
     /**
      * The profile registry
      */
@@ -143,7 +137,6 @@ public final class JsonLdFormatter extends AbstractFormatter {
     /**
      * Remove all blank node IDs from a given "pretty" JSON-LD String
      *
-     * @param jsonLdPretty JSON-LD serialized in pretty mode
      * @return The same JSON-LD without blank node IDs
      */
     private String removeBlankNodeIds(String jsonLdWithBlankNodeIds) {
@@ -171,7 +164,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
         String[] lines = jsonLdWithBlankNodeIds.split(Pattern.quote("\n"));
         for (String line : lines) {
             if (line.trim().startsWith("\"id\"")) {
-                if (line.indexOf("\"_:b") != -1) {
+                if (line.contains("\"_:b")) {
                     continue; // skip this unneeded line
                 } else {
                     builder.append(line);
@@ -197,83 +190,126 @@ public final class JsonLdFormatter extends AbstractFormatter {
      * @param frameString The JSON-LD Frame as String
      * @return the expanded string
      */
-    @SuppressWarnings("unchecked")
     private String applyProfiles(String jsonLd, String frameString) {
         try {
+
             final Object frameObject = frameString == null ? null : JsonUtils.fromString(frameString);
             Object jsonObject = JsonUtils.fromString(jsonLd);
             // Use precreated options with in memory profiles
             JsonLdOptions optionsWithContexts = profileRegistry.getJsonLdOptions();
-            Map<String, Object> framed = null;
-            if (frameObject != null) {
+
+            List<Object> contexts = new ArrayList<>();
+
+            //We assume that framing and compacting only needs to be applied if anno profile is present
+            if (frameObject != null && profiles.contains(DEFAULT_PROFILE)) {
                 final JsonLdOptions options = profileRegistry.getJsonLdOptions();
                 options.format = JsonLdConsts.APPLICATION_NQUADS;
                 options.setCompactArrays(true);
-                framed = JsonLdProcessor.frame(jsonObject, frameObject, options);
-                List<String> contexts = new Vector<String>();
-                for (URL url : profiles) {
-                    String context = url.toString();
-                    contexts.add(context);
-                }
-                java.util.Collections.reverse(contexts);
 
-                if (!profiles.isEmpty()) {
-                    // Compact only if client requested that
-                    jsonObject = JsonLdProcessor.compact(framed, contexts, optionsWithContexts);
-                }
-            } else {
+                // Frame the RDF-converted JSON-LD
+                jsonObject = JsonLdProcessor.frame(jsonObject, frameObject, options);
+
+                // Collect contexts from profiles
                 for (URL url : profiles) {
-                    String context = url.toString();
-                    jsonObject = JsonLdProcessor.compact(jsonObject, context, optionsWithContexts);
+                    contexts.add(url.toString());
+                }
+
+                // Extract @context from the frame and add it to the list
+                if (frameObject instanceof Map) {
+                    Object frameContext = ((Map<?, ?>) frameObject).get("@context");
+                    if (frameContext != null) {
+                        if (frameContext instanceof List) {
+                            // Flatten the list
+                            contexts.addAll((List<?>) frameContext);
+                        } else {
+                            // Add single context (string or map)
+                            contexts.add(frameContext);
+                        }
+                    }
                 }
             }
-            if (!profiles.isEmpty()) {
-                // JSON-LD java api uses just objects, we cannot prevent casting here
-                insertContexts((Map<String, Object>) jsonObject);
-                jsonObject = reorderJsonAttributes((Map<String, Object>) jsonObject);
+            for (URL url : profiles) {
+                contexts.add(url.toString());
             }
+            contexts = deduplicateContexts(contexts);
+            jsonObject = JsonLdProcessor.compact(jsonObject, contexts, optionsWithContexts);
+
+            jsonObject = reorderJsonAttributes(jsonObject);
             return JsonUtils.toPrettyString(jsonObject);
         } catch (JsonLdError | IOException e) {
             throw new FormatException(e.getMessage(), e);
         }
     }
 
-    private void insertContexts(Map<String, Object> map) {
-        Object contexts = createContextString();
-        if (contexts != null) {
-            map.put("@context", contexts);
+    /**
+     * Deduplicates and flattens a list of JSON-LD context entries.
+     * Supports strings (URIs), maps (inline contexts), and nested lists.
+     *
+     * @param rawContexts A list of context entries (String, Map, or List)
+     * @return A flattened, deduplicated list of context entries
+     */
+    public List<Object> deduplicateContexts(List<Object> rawContexts) {
+
+        List<Object> result = new ArrayList<>();
+        Set<String> seenUris = new HashSet<>();
+        Set<String> seenInlineContexts = new HashSet<>();
+
+
+        for (Object ctx : rawContexts) {
+            flattenAndAdd(ctx, result, seenUris, seenInlineContexts);
+        }
+
+        return result;
+    }
+
+    private void flattenAndAdd(Object ctx, List<Object> result,
+                                      Set<String> seenUris, Set<String> seenInlineContexts) {
+        if (ctx instanceof String uri) {
+            if (seenUris.add(uri)) {
+                result.add(uri);
+            }
+        } else if (ctx instanceof Map) {
+            try {
+                String json = JsonUtils.toString(ctx);
+                if (seenInlineContexts.add(json)) {
+                    result.add(ctx);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to serialize inline context", e);
+            }
+        } else if (ctx instanceof List) {
+            for (Object nested : (List<?>) ctx) {
+                flattenAndAdd(nested, result, seenUris, seenInlineContexts);
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported context type: " + ctx.getClass());
         }
     }
 
-    private Object createContextString() {
-        if (profiles.isEmpty()) {
-            return null;
-        }
-        if (profiles.size() == 1) {
-            return profiles.iterator().next().toString();
-        }
-        Iterator<URL> iterator = profiles.iterator();
-        List<Object> list = new ArrayList<Object>();
-        while (iterator.hasNext()) {
-            list.add(iterator.next().toString());
-        }
-        return list;
-    }
+    @SuppressWarnings("unchecked")
+    private Object reorderJsonAttributes(Object jsonObject) {
+        if (jsonObject instanceof Map) {
+            Map<String, Object> jsonMap = (Map<String, Object>) jsonObject;
+            ListOrderedMap<String, Object> orderedJsonMap = new ListOrderedMap<>();
+            orderedJsonMap.putAll(jsonMap);
 
-    private Map<String, Object> reorderJsonAttributes(Map<String, Object> jsonMap) {
-        if (profiles.isEmpty()) {
-            // Framing added the context, now remove if client did not want it
-            jsonMap.remove("@context");
-            return jsonMap;
+            Object context = orderedJsonMap.get("@context");
+            if (context != null) {
+                orderedJsonMap.remove("@context");
+                orderedJsonMap.put(0, "@context", context);
+            }
+            return orderedJsonMap;
+        } else if (jsonObject instanceof List) {
+            // Recursively reorder each item in the list
+            List<Object> reorderedList = new ArrayList<>();
+            for (Object item : (List<?>) jsonObject) {
+                reorderedList.add(reorderJsonAttributes(item));
+            }
+            return reorderedList;
+        } else {
+            // Return as-is if it's neither a Map nor a List
+            return jsonObject;
         }
-        ListOrderedMap<String, Object> orderedJsonMap = new ListOrderedMap<String, Object>();
-        orderedJsonMap.putAll(jsonMap);
-        Object context = orderedJsonMap.get("@context");
-        if (context != null) {
-            orderedJsonMap.remove("@context");
-            orderedJsonMap.put(0, "@context", context);
-        }
-        return orderedJsonMap;
     }
 
     @Override
@@ -354,20 +390,20 @@ public final class JsonLdFormatter extends AbstractFormatter {
 
     @Override
     public String getContentType() {
-        if (profiles == null || profiles.isEmpty()) {
+        if (profiles.isEmpty()) {
             return getFormatString();
         }
         StringBuilder profileString = new StringBuilder();
         for (URL url : profiles) {
             String context = url.toString();
-            if (profileString.length() != 0) {
+            if (!profileString.isEmpty()) {
                 profileString.append(" ");
             }
             profileString.append(context);
         }
         profileString.insert(0, "\"");
         profileString.append("\"");
-        return getFormatString() + ";profile=" + profileString.toString() + ";charset=utf-8";
+        return getFormatString() + ";profile=" + profileString + ";charset=utf-8";
     }
 
     @Override
