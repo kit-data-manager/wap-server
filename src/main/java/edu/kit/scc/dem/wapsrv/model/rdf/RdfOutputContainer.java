@@ -3,12 +3,12 @@ package edu.kit.scc.dem.wapsrv.model.rdf;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.simple.Types;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
 import edu.kit.scc.dem.wapsrv.model.Container;
 import edu.kit.scc.dem.wapsrv.model.rdf.vocabulary.AsVocab;
 import edu.kit.scc.dem.wapsrv.model.rdf.vocabulary.LdpVocab;
 import edu.kit.scc.dem.wapsrv.model.rdf.vocabulary.RdfVocab;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 
 /**
  * The class is used to generate the correct output representation of the Container. It extends the Container class and
@@ -51,9 +51,10 @@ public class RdfOutputContainer extends RdfContainer {
    @Override
    public Dataset getDataset() {
       // Because the sequence head is also included we need to substract 1
+      IRI typeIRI_INT = rdfBackend.getRdf().createIRI(XSDDatatype.XSDnonNegativeInteger.getURI());
       long annoCount = dataset.getGraph().stream(Container.toAnnotationSeqIri(iri), null, null).count() - 1;
       Literal annoCountLiteral
-            = rdfBackend.getRdf().createLiteral(String.valueOf(annoCount), Types.XSD_NONNEGATIVEINTEGER);
+            = rdfBackend.getRdf().createLiteral(String.valueOf(annoCount), typeIRI_INT);
       dataset.getGraph().add(iri, AsVocab.totalItems, annoCountLiteral);
       // Don't show first and last if there are no Annotation, hence no page.
       if (annoCount != 0) {

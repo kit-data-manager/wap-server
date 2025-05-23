@@ -11,7 +11,7 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.simple.Types;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -305,7 +305,7 @@ public abstract class AbstractWapService implements WapService {
    public void deleteObject(String iri, String parentSeqIri) {
       log.info("deleting object '" + iri + "'");
       BlankNodeOrIRI node = repository.getRdf().createIRI(iri);
-      Literal trueLiteral = repository.getRdf().createLiteral("true", Types.XSD_BOOLEAN);
+      Literal trueLiteral = repository.getRdf().createLiteral("true", repository.getRdf().createIRI(XSDDatatype.XSDboolean.getURI()));
       String parentContainerIriString = WapObject.getParentContainerIriString(iri);
       BlankNodeOrIRI parentNode = repository.getRdf().createIRI(parentContainerIriString);
       repository.writeRdfTransaction(ds -> {
@@ -326,7 +326,8 @@ public abstract class AbstractWapService implements WapService {
     */
    public void deleteObjectBulk(List<String> iriList) {
       log.info("bulk deleting of objects.");
-      Literal trueLiteral = repository.getRdf().createLiteral("true", Types.XSD_BOOLEAN);
+
+      Literal trueLiteral = repository.getRdf().createLiteral("true", repository.getRdf().createIRI(XSDDatatype.XSDboolean.getURI()));
       for (String iri : iriList) {
          BlankNodeOrIRI node = repository.getRdf().createIRI(iri);
          repository.writeRdfTransaction(ds -> {

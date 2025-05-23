@@ -8,15 +8,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.Vector;
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.Literal;
-import org.apache.commons.rdf.api.Quad;
-import org.apache.commons.rdf.api.RDF;
-import org.apache.commons.rdf.api.Triple;
-import org.apache.commons.rdf.simple.Types;
+
+import org.apache.commons.rdf.api.*;
 import edu.kit.scc.dem.wapsrv.exceptions.InternalServerException;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 
 /**
  * Utility class with common operations on graphs and datasets
@@ -165,7 +160,8 @@ public class RdfUtilities {
       sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
       // calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
       String dateTimeString = sdf.format(calendar.getTime());
-      Literal timedate = rdf.createLiteral(dateTimeString, Types.XSD_DATETIME);
+      IRI typeIRI_DATETIME = rdf.createIRI(XSDDatatype.XSDdateTime.getURI());
+      Literal timedate = rdf.createLiteral(dateTimeString, typeIRI_DATETIME);
       return timedate;
    }
 }
