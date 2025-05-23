@@ -2,7 +2,7 @@ package edu.kit.scc.dem.wapsrv.model.rdf.vocabulary;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
-import org.apache.commons.rdf.simple.SimpleRDF;
+import org.apache.jena.commonsrdf.JenaRDF;
 
 /**
  * This class provides the vocabulary for this Project (from http://dem.scc.kit.edu/wapserv/ns#).
@@ -28,7 +28,7 @@ public class WapVocab {
 
    private static IRI buildIri(String property) {
       if (rdf == null) {
-         rdf = new SimpleRDF();
+         rdf = new JenaRDF();
       }
       return rdf.createIRI(ROOT + property);
    }

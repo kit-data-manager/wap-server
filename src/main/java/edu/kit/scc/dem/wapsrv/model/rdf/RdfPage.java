@@ -5,7 +5,7 @@ import org.apache.commons.rdf.api.BlankNodeOrIRI;
 import org.apache.commons.rdf.api.Dataset;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.simple.Types;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
 import edu.kit.scc.dem.wapsrv.exceptions.FormatNotAvailableException;
 import edu.kit.scc.dem.wapsrv.model.Annotation;
@@ -82,13 +82,17 @@ public class RdfPage implements Page {
       // IRI containerIri = rdfBackend.getRdf().createIRI(containerIriString);
       // Put basic information
       dataset.getGraph().add(iriFull, RdfVocab.type, AsVocab.orderedCollectionPage);
+
+      IRI typeIRI_INT = rdfBackend.getRdf().createIRI(XSDDatatype.XSDnonNegativeInteger.getURI());
+      IRI typeIRI_DATETIME = rdfBackend.getRdf().createIRI(XSDDatatype.XSDdateTime.getURI());
+
       if (!isEmbedded) {
          // --- part of content start
          dataset.getGraph().add(iriFull, AsVocab.partOf, iriPreferOnly);
          dataset.getGraph().add(iriPreferOnly, AsVocab.totalItems,
-               rdfBackend.getRdf().createLiteral(String.valueOf(annoTotalCount), Types.XSD_NONNEGATIVEINTEGER));
+               rdfBackend.getRdf().createLiteral(String.valueOf(annoTotalCount), typeIRI_INT));
          dataset.getGraph().add(iriPreferOnly, DcTermsVocab.modified,
-               rdfBackend.getRdf().createLiteral(String.valueOf(modified), Types.XSD_DATETIME));
+               rdfBackend.getRdf().createLiteral(String.valueOf(modified), typeIRI_DATETIME));
          dataset.getGraph().add(iriPreferOnly, AsVocab.first, getIriforPage(0));
          dataset.getGraph().add(iriPreferOnly, AsVocab.last, getIriforPage(getPageCount() - 1));
          // label from container
@@ -98,7 +102,7 @@ public class RdfPage implements Page {
       asCollection = new AsCollection(dataset.getGraph(), iriFull);
       // Set startIndex
       dataset.getGraph().add(iriFull, AsVocab.startIndex, rdfBackend.getRdf()
-            .createLiteral(String.valueOf(getFirstAnnotationPosition()), Types.XSD_NONNEGATIVEINTEGER));
+            .createLiteral(String.valueOf(getFirstAnnotationPosition()), typeIRI_INT));
       // Put next/prev pages
       if (hasNextPage()) {
          dataset.getGraph().add(iriFull, AsVocab.next, getIriforPage(pageNr + 1));

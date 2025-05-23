@@ -2,7 +2,7 @@ package edu.kit.scc.dem.wapsrv.model.rdf.vocabulary;
 
 import org.apache.commons.rdf.api.IRI;
 import org.apache.commons.rdf.api.RDF;
-import org.apache.commons.rdf.simple.SimpleRDF;
+import org.apache.jena.commonsrdf.JenaRDF;
 
 /**
  * This class provides the vocabulary for dc-terms (http://dublincore.org/documents/dcmi-terms/).
@@ -239,7 +239,7 @@ public class DcTermsVocab {
 
    private static IRI buildIri(String property) {
       if (rdf == null) {
-         rdf = new SimpleRDF();
+         rdf = new JenaRDF();
       }
       return rdf.createIRI(property);
    }
