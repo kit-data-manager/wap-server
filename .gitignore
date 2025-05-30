@@ -129,3 +129,6 @@ nbdist/
 /application.properties
 /ssl/
 /cors_allowed_origins.conf
+
+# hurl
+/hurlreports
