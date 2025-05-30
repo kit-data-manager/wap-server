@@ -30,3 +30,6 @@ Content-Type: application/ld+json; profile="http://www.w3.org/ns/anno.jsonld"
 HTTP 201
 [Captures]
 anno: header "Location"
+
+GET {{host}}/wap/crud_performance/
+HTTP 200
