@@ -6,11 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
+import java.net.*;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -33,7 +29,6 @@ import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
 import edu.kit.scc.dem.wapsrv.exceptions.FormatException;
 import edu.kit.scc.dem.wapsrv.exceptions.InternalServerException;
 import edu.kit.scc.dem.wapsrv.model.FormattableObject.Type;
-import java.net.URI;
 
 /**
  * Central registry for JSON-LD profiles. It manages a local in memory profile
@@ -92,19 +87,19 @@ public final class JsonLdProfileRegistry {
      * The set of profiles loaded and cached. This set is dynamically populated
      * on first usage.
      */
-    private final Set<URL> cachedProfiles = new HashSet<URL>();
+    private final Set<URI> cachedProfiles = new HashSet<>();
     /**
      * The last times individual profiles have been updated
      */
-    private final Map<URL, Long> lastUpdateTimes = new Hashtable<URL, Long>();
+    private final Map<URI, Long> lastUpdateTimes = new Hashtable<>();
     /**
      * The number individual profiles have had update failures
      */
-    private final Map<URL, Integer> profile2failures = new Hashtable<URL, Integer>();
+    private final Map<URI, Integer> profile2failures = new Hashtable<>();
     /**
      * The last times individual profiles have had update failures
      */
-    private final Map<URL, Long> profile2failureTimes = new Hashtable<URL, Long>();
+    private final Map<URI, Long> profile2failureTimes = new Hashtable<>();
     /**
      * The frames needed for specific types
      */
@@ -258,10 +253,10 @@ public final class JsonLdProfileRegistry {
         for (Object key : profilesDatabase.keySet()) {
             final String filename = (String) key;
             final String urlString = profilesDatabase.getProperty(filename);
-            URL url = null;
+            URI url = null;
             try {
-                url = new URL(urlString);
-            } catch (MalformedURLException e) {
+                url = new URI(urlString);
+            } catch (URISyntaxException e) {
                 logger.warn("Invalid profile url, skipping it : " + urlString);
                 continue;
             }
@@ -354,8 +349,9 @@ public final class JsonLdProfileRegistry {
         setJsonLdOptions(jsonLdOptions);
     }
 
-    private boolean download(File destinationFile, URL srcUrl) {
+    private boolean download(File destinationFile, URI srcUri) {
         try {
+            URL srcUrl = srcUri.toURL();
             Proxy proxy = getProxy(srcUrl);
             HttpURLConnection httpConn
                     = (HttpURLConnection) (proxy == null ? srcUrl.openConnection() : srcUrl.openConnection(proxy));
@@ -446,10 +442,10 @@ public final class JsonLdProfileRegistry {
      * @param url The URL to test
      * @return True if cached, false otherwise
      */
-    public boolean isCachedProfile(URL url) {
+    public boolean isCachedProfile(URI url) {
         blockUntilInitialized();
         // always check for http and https. The file is the same, no need to distinguish
-        URL complementaryUrl = toComplementaryUrl(url);
+        URI complementaryUrl = toComplementaryUrl(url);
         return cachedProfiles.contains(url) || cachedProfiles.contains(complementaryUrl);
     }
 
@@ -573,10 +569,10 @@ public final class JsonLdProfileRegistry {
         for (Object filenameObject : profilesDatabase.keySet()) {
             final String filename = (String) filenameObject;
             final String urlString = profilesDatabase.getProperty(filename);
-            URL url = null;
+            URI url = null;
             try {
-                url = new URL(urlString);
-            } catch (MalformedURLException e) {
+                url = new URI(urlString);
+            } catch (URISyntaxException e) {
                 logger.warn("Invalid profile url, skipping it : " + urlString);
                 continue;
             }
@@ -634,14 +630,14 @@ public final class JsonLdProfileRegistry {
      * @param url The url to convert
      * @return The converted url
      */
-    private URL toComplementaryUrl(URL url) {
+    private URI toComplementaryUrl(URI url) {
         if (url == null) {
             return null;
         }
         String compString = toComplementaryUrl(url.toString());
         try {
-            return new URL(compString);
-        } catch (MalformedURLException e) {
+            return new URI(compString);
+        } catch (URISyntaxException e) {
             // should not happen
             logger.warn("could not complement url, this should not happen : " + url);
             // return the unswitched url as fallback
@@ -658,17 +654,17 @@ public final class JsonLdProfileRegistry {
      * @param url The URL to cache
      * @return True if already cached or caching was successful, false otherwise
      */
-    public boolean cacheProfile(URL url) {
+    public boolean cacheProfile(URI url) {
         if (url == null) {
             return false;
         }
         blockUntilInitialized();
         synchronized (cachedProfiles) {
-            for (URL urlRegistered : cachedProfiles) {
+            for (URI urlRegistered : cachedProfiles) {
                 if (url.equals(urlRegistered)) {
                     return true;
                 }
-                URL complementaryUrl = toComplementaryUrl(urlRegistered);
+                URI complementaryUrl = toComplementaryUrl(urlRegistered);
                 if (url.equals(complementaryUrl)) {
                     return true;
                 }
@@ -681,8 +677,8 @@ public final class JsonLdProfileRegistry {
         synchronized (updateLock) {
             final String urlString = url.toString();
             final File profileFile = new File(profileFolder, getFilename(url));
-            URL urlHttp = null;
-            URL urlHttps = null;
+            URI urlHttp = null;
+            URI urlHttps = null;
             if (url.toString().toLowerCase().startsWith("https:")) {
                 urlHttps = url;
                 urlHttp = toComplementaryUrl(url);
@@ -719,7 +715,7 @@ public final class JsonLdProfileRegistry {
         }
     }
 
-    private String getFilename(URL url) {
+    private String getFilename(URI url) {
         // We use the path part and replace / with _
         return url.getPath().replaceAll(Pattern.quote("/"), "_");
     }
@@ -731,7 +727,7 @@ public final class JsonLdProfileRegistry {
      * @param url The url to get the update time from
      * @return the last update time, -1 if never updated (=not cached yet)
      */
-    protected long getLastUpdateTime(URL url) {
+    protected long getLastUpdateTime(URI url) {
         blockUntilInitialized();
         Long lastTime = lastUpdateTimes.get(url);
         return lastTime == null ? -1 : lastTime;
