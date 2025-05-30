@@ -1,10 +1,8 @@
 package edu.kit.scc.dem.wapsrv.model.formats;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
 import org.apache.commons.collections4.map.ListOrderedMap;
@@ -69,22 +67,6 @@ public final class JsonLdFormatter extends AbstractFormatter {
      */
     public JsonLdFormatter() {
         super(Format.JSON_LD);
-    }
-
-    /**
-     * This is a helper method necessary to be able to use a static URL,
-     * otherwise the exception can not be caught.
-     *
-     * @param urlString The String to generate a URL from
-     * @return The generated URL Object
-     */
-    private static URL makeUrl(String urlString) {
-        try {
-            return new URL(urlString);
-        } catch (MalformedURLException e) {
-            LoggerFactory.getLogger(ContentNegotiator.class).error("DEFAULT_PROFILE is an invalid URL : " + urlString);
-            return null;
-        }
     }
 
     /**
@@ -375,15 +357,12 @@ public final class JsonLdFormatter extends AbstractFormatter {
         // The default profiles are always added if no accept header is given at all
         if (profilesRaw == null || WapServerConfig.getInstance().shouldAlwaysAddDefaultProfilesToJsonLdRequests()) {
             switch (type) {
+                //TODO: check if this behaviour is working as intended
                 case CONTAINER:
-                    if (!profiles.contains(LDP_PROFILE)) {
-                        profiles.add(LDP_PROFILE);
-                    }
+                    profiles.add(LDP_PROFILE);
                 case ANNOTATION:
                 case PAGE:
-                    if (!profiles.contains(DEFAULT_PROFILE)) {
-                        profiles.add(DEFAULT_PROFILE);
-                    }
+                    profiles.add(DEFAULT_PROFILE);
                     break;
                 default:
                 // Unknown type ? do nothing because profile negotiation can be ignored by the server
