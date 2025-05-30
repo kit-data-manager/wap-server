@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -150,28 +150,28 @@ class JsonLdProfileRegistryTest {
         }
     }
 
-    private URL getAnnoProfileUrl() {
+    private URI getAnnoProfileUrl() {
         try {
-            return new URL(ANNO_URL_STRING);
-        } catch (MalformedURLException e) {
+            return new URI(ANNO_URL_STRING);
+        } catch (URISyntaxException e) {
             fail("Internal error, invalid profile url " + e.getMessage());
             return null;
         }
     }
 
-    private URL getLdpProfileUrl() {
+    private URI getLdpProfileUrl() {
         try {
-            return new URL(LDP_URL_STRING);
-        } catch (MalformedURLException e) {
+            return new URI(LDP_URL_STRING);
+        } catch (URISyntaxException e) {
             fail("Internal error, invalid profile url " + e.getMessage());
             return null;
         }
     }
 
-    private URL getAsProfileUrl() {
+    private URI getAsProfileUrl() {
         try {
-            return new URL(AS_URL_STRING);
-        } catch (MalformedURLException e) {
+            return new URI(AS_URL_STRING);
+        } catch (URISyntaxException e) {
             fail("Internal error, invalid profile url " + e.getMessage());
             return null;
         }
@@ -192,7 +192,7 @@ class JsonLdProfileRegistryTest {
     @Test
     final void testCacheUpdateWorks() {
         JsonLdProfileRegistry instance = getJsonLdProfileRegistry();
-        URL profileUrl = getAnnoProfileUrl();
+        URI profileUrl = getAnnoProfileUrl();
         long actualTime = instance.getLastUpdateTime(profileUrl);
         if (actualTime < 0) {
             fail("Profile not existent for cache update test :(");
@@ -220,7 +220,7 @@ class JsonLdProfileRegistryTest {
     final void testCacheUpdateDelayWorks() {
         System.setProperty(JsonLdProfileRegistry.DISABLED_UPDATER_PROPERTY, "xyz");
         JsonLdProfileRegistry instance = getJsonLdProfileRegistry();
-        URL annoUrl = getAnnoProfileUrl();
+        URI annoUrl = getAnnoProfileUrl();
         assertTrue(instance.cacheProfile(annoUrl));
         final String httpProxy = System.getProperty("http.proxyHost");
         final String httpsProxy = System.getProperty("https.proxyHost");
@@ -258,7 +258,7 @@ class JsonLdProfileRegistryTest {
         System.setProperty(JsonLdProfileRegistry.DISABLED_UPDATER_PROPERTY, "xyz");
         JsonLdProfileRegistry instance = getJsonLdProfileRegistry(false);
         profileRegistryHidden.init(config, false);
-        URL annoUrl = getAnnoProfileUrl();
+        URI annoUrl = getAnnoProfileUrl();
         assertTrue(instance.cacheProfile(annoUrl));
         final String httpProxy = System.getProperty("http.proxyHost");
         final String httpsProxy = System.getProperty("https.proxyHost");
@@ -324,7 +324,7 @@ class JsonLdProfileRegistryTest {
     @Test
     final void testCacheProfile() {
         JsonLdProfileRegistry profileRegistry = getJsonLdProfileRegistry();
-        URL url = this.getAsProfileUrl();
+        URI url = this.getAsProfileUrl();
         assertFalse(profileRegistry.isCachedProfile(url));
         assertTrue(profileRegistry.cacheProfile(url));
         assertTrue(profileRegistry.isCachedProfile(url));
@@ -336,7 +336,7 @@ class JsonLdProfileRegistryTest {
     @Test
     final void testGetLastUpdateTime() {
         JsonLdProfileRegistry profileRegistry = getJsonLdProfileRegistry();
-        URL url = this.getAnnoProfileUrl();
+        URI url = this.getAnnoProfileUrl();
         assertTrue(profileRegistry.cacheProfile(url));
         assertNotEquals(-1, profileRegistry.getLastUpdateTime(url));
     }

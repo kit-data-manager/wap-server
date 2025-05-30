@@ -1,8 +1,8 @@
 package edu.kit.scc.dem.wapsrv.model.formats;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.regex.Pattern;
 import org.apache.commons.collections4.map.ListOrderedMap;
@@ -40,11 +40,11 @@ public final class JsonLdFormatter extends AbstractFormatter {
     /**
      * The default JSON-LD Profile
      */
-    public static final URL DEFAULT_PROFILE = makeUrl("http://www.w3.org/ns/anno.jsonld");
+    public static final URI DEFAULT_PROFILE = makeUri("http://www.w3.org/ns/anno.jsonld");
     /**
      * The LDP profile for containers
      */
-    public static final URL LDP_PROFILE = makeUrl("http://www.w3.org/ns/ldp.jsonld");
+    public static final URI LDP_PROFILE = makeUri("http://www.w3.org/ns/ldp.jsonld");
     /**
      * The string identifying JSON-LD
      */
@@ -52,7 +52,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
     /**
      * The set of used profiles
      */
-    private final Set<URL> profiles = new HashSet<>();
+    private final Set<URI> profiles = new HashSet<>();
     /**
      * The profile registry
      */
@@ -76,10 +76,10 @@ public final class JsonLdFormatter extends AbstractFormatter {
      * @param urlString The String to generate a URL from
      * @return The generated URL Object
      */
-    private static URL makeUrl(String urlString) {
+    private static URI makeUri(String urlString) {
         try {
-            return new java.net.URL(urlString);
-        } catch (java.net.MalformedURLException e) {
+            return new URI(urlString);
+        } catch (URISyntaxException e) {
             LoggerFactory.getLogger(ContentNegotiator.class).error("DEFAULT_PROFILE is an invalid URL : " + urlString);
             return null;
         }
@@ -210,7 +210,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
                 jsonObject = JsonLdProcessor.frame(jsonObject, frameObject, options);
 
                 // Collect contexts from profiles
-                for (URL url : profiles) {
+                for (URI url : profiles) {
                     contexts.add(url.toString());
                 }
 
@@ -228,7 +228,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
                     }
                 }
             }
-            for (URL url : profiles) {
+            for (URI url : profiles) {
                 contexts.add(url.toString());
             }
             contexts = deduplicateContexts(contexts);
@@ -335,7 +335,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
                 for (String profile : profiles) {
                     String trimmedProfile = profile.trim();
                     try {
-                        URL url = new URL(trimmedProfile);
+                        URI url = new URI(trimmedProfile);
                         // At least a valid url, but is it locally cached?
                         // We do not support uncached profiles. Inform the registry we need it cached.
                         if (profileRegistry.cacheProfile(url)) {
@@ -344,7 +344,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
                         } else {
                             logger.debug("Skipping not reachable profile : " + url);
                         }
-                    } catch (MalformedURLException e) {
+                    } catch (URISyntaxException e) {
                         // not a valid url, this is an error
                         logger.error("Malformed URL in JSON-LD Profile : " + trimmedProfile);
                     }
@@ -357,15 +357,12 @@ public final class JsonLdFormatter extends AbstractFormatter {
         // The default profiles are always added if no accept header is given at all
         if (profilesRaw == null || WapServerConfig.getInstance().shouldAlwaysAddDefaultProfilesToJsonLdRequests()) {
             switch (type) {
+                //TODO: check if this behaviour is working as intended
                 case CONTAINER:
-                    if (!profiles.contains(LDP_PROFILE)) {
-                        profiles.add(LDP_PROFILE);
-                    }
+                    profiles.add(LDP_PROFILE);
                 case ANNOTATION:
                 case PAGE:
-                    if (!profiles.contains(DEFAULT_PROFILE)) {
-                        profiles.add(DEFAULT_PROFILE);
-                    }
+                    profiles.add(DEFAULT_PROFILE);
                     break;
                 default:
                 // Unknown type ? do nothing because profile negotiation can be ignored by the server
@@ -394,7 +391,7 @@ public final class JsonLdFormatter extends AbstractFormatter {
             return getFormatString();
         }
         StringBuilder profileString = new StringBuilder();
-        for (URL url : profiles) {
+        for (URI url : profiles) {
             String context = url.toString();
             if (!profileString.isEmpty()) {
                 profileString.append(" ");
