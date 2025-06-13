@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Vector;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration.Dynamic;
-import org.apache.jena.fuseki.embedded.FusekiServer;
+import org.apache.jena.fuseki.main.FusekiServer;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.apache.jena.tdb2.TDB2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,10 +74,11 @@ public class FusekiRunner {
             runningServers.clear();
          }
          System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@ Application ready for Fuseki start @@@@@@@@@@@@@@@@@@@@@@");
+         dataBase.getDataBase().getContext().set(TDB2.symUnionDefaultGraph, true);
          // true == read-write
          if (writePort > 0) {
-            server1 = FusekiServer.create().setPort(writePort).add(ENDPOINT_PREFIX, dataBase.getDataBase(), true)
-                  .setLoopback(writeLoopback).build();
+            server1 = FusekiServer.create().port(writePort).add(ENDPOINT_PREFIX, dataBase.getDataBase(), true)
+                  .loopback(writeLoopback).build();
             addCorsFilter(server1, true);
             server1.start();
             System.out.println("@ Fuseki running on Port: " + writePort + " at endpoint: " + ENDPOINT_PREFIX
@@ -86,8 +88,8 @@ public class FusekiRunner {
          }
          // false == read-only
          if (readPort > 0) {
-            server2 = FusekiServer.create().setPort(readPort).add(ENDPOINT_PREFIX, dataBase.getDataBase(), false)
-                  .setLoopback(readLoopback).build();
+            server2 = FusekiServer.create().port(readPort).add(ENDPOINT_PREFIX, dataBase.getDataBase(), false)
+                  .loopback(readLoopback).build();
             addCorsFilter(server2, false);
             server2.start();
             System.out.println(

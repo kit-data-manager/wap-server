@@ -46,6 +46,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * Used as the base class for all external tests. Contains code that sets up the
@@ -60,6 +61,7 @@ import org.slf4j.LoggerFactory;
  * @version 1.1
  */
 @Tag("rest")
+@ActiveProfiles("test")
 public abstract class AbstractRestTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractRestTest.class);
@@ -158,7 +160,9 @@ public abstract class AbstractRestTest {
         props.setProperty(ConfigurationKeys.DataBasePath.toString(), TEST_DB_PATH);
         props.setProperty(ConfigurationKeys.Hostname.toString(), "localhost");
         props.setProperty(ConfigurationKeys.WapIp.toString(), "localhost");
+        props.setProperty("server.tomcat.keep-alive-timeout",  "30000");
         props.setProperty(ConfigurationKeys.WapPort.toString(), "8081");
+        props.setProperty("logging.level.edu.kit.scc.dem.wapsrv", "TRACE");
         props.setProperty(ConfigurationKeys.ShouldAppendStackTraceToErrorMessages.toString(), "true");
         props.setProperty(ConfigurationKeys.SparqlReadPort.toString(), "13333"); // for sparql test in CommonRestTests
         props.setProperty(ConfigurationKeys.SparqlWritePort.toString(), "13334"); // for sparql test in CommonRestTests
@@ -390,8 +394,8 @@ public abstract class AbstractRestTest {
         String annotation = getAnnotation(1);
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response postResponse = request.post(container);
         assertNotNull(postResponse, "Could not get post response");

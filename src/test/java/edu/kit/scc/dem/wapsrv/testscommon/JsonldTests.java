@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
 import org.apache.commons.rdf.api.Graph;
 import org.apache.commons.rdf.api.IRI;
-import org.apache.commons.rdf.jena.JenaDataset;
+import org.apache.jena.commonsrdf.JenaCommonsRDF;
+import org.apache.jena.sparql.core.DatasetGraph;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -46,6 +49,8 @@ import org.slf4j.LoggerFactory;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
         classes = {WapServerConfig.class, JsonLdProfileRegistry.class, FormatRegistry.class, JsonLdFormatter.class})
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @ActiveProfiles("test")
 @Tag("old")
 public class JsonldTests {
@@ -78,13 +83,13 @@ public class JsonldTests {
         File file = new File(".");
         currentDirectory = file.getAbsolutePath();
         logger.trace("Current working directory : " + currentDirectory);
-        JenaDataset annoDs = (JenaDataset) rdfLib.readFromFile(
-                currentDirectory + "/src/main/resources/testdata/annotations/example21.jsonld", Format.JSON_LD);
-        annoDs.getGraph().iterate().forEach(t -> {
-            logger.trace(t.getSubject().ntriplesString() + " " + t.getPredicate().ntriplesString() + " "
-                    + t.getObject().ntriplesString());
+        DatasetGraph annoDs = JenaCommonsRDF.toJena(rdfLib.readFromFile(
+                currentDirectory + "/src/main/resources/testdata/annotations/example21.jsonld", Format.JSON_LD));
+        annoDs.getDefaultGraph().stream().forEach(t -> {
+            logger.trace(t.getSubject().toString() + " " + t.getPredicate().toString() + " "
+                    + t.getObject().toString());
         });
-        String jenaOutput = rdfLib.getOutput(annoDs, Format.NQUADS);
+        String jenaOutput = rdfLib.getOutput(JenaCommonsRDF.fromJena(annoDs), Format.NQUADS);
         logger.trace("**** Jena Output:  " + jenaOutput);
         // JsonLdProfileRegistry profileRegistry = JsonLdProfileRegistry.getInstance();
         // JsonLdOptions options = profileRegistry.getJsonLdOptions();

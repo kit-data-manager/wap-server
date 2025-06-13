@@ -9,11 +9,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Pattern;
-import org.springframework.http.HttpMethod;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import io.specto.hoverfly.junit5.HoverflyExtension;
+import io.specto.hoverfly.junit5.api.HoverflySimulate;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 import edu.kit.scc.dem.wapsrv.app.ErrorMessageRegistry;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
 import edu.kit.scc.dem.wapsrv.controller.AnnotationConstants;
@@ -40,6 +47,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
  * AnnotationRestTest
@@ -51,7 +59,10 @@ import org.slf4j.LoggerFactory;
  * @author Timo Schmidt
  * @version 1.1
  */
+@ExtendWith(HoverflyExtension.class)
+@HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))
 @Tag("rest")
+@ActiveProfiles("test")
 public class AnnotationRestTest extends AbstractRestTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AnnotationRestTest.class);
@@ -112,8 +123,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = postAnnotation(request);
         assertNotNull(response, "Could not get response");
@@ -150,7 +161,7 @@ public class AnnotationRestTest extends AbstractRestTest {
             request.config(RestAssured.config()
                     .encoderConfig(EncoderConfig.encoderConfig().encodeContentTypeAs(formatString, ContentType.TEXT)));
             request.contentType(formatter.getContentType());
-            request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.body(convertedAnnotation);
             Response response = postAnnotation(request);
             assertNotNull(response, "Could not get response");
@@ -171,8 +182,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getAnnotation(46); // 46 has no id
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = postAnnotation(request);
         assertNotNull(response, "Could not get response");
@@ -193,8 +204,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getAnnotation(1); // 1 an id
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = postAnnotation(request);
         assertNotNull(response, "Could not get response");
@@ -236,7 +247,7 @@ public class AnnotationRestTest extends AbstractRestTest {
             // System.out.print("Posting :\n" + annotation);
             assertNotNull(annotation, "Could not load example annotation");
             RequestSpecification request = RestAssured.given();
-            request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.accept("text/turtle");
             request.body(annotation);
             Response response = request.post(containerName + "/");
@@ -248,7 +259,7 @@ public class AnnotationRestTest extends AbstractRestTest {
             // Check we have the container IRI in Location header
             checkHeader(response, "Location", containerIri);
             // We have negotiated turtle, but multi post ignores it and always return JSON-LD, assert that
-            checkHeader(response, "Content-Type", "application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            checkHeader(response, "Content-Type", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             // Check that all have been created (just the number suffices here)
             int total = getTotalFromServer(containerName + "/");
             assertEquals(keys.length, total, "Not as much annos as expected created (container)");
@@ -280,8 +291,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = request.post("nonExistentContainer" + System.currentTimeMillis() + "/");
         assertNotNull(response, "Could not get response");
@@ -297,8 +308,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = request.post();
         assertNotNull(response, "Could not get response");
@@ -324,9 +335,9 @@ public class AnnotationRestTest extends AbstractRestTest {
             URL url = new URL(containerIri);
             String params = "test=1";
             Map<String, Object> requestHeaders = new Hashtable<String, Object>();
-            requestHeaders.put("Content-Type", "application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            requestHeaders.put("Content-Type", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             // requestHeaders.put("If-Match", "\"etag\"");
-            requestHeaders.put("Accept", "application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            requestHeaders.put("Accept", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             OwnResponse response
                     = performOwnHttpRequest(url, OwnHttpURLConnection.Request.POST, requestHeaders, params, annotation);
             // logger.trace(response.getTransmittedString());
@@ -348,7 +359,7 @@ public class AnnotationRestTest extends AbstractRestTest {
     public void testPostAnnotationWithoutContentType() {
         String annotation = getRandomAnnotation();
         RequestSpecification request = RestAssured.given();
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = request.post("container1/");
         assertNotNull(response, "Could not get annotation response");
@@ -370,7 +381,7 @@ public class AnnotationRestTest extends AbstractRestTest {
         // html can never be posted
         RequestSpecification request = RestAssured.given();
         request.contentType("text/html");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = request.post("container1/");
         assertNotNull(response, "Could not get annotation response");
@@ -610,8 +621,8 @@ public class AnnotationRestTest extends AbstractRestTest {
             logger.trace("Testing put valid annotation " + key);
             String annotation = TestDataStore.getAnnotation(key);
             RequestSpecification request = RestAssured.given();
-            request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-            request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.body(annotation);
             Response response = postAnnotation(request); // posts to the default test container
             assertNotNull(response, "Could not get response");
@@ -626,8 +637,8 @@ public class AnnotationRestTest extends AbstractRestTest {
             String id = getAnnotationId(response);
             // 2. update it
             request = RestAssured.given();
-            request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-            request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.header("If-Match", etag);
             request.body(annotation);
             Response putResponse = putAnnotation(request, id);
@@ -655,8 +666,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response postResponse = postAnnotation(request);
         assertNotNull(postResponse, "Could not get post response");
@@ -667,8 +678,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String id = getAnnotationId(postResponse);
         // 2. update it
         request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", etag);
         request.body(annotation);
         Response putResponse = putAnnotation(request, id);
@@ -686,8 +697,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotationString = getAnnotation(1);
         assertNotNull(annotationString, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotationString);
         Response postResponse = postAnnotation(request);
         assertNotNull(postResponse, "Could not get post response");
@@ -725,7 +736,7 @@ public class AnnotationRestTest extends AbstractRestTest {
             request.config(RestAssured.config()
                     .encoderConfig(EncoderConfig.encoderConfig().encodeContentTypeAs(formatString, ContentType.TEXT)));
             request.contentType(formatter.getContentType());
-            request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.body(convertedAnnotation);
             request.header("If-Match", etag);
             Response putResponse = request.put(annotationPath);
@@ -747,8 +758,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getAnnotation(46); // 46 has no id ==> blank node iri
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response postResponse = postAnnotation(request);
         assertNotNull(postResponse, "Could not get post response");
@@ -759,8 +770,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String id = getAnnotationId(postResponse);
         // 2. update it
         request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", etag);
         request.body(annotation);
         Response putResponse = putAnnotation(request, id);
@@ -787,9 +798,9 @@ public class AnnotationRestTest extends AbstractRestTest {
             URL url = new URL(containerIri);
             String params = "test=1";
             Map<String, Object> requestHeaders = new Hashtable<String, Object>();
-            requestHeaders.put("Content-Type", "application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            requestHeaders.put("Content-Type", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             requestHeaders.put("If-Match", "\"etag\"");
-            requestHeaders.put("Accept", "application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            requestHeaders.put("Accept", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             OwnResponse response
                     = performOwnHttpRequest(url, OwnHttpURLConnection.Request.PUT, requestHeaders, params, annotation);
             // logger.trace(response.getTransmittedString());
@@ -808,7 +819,7 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         // The annotation does not have to exist for this test
         RequestSpecification request = RestAssured.given();
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", ETAG_EXAMPLE);
         request.body(annotation);
         Response response = request.put("container1/" + System.currentTimeMillis());
@@ -832,7 +843,7 @@ public class AnnotationRestTest extends AbstractRestTest {
         // html can never be puttet
         RequestSpecification request = RestAssured.given();
         request.contentType("text/html");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", ETAG_EXAMPLE);
         request.body(annotation);
         Response response = request.put("container1/" + System.currentTimeMillis());
@@ -849,8 +860,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         // The annotation does not have to exist for this test
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = request.put("container1/" + System.currentTimeMillis());
         assertNotNull(response, "Could not get annotation response");
@@ -867,8 +878,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response postResponse = postAnnotation(request);
         assertNotNull(postResponse, "Could not get post response");
@@ -879,8 +890,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String id = getAnnotationId(postResponse);
         // 2. update it
         request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", etag);
         request.body(annotation);
         Response putResponse = putAnnotation(request, id);
@@ -900,8 +911,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification postRequest = RestAssured.given();
-        postRequest.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        postRequest.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        postRequest.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        postRequest.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         postRequest.body(annotation);
         Response postResponse = postRequest.post(path);
         assertNotNull(postResponse, "Could not get post response");
@@ -919,8 +930,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         // put anno
         String annoEtag = getEtagFromServer(annoPath);
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", annoEtag);
         request.body(annotation);
         Response putResponse = request.put(annoPath);
@@ -940,8 +951,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getRandomAnnotation();
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response postResponse = postAnnotation(request);
         assertNotNull(postResponse, "Could not get post response");
@@ -987,8 +998,8 @@ public class AnnotationRestTest extends AbstractRestTest {
             logger.trace("Testing post valid annotation " + key);
             String annotation = TestDataStore.getAnnotation(key);
             RequestSpecification request = RestAssured.given();
-            request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-            request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.body(annotation);
             Response response = postAnnotation(request); // posts to the default test container
             assertNotNull(response, "Could not get response");
@@ -1013,8 +1024,8 @@ public class AnnotationRestTest extends AbstractRestTest {
             logger.trace("Testing post invalid annotation " + key);
             String annotation = TestDataStore.getAnnotation(key);
             RequestSpecification request = RestAssured.given();
-            request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-            request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.body(annotation);
             Response response = postAnnotation(request); // posts to the default test container
             assertNotNull(response, "Could not get response");
@@ -1044,8 +1055,8 @@ public class AnnotationRestTest extends AbstractRestTest {
             logger.trace("Testing put invalid annotation " + key);
             String annotation = TestDataStore.getAnnotation(key);
             RequestSpecification request = RestAssured.given();
-            request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-            request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+            request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
             request.header("If-Match", etag);
             request.body(annotation);
             Response response = request.put(testContainer + "/" + annoId);
@@ -1069,8 +1080,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         String annotation = getAnnotation(50); // The one holds a canonical and a via value
         assertNotNull(annotation, "Could not load example annotation");
         RequestSpecification request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.body(annotation);
         Response response = postAnnotation(request);
         assertNotNull(response, "Could not get response");
@@ -1082,8 +1093,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         // post with a different id
         String annoWithDifferentId = annoInDb.replaceAll(Pattern.quote(realId), "0" + realId);
         request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", etag);
         request.body(annoWithDifferentId);
         // logger.trace("from : \n" + annoInDb + "\nto :\n" + annoWithDifferentId);
@@ -1094,8 +1105,8 @@ public class AnnotationRestTest extends AbstractRestTest {
         // the canonical value is : http://www.should-not-be-changed.de
         String annoWithDifferentCanonical = annoInDb.replaceAll(Pattern.quote("-changed"), "");
         request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", etag);
         request.body(annoWithDifferentCanonical);
         // logger.trace("from : \n" + annoInDb + "\nto :\n" + annoWithDifferentCanonical);
@@ -1106,13 +1117,38 @@ public class AnnotationRestTest extends AbstractRestTest {
         // the via value is : http://www.leave-via-alone.de
         String annoWithDifferentVia = annoInDb.replaceAll(Pattern.quote("-alone"), "");
         request = RestAssured.given();
-        request.contentType("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
-        request.accept("application/ld+json; profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
         request.header("If-Match", etag);
         request.body(annoWithDifferentVia);
         logger.trace("from : \n" + annoInDb + "\nto :\n" + annoWithDifferentVia);
         putResponse = putAnnotation(request, realId); // the real id, only within json wrong
         assertNotNull(putResponse, "Could not get put response");
         checkException(UnallowedPropertyChangeException.class, putResponse);
+    }
+
+    /**
+     * Test posting annotation with a series of multiple escaped characters.
+     * @throws JSONException
+     */
+    @Test
+    public void testPostAnnoWithMultipleEscapes() throws JSONException {
+        String annotation = getAnnotation(101);
+        assertNotNull(annotation, "Could not load example annotation");
+        RequestSpecification request = RestAssured.given();
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.body(annotation);
+        Response response = postAnnotation(request);
+        assertNotNull(response, "Could not get response");
+        assertEquals(AnnotationConstants.POST_ANNOTATION_SUCCESS_CODE, response.getStatusCode(),
+                "Annotation could not be created");
+        String annoInDb = response.getBody().asString();
+
+        JSONObject expectedAnno = new JSONObject(annotation);
+        JSONObject actualAnno = new JSONObject(annoInDb);
+        //checks for existence of all values in the posted annotation payload but ignores additional fields (like 'id' or 'created')
+        JSONAssert.assertEquals(expectedAnno, actualAnno, JSONCompareMode.LENIENT);
+
     }
 }

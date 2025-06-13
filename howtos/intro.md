@@ -1,0 +1,2 @@
+On this page, installation and configuration of the Web Annotation Protocol Server are described.
+All information you can find here are also available in the [source code repository at GitHub](https://github.com/kit-data-manager/wap-server/tree/master/howtos).

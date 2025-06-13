@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.commons.rdf.api.RDF;
-import org.apache.commons.rdf.jena.JenaDataset;
-import org.apache.commons.rdf.jena.JenaRDF;
+import org.apache.jena.commonsrdf.JenaCommonsRDF;
+import org.apache.jena.commonsrdf.JenaRDF;
+import org.apache.jena.commonsrdf.impl.JenaDataset;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
@@ -24,6 +25,7 @@ import edu.kit.scc.dem.wapsrv.model.rdf.RdfBackend;
 import edu.kit.scc.dem.wapsrv.repository.CollectedRepository;
 import edu.kit.scc.dem.wapsrv.repository.TransactionRepository;
 import java.util.Optional;
+import org.apache.jena.sparql.core.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -104,7 +106,7 @@ public class JenaRepository2 extends CollectedRepository{
     }
     Model readModel = dataBase.getNamedModel(iri);
     readModel.listStatements().forEachRemaining(s -> {
-      jenaDs.asJenaDatasetGraph().getDefaultGraph().add(s.asTriple());
+      jenaDs.getDataset().getDefaultGraph().add(s.asTriple());
     });
     return retDs;
   }
@@ -123,7 +125,6 @@ public class JenaRepository2 extends CollectedRepository{
    */
   @Override
   public Dataset getDataBase(){
-    System.out.println("GETTING " + dataBase);
     return dataBase;
   }
 
@@ -156,7 +157,8 @@ public class JenaRepository2 extends CollectedRepository{
   @Override
   public void endTransaction(boolean wasOpend){
     if(wasOpend & dataBase.isInTransaction()){
-      if(dataBase.transactionMode() == ReadWrite.WRITE){
+        
+      if(dataBase.isInTransaction()){
         dataBase.commit();
       }
       dataBase.end();
@@ -211,7 +213,7 @@ public class JenaRepository2 extends CollectedRepository{
   public void writeObjectToDatabase(WapObject wapObject){
     org.apache.commons.rdf.api.Dataset dataset = wapObject.getDataset();
     JenaDataset jenaDs = (JenaDataset) dataset;
-    Graph jenaGraph = jenaDs.asJenaDatasetGraph().getDefaultGraph();
+    Graph jenaGraph = jenaDs.getDataset().getDefaultGraph();
     Model jenaModel = org.apache.jena.rdf.model.ModelFactory.createModelForGraph(jenaGraph);
     String iriString = wapObject.getIriString();
     dataBase.addNamedModel(iriString, jenaModel);
@@ -243,8 +245,7 @@ public class JenaRepository2 extends CollectedRepository{
   @Override
   public org.apache.commons.rdf.api.Dataset getTransactionDataset(){
     JenaRDF jenaRDF = (JenaRDF) rdfBackend.getRdf();
-    JenaDataset transactionDataset = jenaRDF.asDataset(dataBase);
-    return transactionDataset;
+    return JenaCommonsRDF.fromJena(dataBase.asDatasetGraph());
   }
 
   @Override
