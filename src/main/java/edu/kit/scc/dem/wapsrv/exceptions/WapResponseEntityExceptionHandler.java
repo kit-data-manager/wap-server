@@ -1,7 +1,7 @@
 package edu.kit.scc.dem.wapsrv.exceptions;
 
 import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

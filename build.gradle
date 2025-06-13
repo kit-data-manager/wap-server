@@ -1,6 +1,6 @@
 plugins {
-    id "org.springframework.boot" version "2.7.5"
-    id "io.spring.dependency-management" version "1.1.0"
+    id "org.springframework.boot" version "3.4.5"
+    id "io.spring.dependency-management" version "1.1.4"
     id "io.freefair.maven-publish-java" version "6.5.1"
     id "com.github.kt3k.coveralls" version "2.12.0"
     id "org.owasp.dependencycheck" version "7.3.0"
@@ -36,11 +36,12 @@ configurations {
 
 ext {
     set('javersVersion', "6.8.0")
-    set('springBootVersion', "2.7.5")
-    set('springDocVersion', "1.6.9")
+    set('jenaVersion', "5.4.0")
+    set('springBootVersion', "3.4.5")
+    set('springDocVersion', "2.5.0")
     set('keycloakVersion', "19.0.0")
-    set('junitPlatformVersion', "1.2.0")
-    set('junitJupiterVersion', "5.2.0")
+    set('junitPlatformVersion', "1.11.4")
+    set('junitJupiterVersion', "5.11.4")
 
     // directory for generated code snippets during tests
     snippetsDir = file("build/generated-snippets")
@@ -85,7 +86,7 @@ dependencies {
 
     //implementation "org.springframework.security:spring-security-web:5.7.5"
     //implementation "org.springframework.security:spring-security-config:5.7.5"
-    implementation "org.thymeleaf:thymeleaf-spring5"
+    implementation "org.thymeleaf:thymeleaf-spring6"
 
 
     // cloud support
@@ -95,23 +96,21 @@ dependencies {
     //implementation 'de.codecentric:spring-boot-admin-starter-client:2.7.10'
 
     // springdoc
-    implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
-    implementation "org.springdoc:springdoc-openapi-data-rest:${springDocVersion}"
-    implementation "org.springdoc:springdoc-openapi-webmvc-core:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
 
     //Keycloak
     // implementation "org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}"
-    implementation "com.nimbusds:nimbus-jose-jwt:9.24.3"
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.37.2'
     implementation "io.jsonwebtoken:jjwt-api:0.11.5"
     implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
 
     //Jena
-    implementation "org.apache.jena:apache-jena-libs:4.10.0"
-    implementation "org.apache.jena:jena-fuseki:4.10.0"
-    implementation "org.apache.jena:jena-fuseki-server:4.10.0"
+    implementation "org.apache.jena:apache-jena-libs:${jenaVersion}"
+    implementation "org.apache.jena:jena-fuseki:${jenaVersion}"
+    implementation "org.apache.jena:jena-fuseki-server:${jenaVersion}"
 
-    implementation "org.apache.jena:jena-commonsrdf:4.10.0"
+    implementation "org.apache.jena:jena-commonsrdf:${jenaVersion}"
     implementation "org.apache.thrift:libthrift:0.18.1"
 
     implementation "org.apache.commons:commons-rdf-jsonld-java:0.5.0"
@@ -120,11 +119,11 @@ dependencies {
     implementation "org.apache.commons:commons-collections4:4.1"
 
      // driver for postgres
-    implementation "org.postgresql:postgresql:42.5.0"
+    implementation 'org.postgresql:postgresql:42.7.2'
     //driver for h2
-    implementation "com.h2database:h2:2.1.214"
+    implementation 'com.h2database:h2:2.2.220'
 
-    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE"
+    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:3.0.3"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework:spring-test"
    // testImplementation "org.springframework.security:spring-security-test"
@@ -136,7 +135,7 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.rest-assured:spring-mock-mvc"
     testImplementation "io.rest-assured:rest-assured"
-    testImplementation ("io.specto:hoverfly-java-junit5:0.17.1") {
+    testImplementation ("io.specto:hoverfly-java-junit5:0.20.0") {
         exclude group: 'ch.qos.logback', module: 'logback-classic'
     }
 
@@ -173,7 +172,7 @@ test {
    environment "spring.config.location", "classpath:/test-config/"
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     testLogging {
         events 'started', 'passed'
     }
@@ -188,13 +187,13 @@ bootJar {
     archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        attributes 'Main-Class': 'org.springframework.boot.loader.launch.PropertiesLauncher'
     }
     launchScript()
 }
 
 // task for printing project name.
-task printProjectName {
+tasks.register('printProjectName') {
     doLast {
         println "${project.name}"
     }

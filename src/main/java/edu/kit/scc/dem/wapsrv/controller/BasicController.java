@@ -1,6 +1,6 @@
 package edu.kit.scc.dem.wapsrv.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpMethod;
 
 /**

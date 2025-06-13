@@ -91,7 +91,7 @@ public class FusekiSparqlTests {
       Dataset ds = this.createDataset();
       ds.begin(ReadWrite.READ);
       Resource model2 = ds.getDefaultModel().getResource("http://data.dem.scc.kit.edu/wap/persons/person1");
-      RDFDataMgr.write(System.out, model2.getModel(), RDFFormat.JSONLD_COMPACT_PRETTY);
+      RDFDataMgr.write(System.out, model2.getModel(), RDFFormat.JSONLD_PRETTY);
       ds.end();
    }
 
