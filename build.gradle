@@ -109,7 +109,7 @@ dependencies {
     //Jena
     implementation "org.apache.jena:apache-jena-libs:4.10.0"
     implementation "org.apache.jena:jena-fuseki:4.10.0"
-    implementation "org.apache.jena:jena-fuseki-server:4.10.0"
+    implementation "org.apache.jena:jena-fuseki-server:5.4.0"
 
     implementation "org.apache.jena:jena-commonsrdf:4.10.0"
     implementation "org.apache.thrift:libthrift:0.18.1"
