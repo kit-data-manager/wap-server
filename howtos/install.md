@@ -14,9 +14,9 @@ In order to start the service, change to the service folder and call:
 
 ```
 user@localhost:/home/user/wap-server$ cd /home/user/wap-instance
-user@localhost:/home/user/wap-server$ java -jar PSE-AA-0.0.1-SNAPSHOT.jar
-Part found : PSE-AA-0.0.1-SNAPSHOT.jar!
-Part found : PSE-AA-0.0.1-SNAPSHOT.jar!
+user@localhost:/home/user/wap-server$ java -jar wap-server.jar
+Part found : wap-server.jar!
+Part found : wap-server.jar!
 #################################
 ### Starting installation
 #################################
