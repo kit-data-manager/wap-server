@@ -47,7 +47,7 @@ public class CatchAllController extends BasicController {
     * @throws WapException
     *                      in case any error occurs
     */
-   @RequestMapping(value = "/{[path:[^\\.]*}")
+   @RequestMapping(value = { "/", "/{path:[^\\.]*}" })
    public ResponseEntity<?> catchallRequest(HttpServletRequest request, @RequestHeader HttpHeaders headers)
          throws WapException {
       // The basic idea is that all "real" controllers just intercept those messages
