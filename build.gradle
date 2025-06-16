@@ -38,7 +38,7 @@ ext {
     set('javersVersion', "6.8.0")
     set('jenaVersion', "5.4.0")
     set('springBootVersion', "3.4.5")
-    set('springDocVersion', "2.5.0")
+    set('springDocVersion', "2.8.9")
     set('keycloakVersion', "19.0.0")
     set('junitPlatformVersion', "1.11.4")
     set('junitJupiterVersion', "5.11.4")
@@ -82,7 +82,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-data-rest"
     implementation "org.springframework.boot:spring-boot-starter-mail"
-    //implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
 
     //implementation "org.springframework.security:spring-security-web:5.7.5"
     //implementation "org.springframework.security:spring-security-config:5.7.5"
@@ -97,6 +97,8 @@ dependencies {
 
     // springdoc
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-common:${springDocVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-api:${springDocVersion}"
 
     //Keycloak
     // implementation "org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}"

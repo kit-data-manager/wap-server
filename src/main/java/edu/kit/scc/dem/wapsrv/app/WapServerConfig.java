@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import edu.kit.scc.dem.wapsrv.controller.WapPathMatcher;
 import java.util.Arrays;
 
@@ -31,7 +31,7 @@ import java.util.Arrays;
  * @version 1.1
  */
 @Configuration
-public class WapServerConfig extends WebMvcConfigurationSupport{
+public class WapServerConfig extends DelegatingWebMvcConfiguration {
 
   /**
    * The endpoint to use for all requests relating to the Web Annotation
