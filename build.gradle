@@ -135,7 +135,7 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.rest-assured:spring-mock-mvc"
     testImplementation "io.rest-assured:rest-assured"
-    testImplementation ("io.specto:hoverfly-java-junit5:0.20.0") {
+    testImplementation ("io.specto:hoverfly-java-junit5:0.20.2") {
         exclude group: 'ch.qos.logback', module: 'logback-classic'
     }
 
