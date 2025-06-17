@@ -795,7 +795,7 @@ public class AnnotationRestTest extends AbstractRestTest {
         // The annotation does not have to exist for this test
         String containerIri = createDefaultContainer(null); // in the root container
         try {
-            URL url = new URL(containerIri);
+            URL url = new URL(containerIri + "anno1");
             String params = "test=1";
             Map<String, Object> requestHeaders = new Hashtable<String, Object>();
             requestHeaders.put("Content-Type", "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
@@ -805,7 +805,7 @@ public class AnnotationRestTest extends AbstractRestTest {
                     = performOwnHttpRequest(url, OwnHttpURLConnection.Request.PUT, requestHeaders, params, annotation);
             // logger.trace(response.getTransmittedString());
             // logger.trace(response.getReceivedString());
-            checkException(IllegalHttpParameterException.class, response, ErrorMessageRegistry.ALL_NO_PARAMETERS_IN_PUT);
+            checkException(IllegalHttpParameterException.class, response, "No parameters allowed");
         } catch (MalformedURLException e) {
             fail(e.getMessage());
         }
