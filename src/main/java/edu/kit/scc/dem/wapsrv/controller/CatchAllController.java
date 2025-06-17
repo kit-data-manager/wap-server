@@ -5,6 +5,8 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 import org.eclipse.jetty.http.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,11 @@ import edu.kit.scc.dem.wapsrv.exceptions.InternalServerException;
 import edu.kit.scc.dem.wapsrv.exceptions.InvalidRequestException;
 import edu.kit.scc.dem.wapsrv.exceptions.MethodNotAllowedException;
 import edu.kit.scc.dem.wapsrv.exceptions.WapException;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.ServerResponse;
+
+import static org.springframework.web.servlet.function.RequestPredicates.path;
+import static org.springframework.web.servlet.function.RouterFunctions.route;
 
 /**
  * This controller adds the catch all feature to the server which answers all request that not mapped correctly
@@ -30,15 +37,20 @@ import edu.kit.scc.dem.wapsrv.exceptions.WapException;
  * @version 1.1
  */
 @RestController
-@RequestMapping("/")
 public class CatchAllController extends BasicController {
    @Autowired
    private WapServerConfig wapServerConfig;
 
+   @Bean
+   RouterFunction<ServerResponse> spaRouter() {
+      ClassPathResource index = new ClassPathResource("static/index.html");
+      return route().resource(path("/"), index).build();
+   }
+
    /**
     * This method implements the endpoint that catches all otherwise not mapped requests to create meaningful error
     * messages
-    * 
+    *
     * @param  request
     *                      The request the client sent
     * @param  headers
@@ -47,9 +59,10 @@ public class CatchAllController extends BasicController {
     * @throws WapException
     *                      in case any error occurs
     */
-   @RequestMapping(value = { "/", "/{path:[^\\.]*}" })
+
    public ResponseEntity<?> catchallRequest(HttpServletRequest request, @RequestHeader HttpHeaders headers)
          throws WapException {
+      //TODO: should be obsolete, currently here for sake of existing tests
       // The basic idea is that all "real" controllers just intercept those messages
       // that truly fit them and check their parameters, headers and so on there.
       // All request that do not exactly fit one request and cannot be mapped, land here
