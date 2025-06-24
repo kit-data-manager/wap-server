@@ -7,11 +7,14 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id "net.researchgate.release" version "3.1.0"
     id "com.gorylenko.gradle-git-properties" version "2.4.1"
+    id 'nebula.lint' version "20.6.2"
     id 'java'
     id 'jacoco'
 }
 
 apply plugin: 'project-report'
+
+gradleLint.rules = ['all-dependency', 'unused-dependency']
 
 //make sure that git properties plugin does not fail on build without access to the git repo information (zip download etc.)
 gitProperties {
@@ -51,8 +54,10 @@ println "Running gradle version: $gradle.gradleVersion"
 println "Building ${name} version: ${version}"
 println "JDK version: ${JavaVersion.current()}"
 
-sourceCompatibility = '17'
-targetCompatibility = '17'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 if (System.getProperty('profile') == 'minimal') {
     println 'Using minimal profile for building ' + project.getName()
@@ -135,9 +140,7 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.rest-assured:spring-mock-mvc"
     testImplementation "io.rest-assured:rest-assured"
-    testImplementation ("io.specto:hoverfly-java-junit5:0.20.2") {
-        exclude group: 'ch.qos.logback', module: 'logback-classic'
-    }
+    testImplementation "io.specto:hoverfly-java-junit5:0.20.2"
 
     //Java 11 Support
     testImplementation "org.mockito:mockito-inline:4.10.0"
