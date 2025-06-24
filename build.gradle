@@ -38,13 +38,9 @@ configurations {
 }
 
 ext {
-    set('javersVersion', "6.8.0")
     set('jenaVersion', "5.4.0")
-    set('springBootVersion', "3.4.5")
     set('springDocVersion', "2.5.0")
-    set('keycloakVersion', "19.0.0")
-    set('junitPlatformVersion', "1.11.4")
-    set('junitJupiterVersion', "5.11.4")
+    //set('keycloakVersion', "19.0.0")
 
     // directory for generated code snippets during tests
     snippetsDir = file("build/generated-snippets")
@@ -89,34 +85,31 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-mail"
     //implementation "org.springframework.boot:spring-boot-starter-actuator"
 
-    //implementation "org.springframework.security:spring-security-web:5.7.5"
-    //implementation "org.springframework.security:spring-security-config:5.7.5"
-    implementation "org.thymeleaf:thymeleaf-spring6"
+    //implementation "org.springframework.security:spring-security-web"
+    //implementation "org.springframework.security:spring-security-config"
 
 
     // cloud support
-    //implementation "org.springframework.cloud:spring-cloud-starter-config:3.1.5"
-    //implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.4"
-   // implementation "org.springframework.cloud:spring-cloud-gateway-mvc:3.1.4"
-    //implementation 'de.codecentric:spring-boot-admin-starter-client:2.7.10'
+    //implementation "org.springframework.cloud:spring-cloud-starter-config"
+    //implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+   // implementation "org.springframework.cloud:spring-cloud-gateway-mvc"
+    //implementation 'de.codecentric:spring-boot-admin-starter-client'
 
     // springdoc
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}"
 
     //Keycloak
     // implementation "org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}"
-    implementation 'com.nimbusds:nimbus-jose-jwt:10.3'
-    implementation "io.jsonwebtoken:jjwt-api:0.11.5"
-    implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
-    implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
+    //implementation 'com.nimbusds:nimbus-jose-jwt:10.3'
+    //implementation "io.jsonwebtoken:jjwt-api:0.11.5"
+    //implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
+    //implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
 
     //Jena
     implementation "org.apache.jena:apache-jena-libs:${jenaVersion}"
     implementation "org.apache.jena:jena-fuseki:${jenaVersion}"
     implementation "org.apache.jena:jena-fuseki-server:${jenaVersion}"
-
     implementation "org.apache.jena:jena-commonsrdf:${jenaVersion}"
-    implementation "org.apache.thrift:libthrift:0.18.1"
 
     implementation "org.apache.commons:commons-rdf-jsonld-java:0.5.0"
     implementation "com.github.java-json-tools:json-schema-validator:2.2.14"
@@ -124,21 +117,15 @@ dependencies {
     implementation "org.apache.commons:commons-collections4:4.1"
 
      // driver for postgres
-    implementation 'org.postgresql:postgresql:42.7.2'
+    runtimeOnly 'org.postgresql:postgresql:42.7.2'
     //driver for h2
-    implementation 'com.h2database:h2:2.3.232'
+    runtimeOnly 'com.h2database:h2:2.3.232'
 
-    testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:3.0.3"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework:spring-test"
    // testImplementation "org.springframework.security:spring-security-test"
 
-    testImplementation "org.junit.platform:junit-platform-launcher:${junitPlatformVersion}"
-    testImplementation "org.junit.platform:junit-platform-engine:${junitPlatformVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
     testImplementation "io.rest-assured:rest-assured"
-    testImplementation "io.rest-assured:spring-mock-mvc"
     testImplementation "io.rest-assured:rest-assured"
     testImplementation "io.specto:hoverfly-java-junit5:0.20.2"
 
