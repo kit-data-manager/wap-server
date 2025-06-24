@@ -4,7 +4,7 @@ plugins {
     id "io.freefair.maven-publish-java" version "6.5.1"
     id "com.github.kt3k.coveralls" version "2.12.0"
     id "org.owasp.dependencycheck" version "7.3.0"
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'org.asciidoctor.jvm.convert' version '4.0.4'
     id "net.researchgate.release" version "3.1.0"
     id "com.gorylenko.gradle-git-properties" version "2.4.1"
     id 'nebula.lint' version "20.6.2"
