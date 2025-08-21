@@ -1,0 +1,68 @@
+# Change these settings according to your project
+[project]
+name = "kit-data-manager/wap-server"
+version = "v1.2.0-SNAPSHOT"
+description = "This project contains a server for creating and managing annotations based on the Web Annotation Data Model (WADM) implementing the complete Web Annotation Protocol (WAP). The service is realized as microservice using Spring Boot and can be operated standalone."
+
+license = "Apache-2.0"
+keywords = [
+    "kit-data-manager",
+    "metadata",
+    "SPARQL",
+    "RDF",
+    "WADM",
+    "Web Annotation",
+    "jena-fuseki",
+    "restful"
+]
+repository = "https://github.com/kit-data-manager/wap-server"
+homepage = "https://kit-data-manager.github.io/webpage/wap-server/"
+documentation = "https://kit-data-manager.github.io/webpage/wap-server/"
+
+[config]
+verbose = true
+
+[[project.people]]
+given-names = "Germaine"
+family-names = "Götzelmann"
+orcid = "https://orcid.org/0000-0003-3974-3728"
+affiliation = "Karlsruhe Institute of Technology (KIT)"
+author = true
+maintainer = true
+publication_author = true
+
+[[project.people]]
+given-names = "Thomas"
+family-names = "Jejkal"
+orcid = "https://orcid.org/0000-0003-2804-688X"
+affiliation = "Karlsruhe Institute of Technology (KIT)"
+author = true
+maintainer = true
+
+[[project.people]]
+given-names = "Danah"
+family-names = "Tonne"
+orcid = "https://orcid.org/0000-0001-6296-7282"
+affiliation = "Karlsruhe Institute of Technology (KIT)"
+author = true
+publication_author = true
+
+[[project.people]]
+given-names = "Andreas"
+family-names = "Löffler"
+author = true
+
+[[project.people]]
+given-names = "Michael"
+family-names = "Hitzker"
+author = true
+
+[[project.people]]
+given-names = "Markus"
+family-names = "Höfler"
+author = true
+
+[[project.people]]
+given-names = "Timo"
+family-names = "Schmidt"
+author = true
