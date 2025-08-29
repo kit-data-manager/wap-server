@@ -51,18 +51,22 @@ publication_author = true
 given-names = "Andreas"
 family-names = "Löffler"
 author = true
+publication_author = true
 
 [[project.people]]
 given-names = "Michael"
 family-names = "Hitzker"
 author = true
+publication_author = true
 
 [[project.people]]
 given-names = "Markus"
 family-names = "Höfler"
 author = true
+publication_author = true
 
 [[project.people]]
 given-names = "Timo"
 family-names = "Schmidt"
 author = true
+publication_author = true

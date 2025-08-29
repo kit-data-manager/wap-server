@@ -31,9 +31,29 @@
       "@id": "https://orcid.org/0000-0001-6296-7282",
       "identifier": "https://orcid.org/0000-0001-6296-7282",
       "affiliation": "Karlsruhe Institute of Technology (KIT)"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Andreas",
+      "familyName": "Löffler"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Michael",
+      "familyName": "Hitzker"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Markus",
+      "familyName": "Höfler"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Timo",
+      "familyName": "Schmidt"
     }
   ],
-  "name": "kitdatamanager/wap-server",
+  "name": "kit-data-manager/wap-server",
   "description": "This project contains a server for creating and managing annotations based on the Web Annotation Data Model (WADM) implementing the complete Web Annotation Protocol (WAP). The service is realized as microservice using Spring Boot and can be operated standalone.",
   "version": "v1.2.0-SNAPSHOT",
   "keywords": [
@@ -70,27 +90,5 @@
   "softwareHelp": "https://kit-data-manager.github.io/webpage/wap-server/",
   "codeRepository": "https://github.com/kit-data-manager/wap-server",
   "buildInstructions": "https://kit-data-manager.github.io/webpage/wap-server/",
-  "contributor": [
-    {
-      "@type": "Person",
-      "givenName": "Andreas",
-      "familyName": "Löffler"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Michael",
-      "familyName": "Hitzker"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Markus",
-      "familyName": "Höfler"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Timo",
-      "familyName": "Schmidt"
-    }
-  ],
   "url": "https://kit-data-manager.github.io/webpage/wap-server/"
 }
