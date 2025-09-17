@@ -1,0 +1,43 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using these metadata.
+type: software
+title: kitdatamanager/wap-server
+abstract: This project contains a server for creating and managing annotations 
+  based on the Web Annotation Data Model (WADM) implementing the complete Web 
+  Annotation Protocol (WAP). The service is realized as microservice using 
+  Spring Boot and can be operated standalone.
+version: v1.2.0-SNAPSHOT
+keywords:
+  - kit-data-manager
+  - metadata
+  - SPARQL
+  - RDF
+  - WADM
+  - Web Annotation
+  - jena-fuseki
+  - restful
+authors:
+  - given-names: Germaine
+    orcid: https://orcid.org/0000-0003-3974-3728
+    affiliation: Karlsruhe Institute of Technology (KIT)
+    family-names: Götzelmann
+  - given-names: Thomas
+    orcid: https://orcid.org/0000-0003-2804-688X
+    affiliation: Karlsruhe Institute of Technology (KIT)
+    family-names: Jejkal
+  - given-names: Danah
+    orcid: https://orcid.org/0000-0001-6296-7282
+    affiliation: Karlsruhe Institute of Technology (KIT)
+    family-names: Tonne
+contact:
+  - given-names: Germaine
+    orcid: https://orcid.org/0000-0003-3974-3728
+    affiliation: Karlsruhe Institute of Technology (KIT)
+    family-names: Götzelmann
+  - given-names: Thomas
+    orcid: https://orcid.org/0000-0003-2804-688X
+    affiliation: Karlsruhe Institute of Technology (KIT)
+    family-names: Jejkal
+license: Apache-2.0
+url: https://kit-data-manager.github.io/webpage/wap-server/
+repository-code: https://github.com/kit-data-manager/wap-server
