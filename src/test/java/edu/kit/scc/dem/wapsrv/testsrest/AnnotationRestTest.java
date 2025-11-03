@@ -1128,6 +1128,58 @@ public class AnnotationRestTest extends AbstractRestTest {
     }
 
     /**
+     * Test put annotation with allowed changes.
+     * Via field and canonical field are not changeable but are allowed on PUT if they did not exist before
+     */
+    @Test
+    public void testPutAnnotationWitAllowedChanges() {
+        String annotation = getAnnotation(0); // The one holds a canonical and a via value
+        assertNotNull(annotation, "Could not load example annotation");
+        RequestSpecification request = RestAssured.given();
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.body(annotation);
+        Response response = postAnnotation(request);
+        assertNotNull(response, "Could not get response");
+        assertEquals(AnnotationConstants.POST_ANNOTATION_SUCCESS_CODE, response.getStatusCode(),
+                "Annotation could not be created");
+        final String annoInDb = response.getBody().asString();
+        String etag = getEtag(response);
+        final String realId = getAnnotationId(response);
+        Response response2 = postAnnotation(request);
+        assertNotNull(response2, "Could not get response");
+        assertEquals(AnnotationConstants.POST_ANNOTATION_SUCCESS_CODE, response2.getStatusCode(),
+                "Annotation could not be created");
+        final String annoInDb2 = response2.getBody().asString();
+        String etag2 = getEtag(response2);
+        final String realId2 = getAnnotationId(response2);
+        // post with a new via
+        String annoWithVia = annoInDb.replaceAll(Pattern.quote("\n}"), ",\n\"via\": \"http://newvia\"\n}");
+        request = RestAssured.given();
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.header("If-Match", etag);
+        request.body(annoWithVia);
+        logger.trace("from : \n" + annoInDb + "\nto :\n" + annoWithVia);
+        Response putResponse = putAnnotation(request, realId);
+        assertNotNull(putResponse, "Could not get put response");
+        assertEquals(AnnotationConstants.PUT_ANNOTATION_SUCCESS_CODE, putResponse.getStatusCode(),
+                "Annotation could not be updated.");
+        // post with a new canonical
+        String annoWithCanonical = annoInDb2.replaceAll(Pattern.quote("\n}"), ",\n\"canonical\": \"http://newcanon\"\n}");
+        request = RestAssured.given();
+        request.contentType("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.accept("application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"");
+        request.header("If-Match", etag2);
+        request.body(annoWithCanonical);
+        logger.trace("from : \n" + annoInDb2 + "\nto :\n" + annoWithCanonical);
+        putResponse = putAnnotation(request, realId2);
+        assertNotNull(putResponse, "Could not get put response");
+        assertEquals(AnnotationConstants.PUT_ANNOTATION_SUCCESS_CODE, putResponse.getStatusCode(),
+                "Annotation could not be updated.");
+    }
+
+    /**
      * Test posting annotation with a series of multiple escaped characters.
      * @throws JSONException
      */
