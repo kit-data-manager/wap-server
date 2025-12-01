@@ -117,7 +117,7 @@ dependencies {
     implementation "org.apache.commons:commons-collections4:4.5.0"
 
      // driver for postgres
-    runtimeOnly 'org.postgresql:postgresql:42.7.2'
+    runtimeOnly 'org.postgresql:postgresql:42.7.8'
     //driver for h2
     runtimeOnly 'com.h2database:h2:2.3.232'
 
