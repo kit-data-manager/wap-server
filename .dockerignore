@@ -1,0 +1,17 @@
+#git
+.git
+.gitattributes
+.gitignore
+.github/
+#IDE
+.idea
+#build
+.gradle/
+build
+#data
+production_db
+#misc
+CHANGELOG
+LICENSE
+temp
+docker

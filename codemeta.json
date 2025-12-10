@@ -1,0 +1,96 @@
+{
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "https://w3id.org/software-iodata",
+    "https://raw.githubusercontent.com/jantman/repostatus.org/master/badges/latest/ontology.jsonld",
+    "https://schema.org",
+    "https://w3id.org/software-types"
+  ],
+  "@type": "SoftwareSourceCode",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Germaine",
+      "familyName": "Götzelmann",
+      "@id": "https://orcid.org/0000-0003-3974-3728",
+      "identifier": "https://orcid.org/0000-0003-3974-3728",
+      "affiliation": "Karlsruhe Institute of Technology (KIT)"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Thomas",
+      "familyName": "Jejkal",
+      "@id": "https://orcid.org/0000-0003-2804-688X",
+      "identifier": "https://orcid.org/0000-0003-2804-688X",
+      "affiliation": "Karlsruhe Institute of Technology (KIT)"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Danah",
+      "familyName": "Tonne",
+      "@id": "https://orcid.org/0000-0001-6296-7282",
+      "identifier": "https://orcid.org/0000-0001-6296-7282",
+      "affiliation": "Karlsruhe Institute of Technology (KIT)"
+    }
+  ],
+  "name": "kitdatamanager/wap-server",
+  "description": "This project contains a server for creating and managing annotations based on the Web Annotation Data Model (WADM) implementing the complete Web Annotation Protocol (WAP). The service is realized as microservice using Spring Boot and can be operated standalone.",
+  "version": "v1.2.0-SNAPSHOT",
+  "keywords": [
+    "kit-data-manager",
+    "metadata",
+    "SPARQL",
+    "RDF",
+    "WADM",
+    "Web Annotation",
+    "jena-fuseki",
+    "restful"
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Germaine",
+      "familyName": "Götzelmann",
+      "@id": "https://orcid.org/0000-0003-3974-3728",
+      "identifier": "https://orcid.org/0000-0003-3974-3728",
+      "affiliation": "Karlsruhe Institute of Technology (KIT)"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Thomas",
+      "familyName": "Jejkal",
+      "@id": "https://orcid.org/0000-0003-2804-688X",
+      "identifier": "https://orcid.org/0000-0003-2804-688X",
+      "affiliation": "Karlsruhe Institute of Technology (KIT)"
+    }
+  ],
+  "license": [
+    "https://spdx.org/licenses/Apache-2.0"
+  ],
+  "softwareHelp": "https://kit-data-manager.github.io/webpage/wap-server/",
+  "codeRepository": "https://github.com/kit-data-manager/wap-server",
+  "buildInstructions": "https://kit-data-manager.github.io/webpage/wap-server/",
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Andreas",
+      "familyName": "Löffler"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Michael",
+      "familyName": "Hitzker"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Markus",
+      "familyName": "Höfler"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Timo",
+      "familyName": "Schmidt"
+    }
+  ],
+  "url": "https://kit-data-manager.github.io/webpage/wap-server/"
+}

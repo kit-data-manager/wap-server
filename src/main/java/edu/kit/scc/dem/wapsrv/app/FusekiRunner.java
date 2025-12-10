@@ -3,10 +3,10 @@ package edu.kit.scc.dem.wapsrv.app;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Vector;
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration.Dynamic;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration.Dynamic;
 import org.apache.jena.fuseki.main.FusekiServer;
-import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.apache.jena.fuseki.servlets.CrossOriginFilter;
 import org.apache.jena.tdb2.TDB2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,7 +151,7 @@ public class FusekiRunner {
     * @return                A cross origin filter that enforces the given parameters
     */
    private CrossOriginFilter createCrossOriginFilter(final int maxAge, final String allowedHeaders,
-         final String exposedHeaders) {
+                                                     final String exposedHeaders) {
       // The jena/jetty implementation has some flaws we have to work around
       // Details are found within the CorsFilter class
       return new CorsFilter(maxAge, allowedHeaders, exposedHeaders);

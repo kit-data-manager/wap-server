@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java: [17]
+        java: [17, 21]
 
     steps:
       - name: Checkout code
@@ -38,8 +38,8 @@ jobs:
           sleep 20  # Give the server time to start
 
       - name: hurl install
-        uses: gacts/install-hurl@v1
-
+        uses: gacts/install-hurl@v1.3.0
+        with: {disable-cache: true} # hurl installation sometimes fails on cache restore, trying to disable it as a workaround https://github.com/gacts/install-hurl/issues/93
       - name: hurl CRUD tests (windows)
         if: runner.os == 'Windows'
         shell: bash

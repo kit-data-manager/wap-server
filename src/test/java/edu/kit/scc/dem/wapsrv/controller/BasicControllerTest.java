@@ -1,7 +1,7 @@
 package edu.kit.scc.dem.wapsrv.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 

@@ -50,7 +50,8 @@ class ExampleData {
 			}
 		
 		if (window.location.origin !== "null") {
-			callback.settings["url"] = window.location.origin + "/webapp/" + "resources/examples/" + filename;
+			let contextpath = !window.location.pathname.startsWith("/webapp") ? window.location.pathname.split("/webapp").at(0) : ""
+			callback.settings["url"] = window.location.origin + contextpath + "/webapp/" + "resources/examples/" + filename;
 		} else {
 			return false;
 		}

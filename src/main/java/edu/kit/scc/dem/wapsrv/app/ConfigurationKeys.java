@@ -111,5 +111,13 @@ public enum ConfigurationKeys {
    /**
     * @see WapServerConfig#fallbackValidation
     */
-   FallbackValidation
+   FallbackValidation,
+   /**
+    * @see WapServerConfig#contextPath
+    */
+   ContextPath,
+   /**
+    * @see WapServerConfig#proxiedBasePath
+    */
+   ProxiedBasePath
 }

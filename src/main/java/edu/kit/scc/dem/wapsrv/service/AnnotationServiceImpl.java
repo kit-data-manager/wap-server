@@ -57,6 +57,20 @@ public class AnnotationServiceImpl extends AbstractWapService implements Annotat
   @Autowired
   private EtagFactory etagFactory;
 
+  /**
+   * Spec: <a href="https://www.w3.org/TR/annotation-protocol/#update-an-existing-annotation">WAP 5.3 Update an Existing Annotation</a>
+   *
+   * @param iri
+   *                       The IRI of the annotation
+   * @param etag
+   *                       The ETag associated with the annotation state known to the client
+   * @param rawAnnotation
+   *                       A String representation of the Annotation
+   * @param format
+   *                       The data format used
+   * @return the updated annotation
+   * @throws WapException on error encountered during update
+   */
   @Override
   public Annotation putAnnotation(final String iri, final String etag, String rawAnnotation, Format format)
           throws WapException{
@@ -82,12 +96,16 @@ public class AnnotationServiceImpl extends AbstractWapService implements Annotat
     if(!iri.equals(newAnnotation.getIriString())){
       throw new UnallowedPropertyChangeException("The IRI cannot change with a PUT requests");
     }
+    /**
+     * Servers SHOULD reject update requests that modify the values of the canonical or via properties,
+     * if they have been already set
+     */
     // Check if no forbidden field has been changed canonical (there is only one)
-    if(!existingAnnotation.isPropertyEqual(newAnnotation, AnnoVocab.canonical)){
+    if(existingAnnotation.hasProperty(AnnoVocab.canonical) && !existingAnnotation.isPropertyEqual(newAnnotation, AnnoVocab.canonical)){
       throw new UnallowedPropertyChangeException("canonical property cannot change");
     }
     // Check via (there may be more)
-    if(!existingAnnotation.isPropertyWithMultipleValuesEqual(newAnnotation, AnnoVocab.via)){
+    if(existingAnnotation.hasProperty(AnnoVocab.via) && !existingAnnotation.isPropertyWithMultipleValuesEqual(newAnnotation, AnnoVocab.via)){
       throw new UnallowedPropertyChangeException("via properties cannot change");
     }
     String oldEtag = etag;
