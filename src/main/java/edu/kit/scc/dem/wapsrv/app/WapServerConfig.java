@@ -248,6 +248,9 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
   @Value("${server.servlet.context-path:}")
   private String contextPath;
 
+  @Value("${WapBasePath:#{null}}")
+  private String proxiedBasePath;
+
   /**
    * The cors configuration to use
    */
@@ -816,6 +819,7 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
    * @return The base url
    */
   public String getBaseUrl(){
+    if(proxiedBasePath != null) return proxiedBasePath;
     if(enableHttps){
       if(wapPort == 443){
         return "https://" + hostname + contextPath;
