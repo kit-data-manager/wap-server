@@ -29,7 +29,7 @@ Example 4: Hostname=host1.example.org, EnableHttps=true, WapPort=443
 When using the installer (via --install or by starting the jar in an empty folder) it asks for this base configuration
 and shows its consequences on the root container IRI.
 
-All of the above can be overwritten by using the `WapBasePath` property.
+All of the above can be overwritten by using the `WapBaseUrl` property.
 This property is intended to be used only in scenarios where the server is reachable from a different URL
 and if this should or must be reflected in the database (reverse proxy, docker container).
 

@@ -462,13 +462,13 @@ class WapServerConfigTest {
         assertNotNull(actual, "Could not get base url from WapServerConfig after setting context path.");
         expected = "https://localhost/context";
         assertEquals(expected, actual);
-        // test WapBasePath = http://example.com
+        // test WapBaseUrl = http://example.com
         paramProperties.setProperty(ConfigurationKeys.ProxiedBasePath.toString(), "http://example.com");
         objWapServerConfig.updateConfig(paramProperties);
 
         actual = null;
         actual = objWapServerConfig.getBaseUrl();
-        assertNotNull(actual, "Could not get base url from WapServerConfig after setting WapBasePath.");
+        assertNotNull(actual, "Could not get base url from WapServerConfig after setting WapBaseUrl.");
         expected = "http://example.com";
         assertEquals(expected, actual);
     }

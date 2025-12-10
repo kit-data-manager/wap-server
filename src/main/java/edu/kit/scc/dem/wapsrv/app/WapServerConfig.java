@@ -250,7 +250,7 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
   @Value("${server.servlet.context-path:" + CONTEXT_PATH_DEFAULT + "}")
   private String contextPath = CONTEXT_PATH_DEFAULT;
 
-  @Value("${WapBasePath:" + PROXYBASEPATH_DEFAULT + "}")
+  @Value("${WapBaseUrl:" + PROXYBASEPATH_DEFAULT + "}")
   private String proxiedBasePath;
 
   /**
