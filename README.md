@@ -7,7 +7,21 @@ This project contains a server for creating and managing annotations based on th
 the complete Web Annotation Protocol (WAP). The service is realized as microservice using Spring Boot and can be operated standalone.
 
 
-## How to build
+## How to build and use
+
+### Docker
+
+```
+docker build -f docker/Dockerfile -t wap-server .
+```
+
+To run the application at `http://localhost:<host port>`, use:
+
+```
+docker run -d -p <host port>:8080 -e WAPBASEPATH=http://localhost:<host port> wap-server
+```
+
+### From source
 
 To install the application from source, see [howtos](howtos/summary.md).
 

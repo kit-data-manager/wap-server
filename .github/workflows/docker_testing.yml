@@ -1,0 +1,86 @@
+name: Build and Test Dockerized App
+
+on:
+  push:
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        java: [17, 21]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.java }}
+
+      - name: Grant execute permission for Gradle wrapper (Unix)
+        if: runner.os != 'Windows'
+        run: chmod +x gradlew
+
+      # Build Docker image instead of bootable JAR
+      - name: Build Docker image
+        run: |
+          docker build -f docker/Dockerfile -t wap-server:${{ matrix.os }}-${{ matrix.java }} .
+
+      # Run Docker container (detached, expose port 8080)
+      - name: Run Docker container
+        run: |
+          docker run -d -p 8080:8080 --name wap-server \
+            wap-server:${{ matrix.os }}-${{ matrix.java }}
+          echo "Wait for wap server to be healthy before proceeding to tests"
+          while true; do
+          docker ps -a
+          if ! docker ps | grep -q wap-server; then
+          echo "Docker container stopped unexpectedly. Aborting."
+          exit 1
+          fi
+          if curl -f http://localhost:8080; then
+          echo "Service is running."
+          break
+          fi
+          echo "Waiting for the service to be ready..."
+          docker logs --tail 20 wap-server
+          sleep 5
+          done
+
+      - name: hurl install
+        uses: gacts/install-hurl@v1.3.0
+        with: {disable-cache: true}
+
+      - name: hurl CRUD tests (windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          for file in ./integration_tests/CRUD/*.hurl; do
+            hurl --variable host=http://localhost:8080 --test "$file" --verbose --error-format=long --continue-on-error --report-html hurlreports
+          done
+
+      - name: hurl tests (other)
+        if: runner.os != 'Windows'
+        run: hurl --variable host=http://localhost:8080 --test ./integration_tests/CRUD/*.hurl --verbose --error-format=long --continue-on-error --report-html hurlreports
+
+      # Stop and clean up container
+      - name: Stop Docker container
+        if: always()
+        run: |
+          docker logs wap-server
+          docker stop wap-server
+          docker rm wap-server
+
+      # Upload artifacts (optional: you may want to upload Docker logs instead of JARs)
+      - name: Upload Docker logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker_logs_jdk${{ matrix.java }}_${{ matrix.os }}
+          path: ./hurlreports
