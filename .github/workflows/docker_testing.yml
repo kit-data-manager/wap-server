@@ -37,7 +37,21 @@ jobs:
         run: |
           docker run -d -p 8080:8080 --name wap-server \
             wap-server:${{ matrix.os }}-${{ matrix.java }}
-          sleep 100  # Give the server time to start
+          echo "Wait for wap server to be healthy before proceeding to tests"
+          while true; do
+          docker ps -a
+          if ! docker ps | grep -q wap-server; then
+          echo "Docker container stopped unexpectedly. Aborting."
+          exit 1
+          fi
+          if curl -f http://localhost:8080; then
+          echo "Service is running."
+          break
+          fi
+          echo "Waiting for the service to be ready..."
+          docker logs --tail 20 wap-server
+          sleep 5
+          done
 
       - name: hurl install
         uses: gacts/install-hurl@v1.3.0
