@@ -245,6 +245,9 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
   @Value("${RdfBackendImplementation:" + RDF_BACKEND_IMPLEMENTATION_DEFAULT + "}")
   private String rdfBackendImplementation;
 
+  @Value("${server.servlet.context-path:}")
+  private String contextPath;
+
   /**
    * The cors configuration to use
    */
@@ -815,15 +818,15 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
   public String getBaseUrl(){
     if(enableHttps){
       if(wapPort == 443){
-        return "https://" + hostname;
+        return "https://" + hostname + contextPath;
       } else{
-        return "https://" + hostname + ":" + wapPort;
+        return "https://" + hostname + ":" + wapPort + contextPath;
       }
     } else{
       if(wapPort == 80){
-        return "http://" + hostname;
+        return "http://" + hostname + contextPath;
       } else{
-        return "http://" + hostname + ":" + wapPort;
+        return "http://" + hostname + ":" + wapPort + contextPath;
       }
     }
   }
