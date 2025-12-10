@@ -55,7 +55,8 @@ class Main {
 		this.initEventHandler();
 		//init value for targetUrl
 		if (window.location.origin !== "null") {
-			$("#targetUrl").val(window.location.origin + "/wap/");
+			let contextpath = !window.location.pathname.startsWith("/webapp") ? window.location.pathname.split("/webapp").at(0) : ""
+			$("#targetUrl").val(window.location.origin + contextpath + "/wap/");
 		}
 	}
 
