@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -825,7 +826,7 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
    * @return The base url
    */
   public String getBaseUrl(){
-    if(proxiedBasePath != null && proxiedBasePath != "") return proxiedBasePath;
+    if(StringUtils.hasText(proxiedBasePath))return proxiedBasePath;
     if(enableHttps){
       if(wapPort == 443){
         return "https://" + hostname + contextPath;
