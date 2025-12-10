@@ -1,8 +1,7 @@
 FROM eclipse-temurin:17-jdk
 ARG SERVER_NAME_DEFAULT=wapserver
 
-#This is the post that you want to use on the HOST machine, not in the container itself
-ARG PORT_DEFAULT=8090
+ARG PORT_DEFAULT=8080
 ARG SPARQ_DEFAULT=3330
 ARG HOST_DEFAULT=localhost
 ARG ROOT_DIRECTORY_DEFAULT=/spring
