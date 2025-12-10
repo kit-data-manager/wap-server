@@ -29,6 +29,10 @@ Example 4: Hostname=host1.example.org, EnableHttps=true, WapPort=443
 When using the installer (via --install or by starting the jar in an empty folder) it asks for this base configuration
 and shows its consequences on the root container IRI.
 
+All of the above can be overwritten by using the `WapBasePath` property.
+This property is intended to be used only in scenarios where the server is reachable from a different URL
+and if this should or must be reflected in the database (reverse proxy, docker container).
+
 If changing any of those parameters with an already running server is necessary, a deletion of the database is needed.
 It gets recreated on first startup after the configuration has been changed.
 
@@ -38,6 +42,6 @@ It gets recreated on first startup after the configuration has been changed.
 Using manual database manipulation, a conversion of the database to fit the new root container IRI can be achieved,
 but this is not implemented in the application. The easiest way to achieve this would be to have the database
 been backed up to NQUADS (which retains the named graphs) and then run a simple text replacement of old IRI ==> new IRI.
-This has never been tested and should be regarded as a good starting point at best.
+Also see [data migration guide](https://github.com/kit-data-manager/wap-server/wiki/Migrating-a-Server-Instance-and-its-Data) for details.
 
 ---
