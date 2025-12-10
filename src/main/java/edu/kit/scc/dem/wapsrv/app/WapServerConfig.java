@@ -90,6 +90,8 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
   private static final String CORS_ALLOWED_ORIGINS_PATH_DEFAULT = "./cors_allowed_origins.conf";
   private static final boolean FALLBACK_VALIDATION_DEFAULT = true;
   private static final String RDF_BACKEND_IMPLEMENTATION_DEFAULT = "jena";
+  private static final String CONTEXT_PATH_DEFAULT = "";
+  private static final String PROXYBASEPATH_DEFAULT = "";
 
   /**
    * The single instance of the configuration
@@ -245,10 +247,10 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
   @Value("${RdfBackendImplementation:" + RDF_BACKEND_IMPLEMENTATION_DEFAULT + "}")
   private String rdfBackendImplementation;
 
-  @Value("${server.servlet.context-path:}")
-  private String contextPath;
+  @Value("${server.servlet.context-path:" + CONTEXT_PATH_DEFAULT + "}")
+  private String contextPath = CONTEXT_PATH_DEFAULT;
 
-  @Value("${WapBasePath:#{null}}")
+  @Value("${WapBasePath:" + PROXYBASEPATH_DEFAULT + "}")
   private String proxiedBasePath;
 
   /**
@@ -368,6 +370,8 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
     props.put(ConfigurationKeys.SimpleFormatters.toString(), SIMPLE_FORMATTERS_DEFAULT);
     props.put(ConfigurationKeys.CorsAllowedOriginsPath.toString(), CORS_ALLOWED_ORIGINS_PATH_DEFAULT);
     props.put(ConfigurationKeys.FallbackValidation.toString(), FALLBACK_VALIDATION_DEFAULT + "");
+    props.put(ConfigurationKeys.ContextPath.toString(), CONTEXT_PATH_DEFAULT);
+    props.put(ConfigurationKeys.ProxiedBasePath.toString(), PROXYBASEPATH_DEFAULT);
     if(ConfigurationKeys.values().length != props.size()){
       throw new RuntimeException("Default properties and the ConfigurationKeys enum not in sync");
     }
@@ -721,6 +725,8 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
     corsAllowedOriginsPath
             = getProperty(props, ConfigurationKeys.CorsAllowedOriginsPath, CORS_ALLOWED_ORIGINS_PATH_DEFAULT);
     fallbackValidation = getProperty(props, ConfigurationKeys.FallbackValidation, FALLBACK_VALIDATION_DEFAULT);
+    contextPath = getProperty(props, ConfigurationKeys.ContextPath, CONTEXT_PATH_DEFAULT);
+    proxiedBasePath = getProperty(props, ConfigurationKeys.ProxiedBasePath, PROXYBASEPATH_DEFAULT);
   }
 
   private String getProperty(Properties newProps, ConfigurationKeys key, String defaultValue){
@@ -819,7 +825,7 @@ public class WapServerConfig extends WebMvcConfigurationSupport{
    * @return The base url
    */
   public String getBaseUrl(){
-    if(proxiedBasePath != null) return proxiedBasePath;
+    if(proxiedBasePath != null && proxiedBasePath != "") return proxiedBasePath;
     if(enableHttps){
       if(wapPort == 443){
         return "https://" + hostname + contextPath;
