@@ -132,8 +132,8 @@ dependencies {
     //Java 11 Support
     testImplementation "org.mockito:mockito-inline:5.2.0"
     //testImplementation "org.mockito:mockito-core:2.23.4"
-    testImplementation "com.sun.xml.bind:jaxb-core:2.3.0.1"
-    testImplementation "com.sun.xml.bind:jaxb-impl:2.3.0.1"
+    testImplementation "com.sun.xml.bind:jaxb-core:4.0.6"
+    testImplementation "com.sun.xml.bind:jaxb-impl:4.0.6"
     testImplementation "javax.activation:activation:1.1.1"
     testImplementation "org.javassist:javassist:3.23.1-GA"
     testImplementation "javax.xml.bind:jaxb-api:2.3.1"
