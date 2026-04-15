@@ -30,7 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import edu.kit.scc.dem.wapsrv.app.EtagFactory;
 import edu.kit.scc.dem.wapsrv.app.EtagFactoryMock;
 import edu.kit.scc.dem.wapsrv.app.WapServerConfig;
-import edu.kit.scc.dem.wapsrv.app.WapServerConfigMock;
+import edu.kit.scc.dem.wapsrv.app.WapServerConfigSpy;
 import edu.kit.scc.dem.wapsrv.exceptions.ContainerNotEmptyException;
 import edu.kit.scc.dem.wapsrv.exceptions.InvalidContainerException;
 import edu.kit.scc.dem.wapsrv.exceptions.ResourceDeletedException;
@@ -66,7 +66,7 @@ import edu.kit.scc.dem.wapsrv.testscommon.ModelFactoryMock;
 // @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {ContainerServiceImpl.class, RepositoryMock.class, ModelFactoryMock.class,
-      EtagFactoryMock.class, JsonLdProfileRegistry.class, ValidatorRegistry.class, WapServerConfigMock.class,
+      EtagFactoryMock.class, JsonLdProfileRegistry.class, ValidatorRegistry.class, WapServerConfigSpy.class,
       JsonLdValidator.class, Validator.class})
 @ExtendWith(HoverflyExtension.class)
 @HoverflySimulate(source = @HoverflySimulate.Source(value = "w3c_simulation.json", type = HoverflySimulate.SourceType.DEFAULT_PATH))

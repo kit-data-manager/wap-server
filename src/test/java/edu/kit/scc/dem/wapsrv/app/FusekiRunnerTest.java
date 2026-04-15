@@ -22,7 +22,7 @@ import edu.kit.scc.dem.wapsrv.repository.jena.JenaDataBase;
  * @version 1.1
  */
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {FusekiRunner.class, JenaDataBase.class, WapServerConfigMock.class})
+@SpringBootTest(classes = {FusekiRunner.class, JenaDataBase.class, WapServerConfigSpy.class})
 @ActiveProfiles("test")
 class FusekiRunnerTest {
    @Autowired
