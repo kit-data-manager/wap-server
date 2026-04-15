@@ -72,24 +72,19 @@ class FusekiRunnerTest {
       when(wapServerConfig.getSparqlReadIp()).thenReturn("localhost");
       when(wapServerConfig.getSparqlWriteIp()).thenReturn("localhost");
       // test readPort > 0 || writePort > 0
-      // test true || false
-      when(wapServerConfig.getSparqlReadPort()).thenReturn(3330);
+      // test with disabled write port
       when(wapServerConfig.getSparqlWritePort()).thenReturn(-1);
       objFusekiRunner.init();
       objFusekiRunner.deinit();
-      // test false || true
+      // test with disabled read port
       when(wapServerConfig.getSparqlReadPort()).thenReturn(-1);
-      when(wapServerConfig.getSparqlWritePort()).thenReturn(3331);
       objFusekiRunner.init();
       objFusekiRunner.deinit();
-      // test false || false
+      // test with disabled read and write port
       when(wapServerConfig.getSparqlReadPort()).thenReturn(-1);
       when(wapServerConfig.getSparqlWritePort()).thenReturn(-1);
       objFusekiRunner.init();
       objFusekiRunner.deinit();
-      // set back to default
-      when(wapServerConfig.getSparqlReadPort()).thenReturn(3330);
-      when(wapServerConfig.getSparqlWritePort()).thenReturn(3331);
    }
 
    /**
