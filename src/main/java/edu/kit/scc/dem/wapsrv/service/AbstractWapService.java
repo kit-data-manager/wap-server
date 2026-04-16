@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.rdf.api.BlankNodeOrIRI;
-import org.apache.commons.rdf.api.Dataset;
-import org.apache.commons.rdf.api.Graph;
-import org.apache.commons.rdf.api.Literal;
+import org.apache.commons.rdf.api.*;
 import org.apache.commons.rdf.simple.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -452,6 +449,14 @@ public abstract class AbstractWapService implements WapService {
       repository.readRdfTransaction(ds -> {
          Graph graph = ds.getGraph(node).get();
          result[0] = graph.contains(node, WapVocab.deleted, null);
+         if(result[0]) {
+            Triple deletedTriple = graph.stream(node, WapVocab.deleted, null).findFirst().orElseThrow();
+            Literal falseLiteral = repository.getRdf().createLiteral("false", Types.XSD_BOOLEAN);
+            if(deletedTriple.getObject().equals(falseLiteral)) {
+               //deleted flag is present but value is set to false
+               result[0] = false;
+            }
+         }
       });
       log.info("check deleted result for: '" + iri + "' is: '" + result[0] + "'");
       return result[0];
